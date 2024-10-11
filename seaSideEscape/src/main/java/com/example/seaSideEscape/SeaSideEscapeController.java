@@ -40,6 +40,7 @@ public class SeaSideEscapeController {
         return hotelRepository.findAll();
     }
 
+
     //Testing adding hotels to a database
     @PostMapping
     public Hotel addHotel(@RequestBody Hotel hotel) {
