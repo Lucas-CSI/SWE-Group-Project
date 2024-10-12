@@ -33,7 +33,8 @@ public class BillingService {
         BigDecimal totalAmount = calculateTotalAmount(charges, roomRate);
 
         BigDecimal taxes = calculateTaxes(totalAmount);
-        BigDecimal finalAmount = totalAmount.add(taxes); // No discounts here
+        BigDecimal discounts = reservation.getDiscount() != null ? reservation.getDiscount() : BigDecimal.ZERO; // Handle null discounts
+        BigDecimal finalAmount = totalAmount.add(taxes).subtract(discounts); // No discounts here
 
         // Create the Bill object
         Bill bill = new Bill();
