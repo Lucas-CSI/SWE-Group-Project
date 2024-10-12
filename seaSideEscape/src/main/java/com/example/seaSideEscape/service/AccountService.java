@@ -2,8 +2,7 @@ package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.repository.AccountRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 import java.util.Random;
-import java.util.function.Supplier;
 
 @Service
 public class AccountService {
