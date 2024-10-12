@@ -1,9 +1,11 @@
 package com.example.seaSideEscape.model;
 import jakarta.persistence.Entity;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@JsonPropertyOrder({ "reservation", "roomRate", "charges", "taxes", "totalAmount", "finalAmount" })
 public class Bill extends Reservation{
 
     private Reservation reservation;
