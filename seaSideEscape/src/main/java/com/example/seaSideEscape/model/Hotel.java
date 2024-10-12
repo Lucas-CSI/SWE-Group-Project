@@ -16,8 +16,6 @@ public class Hotel {
     private String address;
     private int rating;
 
-    // Getters and Setters
-
     public Hotel(){
     }
 
