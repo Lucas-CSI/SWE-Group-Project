@@ -2,6 +2,8 @@ package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.repository.AccountRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +12,9 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 import java.util.Random;
+import java.util.function.Supplier;
 
 @Service
 public class AccountService {
@@ -29,9 +33,8 @@ public class AccountService {
             int index = (int) (rnd.nextFloat() * SALTCHARS.length());
             salt.append(SALTCHARS.charAt(index));
         }
-        String saltStr = salt.toString();
 
-        return saltStr;
+        return salt.toString();
     }
 
     private String bytesToHex(byte[] hash) {
@@ -46,20 +49,40 @@ public class AccountService {
         return hexString.toString();
     }
 
+    private String getSHA256(String str) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] encodedHash = digest.digest(str.getBytes(StandardCharsets.UTF_8));
+        return bytesToHex(encodedHash);
+    }
+
+    private String getHashedPassword(Account account) throws NoSuchAlgorithmException {
+        return getSHA256(account.getPassword() + account.getSalt());
+    }
+
     public ResponseEntity<String> createAccount(Account account) throws NoSuchAlgorithmException {
-        if(accountRepository.findByUsername(account.getUsername()) == null) {
+        if(accountRepository.findByUsername(account.getUsername()).isEmpty()) {
             String saltStr = createSalt();
-            String password = account.getPassword() + saltStr;
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] encodedHash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+            String password = getHashedPassword(account);
 
             account.setSalt(saltStr);
-            account.setPassword(bytesToHex(encodedHash));
+            account.setPassword(password);
             accountRepository.save(account);
 
             return new ResponseEntity<>("Successfully created account.", HttpStatus.OK);
         }else{
             return new ResponseEntity<>("Account already exists.", HttpStatus.CONFLICT);
         }
+    }
+
+    public Optional<Account> canLogin(Account account) throws NoSuchAlgorithmException {
+        Optional<Account> acc = accountRepository.findByUsername(account.getUsername());
+        String password;
+        if(acc.isPresent()) {
+            password = getHashedPassword(account);
+            if (password.equals(acc.get().getPassword())) {
+                return acc;
+            }
+        }
+        return Optional.empty();
     }
 }
