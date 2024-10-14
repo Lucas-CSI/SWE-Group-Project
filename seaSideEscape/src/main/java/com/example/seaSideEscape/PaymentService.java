@@ -1,7 +1,9 @@
 package com.example.seaSideEscape;
 
+import com.example.seaSideEscape.model.EventBooking;
 import com.example.seaSideEscape.model.Payment;
 import com.example.seaSideEscape.model.Reservation;
+import com.example.seaSideEscape.repository.EventBookingRepository;
 import com.example.seaSideEscape.repository.PaymentRepository;
 import com.example.seaSideEscape.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
