@@ -46,4 +46,5 @@ public class SeaSideEscapeController {
     public Hotel addHotel(@RequestBody Hotel hotel) {
         return hotelRepository.save(hotel);
     }
+
 }
