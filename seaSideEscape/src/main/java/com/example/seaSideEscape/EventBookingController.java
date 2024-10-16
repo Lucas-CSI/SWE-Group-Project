@@ -1,6 +1,7 @@
 package com.example.seaSideEscape;
 
 
+import com.example.seaSideEscape.Service.EventBookingService;
 import com.example.seaSideEscape.model.EventBooking;
 import com.example.seaSideEscape.model.Venue;
 import com.example.seaSideEscape.repository.VenueRepository;
@@ -25,8 +26,6 @@ public class EventBookingController {
                                   @RequestParam String eventName,
                                   @RequestParam String guestEmail){
         return eventBookingService.bookEvent(venueId, eventDate, eventName, guestEmail);
-
-
     }
     @GetMapping("/venues")
     public List<Venue> getAvailableVenues(){

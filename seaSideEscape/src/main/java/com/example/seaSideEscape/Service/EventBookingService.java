@@ -1,4 +1,4 @@
-package com.example.seaSideEscape;
+package com.example.seaSideEscape.Service;
 
 
 import com.example.seaSideEscape.model.EventBooking;
