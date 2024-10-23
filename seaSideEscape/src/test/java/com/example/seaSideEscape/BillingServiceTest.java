@@ -1,6 +1,6 @@
 package com.example.seaSideEscape;
 
-import com.example.seaSideEscape.Service.BillingService;
+import com.example.seaSideEscape.service.BillingService;
 import com.example.seaSideEscape.model.Bill;
 import com.example.seaSideEscape.model.Charge;
 import com.example.seaSideEscape.model.Reservation;
@@ -37,7 +37,6 @@ class BillingServiceTest {
         reservation = new Reservation();
         reservation.setId(1L);
         reservation.setRoomRate(new BigDecimal("100.00"));
-        reservation.setTotalAmount(new BigDecimal("100.00"));
 
         List<Charge> charges = new ArrayList<>();
         Charge charge = new Charge();

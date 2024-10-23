@@ -30,20 +30,20 @@ public class BillingService {
 
         List<Charge> charges = reservation.getCharges();
         BigDecimal roomRate = reservation.getRoomRate();
-        BigDecimal totalAmount = calculateTotalAmount(charges, roomRate);
+        BigDecimal subTotal = calculateTotalAmount(charges, roomRate);
 
         BigDecimal taxes = calculateTaxes(totalAmount);
         BigDecimal discounts = reservation.getDiscount() != null ? reservation.getDiscount() : BigDecimal.ZERO; // Handle null discounts
-        BigDecimal finalAmount = totalAmount.add(taxes).subtract(discounts); // No discounts here
+        BigDecimal totalAmount = subTotal.add(taxes).subtract(discounts); // No discounts here
 
         // Create the Bill object
         Bill bill = new Bill();
         bill.setReservation(reservation);
-        bill.setRoomRate(roomRate);
+        bill.setRoomRate(reservation.getRoomRate());
         bill.setCharges(charges);
         bill.setTaxes(taxes);
+        bill.setSubTotal(subTotal);
         bill.setTotalAmount(totalAmount);
-        bill.setFinalAmount(finalAmount);
 
         return bill;
     }
