@@ -26,7 +26,7 @@ public class BillingService {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
 
-        System.out.println("Generating bill for reservation: " + reservation.getId());
+        System.out.println("Generating bill for reservation: " + reservationId);
 
         List<Charge> charges = reservation.getCharges();
         BigDecimal roomRate = reservation.getRoomRate();
