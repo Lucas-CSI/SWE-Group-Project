@@ -15,6 +15,7 @@ public class Room {
     private String bedType; // twin, full, queen, king
     private boolean isSmokingAllowed;
     private double maxRate;
+    private boolean isBooked;
 
     @ManyToOne
     private Reservation reservation;
@@ -55,5 +56,11 @@ public class Room {
 
     public void setMaxRate(double maxRate){this.maxRate = maxRate;}
 
+    public boolean isBooked() {
+        return isBooked;
+    }
 
+    public void setBooked(boolean booked) {
+        isBooked = booked;
+    }
 }
