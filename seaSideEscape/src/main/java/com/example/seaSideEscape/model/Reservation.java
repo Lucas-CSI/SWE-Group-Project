@@ -60,5 +60,11 @@ public class Reservation {
 
     public void setPaid(boolean paid) {this.paid = paid;}
 
+    public List<Charge> getCharges() {
+        return charges;
+    }
 
+    public void setCharges(List<Charge> charges) {
+        this.charges = charges;
+    }
 }
