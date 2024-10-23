@@ -8,6 +8,7 @@ import EventsPage from './components/EventPageComponents/EventsPage';
 import EventReservationPage from "./components/EventPageComponents/EventReservationPage";
 import EventSummaryPage from "./components/EventPageComponents/EventSummaryPage";
 import EventConfirmationPage from "./components/EventPageComponents/EventConfirmationPage";
+import ReservationPage from "./components/ReservationPageComponents/ReservationPage";
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
                     <Route path="/event-reservation/:eventId" element={<EventReservationPage />} />
                     <Route path="/event-reservation-summary/:eventId" element={<EventSummaryPage />} />
                     <Route path="/event-confirmation/:eventId" element={<EventConfirmationPage />} />
+                    <Route path="/reservation" element={<ReservationPage />} />
                 </Routes>
             </Box>
         </Router>
