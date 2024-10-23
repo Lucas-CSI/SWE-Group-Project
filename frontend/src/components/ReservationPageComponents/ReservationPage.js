@@ -5,8 +5,8 @@ import axios from "axios";
 
 const ReservationPage = () => {
     const [formData, setFormData] = useState({
-        checkInDate: "",
-        checkOutDate: "",
+        startDate: "",
+        endDate: "",
         guests: 1,
         roomType: "standard",
         specialRequests: "",
@@ -51,24 +51,24 @@ const ReservationPage = () => {
 
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="checkInDate">Check-In Date:</label>
+                    <label htmlFor="startDate">Check-In Date:</label>
                     <input
                         type="date"
-                        id="checkInDate"
-                        name="checkInDate"
-                        value={formData.checkInDate}
+                        id="startDate"
+                        name="startDate"
+                        value={formData.startDate}
                         onChange={handleChange}
                         required
                     />
                 </div>
 
                 <div>
-                    <label htmlFor="checkOutDate">Check-Out Date:</label>
+                    <label htmlFor="endDate">Check-Out Date:</label>
                     <input
                         type="date"
-                        id="checkOutDate"
-                        name="checkOutDate"
-                        value={formData.checkOutDate}
+                        id="endDate"
+                        name="endDate"
+                        value={formData.endDate}
                         onChange={handleChange}
                         required
                     />
