@@ -10,22 +10,27 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EventBookingService {
+
     @Autowired
     private VenueRepository venueRepository;
 
     @Autowired
     private EventBookingRepository eventBookingRepository;
 
+    @Autowired
+    public EventBookingService(VenueRepository venueRepository, EventBookingRepository eventBookingRepository){
+        this.venueRepository = venueRepository;
+        this.eventBookingRepository = eventBookingRepository;
+    }
+
     public EventBooking bookEvent(Long venueID, LocalDateTime eventDate, String eventName, String guestEmail){
         Venue venue = venueRepository.findById(venueID)
-                .orElseThrow(()->new IllegalArgumentException("Venue is not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Venue not found"));
 
-        if (venueID == null) {
-            throw new IllegalArgumentException("Venue ID cannot be null");
-        }
         if (eventDate == null) {
             throw new IllegalArgumentException("Event Date cannot be null");
         }
@@ -36,14 +41,18 @@ public class EventBookingService {
             throw new IllegalArgumentException("Guest Email cannot be null or empty");
         }
 
-        if(venue.isBooked()){
+        if (venue.isBooked()) {
             throw new IllegalArgumentException("Venue is already booked.");
         }
-        List<EventBooking> existingEvents = eventBookingRepository.findByEventDate(eventDate);
-        if(!existingEvents.isEmpty()){
-            throw new IllegalArgumentException("Date conflict with another event.");
-        }
 
+        List<EventBooking> existingEvents = eventBookingRepository.findByEventDate(eventDate);
+        if (!existingEvents.isEmpty()) {
+            Optional<EventBooking> isBooked = existingEvents.stream()
+                    .filter(event -> event.getEventDate() == eventDate)
+                    .findFirst();
+            if(isBooked.isPresent())
+                throw new IllegalArgumentException("Date conflict with another event.");
+        }
 
         venue.setBooked(true);
         venueRepository.save(venue);
@@ -62,4 +71,7 @@ public class EventBookingService {
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
     }
 
+    public List<Venue> getAvailableVenuesByFloor(int floorNumber) {
+        return venueRepository.findByIsBookedAndFloorNumber(false, floorNumber);
+    }
 }

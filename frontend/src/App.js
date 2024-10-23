@@ -4,7 +4,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavigationBar from './components/NavigationBar';
 import HomePage from './components/HomePage';
 import PaymentScreen from './components/PaymentScreen';
-import EventsPage from './components/EventsPage';
+import EventsPage from './components/EventPageComponents/EventsPage';
+import EventReservationPage from "./components/EventPageComponents/EventReservationPage";
+import EventSummaryPage from "./components/EventPageComponents/EventSummaryPage";
+import EventConfirmationPage from "./components/EventPageComponents/EventConfirmationPage";
 
 function App() {
     return (
@@ -16,6 +19,9 @@ function App() {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/payment" element={<PaymentScreen />} />
                     <Route path="/events" element={<EventsPage />} />
+                    <Route path="/event-reservation/:eventId" element={<EventReservationPage />} />
+                    <Route path="/event-reservation-summary/:eventId" element={<EventSummaryPage />} />
+                    <Route path="/event-confirmation/:eventId" element={<EventConfirmationPage />} />
                 </Routes>
             </Box>
         </Router>
@@ -23,3 +29,4 @@ function App() {
 }
 
 export default App;
+// <Route path="/event-confirmation/:eventId" element={<EventConfirmation />} />
