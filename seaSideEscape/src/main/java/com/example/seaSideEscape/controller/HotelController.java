@@ -46,4 +46,5 @@ public class HotelController {
     public Hotel addHotel(@RequestBody Hotel hotel) {
         return hotelRepository.save(hotel);
     }
+
 }

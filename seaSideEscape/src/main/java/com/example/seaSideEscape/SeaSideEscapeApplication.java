@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @EnableJpaRepositories(basePackages = "com.example.seaSideEscape.repository")
 public class SeaSideEscapeApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(SeaSideEscapeApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(SeaSideEscapeApplication.class, args);
+	}
 }
