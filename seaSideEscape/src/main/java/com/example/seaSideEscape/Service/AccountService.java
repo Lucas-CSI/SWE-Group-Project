@@ -1,9 +1,4 @@
-<<<<<<<< HEAD:seaSideEscape/src/main/java/com/example/seaSideEscape/service/AccountService.java
 package com.example.seaSideEscape.service;
-========
-package com.example.seaSideEscape.Service;
->>>>>>>> Francisco:seaSideEscape/src/main/java/com/example/seaSideEscape/Service/AccountService.java
-
 import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.repository.AccountRepository;
 

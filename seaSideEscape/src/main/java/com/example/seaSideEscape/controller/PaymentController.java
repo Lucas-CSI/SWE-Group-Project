@@ -1,6 +1,6 @@
-package com.example.seaSideEscape;
+package com.example.seaSideEscape.controller;
 
-import com.example.seaSideEscape.Service.PaymentService;
+import com.example.seaSideEscape.service.PaymentService;
 import com.example.seaSideEscape.model.Payment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

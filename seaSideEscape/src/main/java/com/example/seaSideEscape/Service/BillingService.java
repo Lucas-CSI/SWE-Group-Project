@@ -1,4 +1,4 @@
-package com.example.seaSideEscape.Service;
+package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.model.Bill;
 import com.example.seaSideEscape.model.Charge;

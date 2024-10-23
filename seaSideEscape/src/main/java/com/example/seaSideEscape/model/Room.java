@@ -1,16 +1,13 @@
 package com.example.seaSideEscape.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.*;
 
 @Entity
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private Long id;
+    private Long roomId;
 
     private String roomNumber;
     private String theme; //TBD
@@ -19,9 +16,20 @@ public class Room {
     private boolean isSmokingAllowed;
     private double maxRate;
 
-    public Long getId(){return id;}
+    @ManyToOne
+    private Reservation reservation;
 
-    public void setId(Long id){this.id = id;}
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
+    public Long getId(){return roomId;}
+
+    public void setId(Long id){this.roomId = id;}
 
     public String getRoomNumber(){return roomNumber;}
 

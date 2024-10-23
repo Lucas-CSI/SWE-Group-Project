@@ -1,12 +1,11 @@
-package com.example.seaSideEscape;
+package com.example.seaSideEscape.controller;
 
 
-import com.example.seaSideEscape.Service.EventBookingService;
+import com.example.seaSideEscape.service.EventBookingService;
 import com.example.seaSideEscape.model.EventBooking;
 import com.example.seaSideEscape.model.Venue;
 import com.example.seaSideEscape.repository.VenueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
