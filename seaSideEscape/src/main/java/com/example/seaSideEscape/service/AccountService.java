@@ -59,12 +59,11 @@ public class AccountService {
     public ResponseEntity<String> createAccount(Account account) throws NoSuchAlgorithmException {
         if(accountRepository.findByUsername(account.getUsername()).isEmpty()) {
             String saltStr = createSalt();
+            account.setSalt(saltStr);
             String password = getHashedPassword(account);
 
-            account.setSalt(saltStr);
             account.setPassword(password);
             accountRepository.save(account);
-
             return new ResponseEntity<>("Successfully created account.", HttpStatus.OK);
         }else{
             return new ResponseEntity<>("Account already exists.", HttpStatus.CONFLICT);
@@ -75,6 +74,7 @@ public class AccountService {
         Optional<Account> acc = accountRepository.findByUsername(account.getUsername());
         String password;
         if(acc.isPresent()) {
+            account.setSalt(acc.get().getSalt());
             password = getHashedPassword(account);
             if (password.equals(acc.get().getPassword())) {
                 return acc;
