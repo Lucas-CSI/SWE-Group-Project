@@ -8,16 +8,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReservationService {
     private final ReservationRepository reservationRepository;
+    private final BillingService billingService;
 
     @Autowired
-    public ReservationService(ReservationRepository reservationRepository) {
+    public ReservationService(ReservationRepository reservationRepository, BillingService billingService) {
         this.reservationRepository = reservationRepository;
+        this.billingService = billingService;
     }
 
     public Reservation bookRoom(Reservation reservation) throws Exception {
         if(reservationRepository.findByRoom(reservation.getRoom()).isPresent()) {
             throw new Exception("Error: Room already reserved");
         }
-        return reservationRepository.save(reservation);
+        Reservation newReservation = reservationRepository.save(reservation);
+        billingService.generateBill(newReservation.getId());
+
+        return newReservation;
     }
 }
