@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/seaSideEscape.iml" filepath="$PROJECT_DIR$/.idea/seaSideEscape.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/SWE-Group-Project.iml" filepath="$PROJECT_DIR$/.idea/SWE-Group-Project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/seaSideEscape/seaSideEscape.iml" filepath="$PROJECT_DIR$/seaSideEscape/seaSideEscape.iml" />
     </modules>
   </component>
 </project>
