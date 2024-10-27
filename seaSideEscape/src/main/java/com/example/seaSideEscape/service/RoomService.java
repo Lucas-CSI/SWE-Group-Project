@@ -5,6 +5,8 @@ import com.example.seaSideEscape.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class RoomService {
     private final RoomRepository roomRepository;
@@ -24,5 +26,9 @@ public class RoomService {
         }else{
             throw new Exception("Error: Room does not exist.");
         }
+    }
+
+    public Optional<Room> getAvailableRoomWithTheme(String theme){
+        return roomRepository.findByThemeAndBooked(theme, false);
     }
 }

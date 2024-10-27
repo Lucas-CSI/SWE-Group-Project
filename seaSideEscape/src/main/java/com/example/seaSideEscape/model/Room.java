@@ -10,12 +10,22 @@ public class Room {
     private Long roomId;
 
     private String roomNumber;
-    private String theme; //TBD
+    private Themes theme; //TBD
     private String qualityLevel;  // executive, business, comfort, economy
     private String bedType; // twin, full, queen, king
     private boolean isSmokingAllowed;
     private double maxRate;
     private boolean isBooked;
+    public enum Themes{NATURE_RETREAT, URBAN_ELEGANCE, VINTAGE_CHARM};
+    private boolean oceanView;
+
+    public boolean isOceanView() {
+        return oceanView;
+    }
+
+    public void setOceanView(boolean oceanView) {
+        this.oceanView = oceanView;
+    }
 
     @ManyToOne
     private Reservation reservation;
@@ -36,9 +46,11 @@ public class Room {
 
     public void setRoomNumber(String roomNumber){this.roomNumber = roomNumber;}
 
-    public String getTheme(){return theme;}
+    public String getTheme(){
+        return theme.toString();
+    }
 
-    public void setTheme(String theme){this.theme = theme;}
+    public void setTheme(Themes theme){this.theme = theme;}
 
     public String getQualityLevel(){return qualityLevel;}
 
