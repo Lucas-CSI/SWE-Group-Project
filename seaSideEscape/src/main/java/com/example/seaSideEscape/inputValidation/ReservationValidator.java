@@ -4,12 +4,12 @@ import com.example.seaSideEscape.model.Reservation;
 import java.time.LocalDate;
 import java.util.HashMap;
 
-public class reservationValidator implements Validator{
+public class ReservationValidator implements Validator{
     HashMap<String, String> invalidItems = new HashMap<String, String>();
 
-    public reservationValidator(Reservation reservation){
-        validateDate(reservation.getStartDate());
-        validateDate(reservation.getEndDate());
+    public ReservationValidator(Reservation reservation){
+        validateDate(reservation.getStartDate(), "Start Date");
+        validateDate(reservation.getEndDate(), "End Date");
     }
 
     public HashMap<String, String> getInvalidItems() {
@@ -20,8 +20,8 @@ public class reservationValidator implements Validator{
         return invalidItems.isEmpty();
     }
 
-    public void validateDate(LocalDate date){
+    public void validateDate(LocalDate date, String dateType){
         if(date.isAfter(LocalDate.now()))
-            invalidItems.put("date", "Invalid date");
+            invalidItems.put(dateType, "Invalid date");
     }
 }
