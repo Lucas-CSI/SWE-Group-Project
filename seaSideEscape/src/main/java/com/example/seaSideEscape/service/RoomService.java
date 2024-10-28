@@ -28,7 +28,7 @@ public class RoomService {
         }
     }
 
-    public Optional<Room> getAvailableRoomWithTheme(String theme){
-        return roomRepository.findByThemeAndBooked(theme, false);
+    public Optional<Room> getAvailableRoomWithViewAndTheme(boolean oceanView, Room.Themes theme){
+        return roomRepository.findByViewByThemeAndBooked(oceanView, theme, false);
     }
 }

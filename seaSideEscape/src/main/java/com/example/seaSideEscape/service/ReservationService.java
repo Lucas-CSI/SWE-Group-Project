@@ -6,6 +6,8 @@ import com.example.seaSideEscape.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ReservationService {
     private final ReservationRepository reservationRepository;
@@ -19,18 +21,20 @@ public class ReservationService {
         this.roomService = roomService;
     }
 
-    public Reservation bookRoom(Reservation reservation) throws Exception {
+    public Reservation bookRoom(Reservation reservation, boolean oceanView, Room.Themes theme) throws Exception {
         Room room = reservation.getRoom();
         if(!roomService.roomExists(reservation.getId())){
             throw new Exception("Room does not exist");
         }
-        else if(roomService.isRoomBooked(room.getId())) {
-            throw new Exception("Error: Room already reserved");
+        Optional<Room> availableRoom = roomService.getAvailableRoomWithViewAndTheme(oceanView, theme);
+
+        if(availableRoom.isPresent()) {
+            Reservation newReservation = reservationRepository.save(reservation);
+            billingService.generateBill(newReservation.getId());
+            return newReservation;
+        }else{
+            throw new Exception("No room available.");
         }
 
-        Reservation newReservation = reservationRepository.save(reservation);
-        billingService.generateBill(newReservation.getId());
-
-        return newReservation;
     }
 }

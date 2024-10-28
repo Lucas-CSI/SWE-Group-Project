@@ -13,6 +13,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query("SELECT u FROM Room u WHERE u.theme = ?1")
     Optional<Room> findByTheme(String theme);
 
-    @Query("SELECT u FROM Room u WHERE u.theme = ?1 AND u.isBooked = ?2")
-    Optional<Room> findByViewByThemeAndBooked(Room.Themes theme, boolean booked);
+    @Query("SELECT u FROM Room u WHERE u.oceanView = ?1 AND u.theme = ?2 AND u.isBooked = ?3")
+    Optional<Room> findByViewByThemeAndBooked(boolean oceanView, Room.Themes theme, boolean booked);
 }
