@@ -1,5 +1,6 @@
 package com.example.seaSideEscape;
 
+import com.example.seaSideEscape.controller.BillingController;
 import com.example.seaSideEscape.service.BillingService;
 import com.example.seaSideEscape.model.Bill;
 import org.junit.jupiter.api.Test;

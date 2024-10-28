@@ -1,5 +1,6 @@
 package com.example.seaSideEscape;
 
+import com.example.seaSideEscape.controller.EventBookingController;
 import com.example.seaSideEscape.service.EventBookingService;
 import com.example.seaSideEscape.model.EventBooking;
 import com.fasterxml.jackson.databind.ObjectMapper;

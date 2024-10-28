@@ -46,5 +46,7 @@ public class Account {
     }
 
     public boolean isAdmin() { return isAdmin; }
-    public void setIsAdmin(Boolean isAdmin) { this.isAdmin = isAdmin; }
+
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin; }
 }
