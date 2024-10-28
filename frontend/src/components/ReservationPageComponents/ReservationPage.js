@@ -7,9 +7,14 @@ const ReservationPage = () => {
     const [formData, setFormData] = useState({
         startDate: "",
         endDate: "",
-        guests: 1,
-        roomType: "standard",
         specialRequests: "",
+        room: {
+            theme: 1,
+            qualityLevel: 1,
+            smokingAllowed: false,
+            bedType: "Suite",
+            oceanView: 1,
+        }
     });
 
     const [loading, setLoading] = useState(false); // Loading state
@@ -75,12 +80,12 @@ const ReservationPage = () => {
                 </div>
 
                 <div>
-                    <label htmlFor="guests">Number of Guests:</label>
+                    <label htmlFor="theme">Theme:</label>
                     <input
                         type="number"
-                        id="guests"
-                        name="guests"
-                        value={formData.guests}
+                        id="theme"
+                        name="theme"
+                        value={formData.room.theme}
                         onChange={handleChange}
                         min="1"
                         max="10"
@@ -93,13 +98,13 @@ const ReservationPage = () => {
                     <select
                         id="roomType"
                         name="roomType"
-                        value={formData.roomType}
+                        value={formData.room.bedType}
                         onChange={handleChange}
                         required
                     >
-                        <option value="standard">Standard</option>
-                        <option value="deluxe">Deluxe</option>
-                        <option value="suite">Suite</option>
+                        <option value="Standard">Standard</option>
+                        <option value="Deluxe">Deluxe</option>
+                        <option value="Suite">Suite</option>
                     </select>
                 </div>
 
