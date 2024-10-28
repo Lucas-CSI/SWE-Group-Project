@@ -18,7 +18,7 @@ public class ReservationController {
     }
 
     @PostMapping("/book")
-    public Reservation bookRoom(@RequestBody Reservation reservation, @RequestParam boolean oceanView, @RequestParam Room.Themes theme) throws Exception {
-        return reservationService.bookRoom(reservation, oceanView, theme);
+    public Reservation bookRoom(@RequestBody Reservation reservation) throws Exception {
+        return reservationService.bookRoom(reservation);
     }
 }

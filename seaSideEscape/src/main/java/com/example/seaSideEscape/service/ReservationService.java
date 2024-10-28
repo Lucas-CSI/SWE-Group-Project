@@ -7,6 +7,7 @@ import com.example.seaSideEscape.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,12 +23,27 @@ public class ReservationService {
         this.roomService = roomService;
     }
 
-    public Reservation bookRoom(Reservation reservation, boolean oceanView, Room.Themes theme) throws Exception {
+    public Reservation bookRoom(Reservation reservation) throws Exception {
         ReservationValidator reservationValidator = new ReservationValidator(reservation);
+        Room room = reservation.getRoom();
         if(reservationValidator.isValid()) {
-            Optional<Room> availableRoom = roomService.getAvailableRoomWithViewAndTheme(oceanView, theme);
+            List<Room> rooms = roomService.getRoomsByQualityLevelAndBedTypeAndViewAndTheme(
+                    room.getQualityLevel(),
+                    room.getBedType(),
+                    room.isOceanView(),
+                    room.getTheme()
+            );
+            List<Reservation> reservations = reservationRepository.findByQualityLevelAndBedTypeAndViewAndThemeBetweenCheckInDateAndCheckOutDate(
+                    room.getQualityLevel(),
+                    room.getBedType(),
+                    room.isOceanView(),
+                    room.getTheme(),
+                    reservation.getStartDate(),
+                    reservation.getEndDate()
+            );
 
-            if (availableRoom.isPresent()) {
+            if (rooms.size() - reservations.size() > 0) {
+                reservation.setRoom(rooms.getFirst());
                 Reservation newReservation = reservationRepository.save(reservation);
                 billingService.generateBill(newReservation.getId());
                 return newReservation;

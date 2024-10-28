@@ -5,6 +5,7 @@ import com.example.seaSideEscape.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,15 +21,7 @@ public class RoomService {
         return roomRepository.existsById(roomId);
     }
 
-    public boolean isRoomBooked(Long roomId) throws Exception {
-        if(roomExists(roomId)) {
-            return roomRepository.findById(roomId).get().isBooked();
-        }else{
-            throw new Exception("Error: Room does not exist.");
-        }
-    }
-
-    public Optional<Room> getAvailableRoomWithViewAndTheme(boolean oceanView, Room.Themes theme){
-        return roomRepository.findByViewByThemeAndBooked(oceanView, theme, false);
+    public List<Room> getRoomsByQualityLevelAndBedTypeAndViewAndTheme(Room.QualityLevel qualityLevel, String bedType, boolean oceanView, Room.Themes theme){
+        return roomRepository.findByQualityLevelAndBedTypeAndViewAndTheme(qualityLevel, bedType, oceanView, theme);
     }
 }
