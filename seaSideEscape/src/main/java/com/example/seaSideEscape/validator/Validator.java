@@ -1,4 +1,4 @@
-package com.example.seaSideEscape.inputValidation;
+package com.example.seaSideEscape.validator;
 
 import java.util.HashMap;
 

@@ -1,4 +1,4 @@
-package com.example.seaSideEscape.inputValidation;
+package com.example.seaSideEscape.validator;
 import com.example.seaSideEscape.model.Reservation;
 
 import java.time.LocalDate;

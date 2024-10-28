@@ -1,6 +1,6 @@
 package com.example.seaSideEscape.service;
 
-import com.example.seaSideEscape.inputValidation.ReservationValidator;
+import com.example.seaSideEscape.validator.ReservationValidator;
 import com.example.seaSideEscape.model.Reservation;
 import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.repository.ReservationRepository;
@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReservationService {
