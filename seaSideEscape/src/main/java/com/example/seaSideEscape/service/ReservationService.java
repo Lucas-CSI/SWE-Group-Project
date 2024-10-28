@@ -1,5 +1,6 @@
 package com.example.seaSideEscape.service;
 
+import com.example.seaSideEscape.inputValidation.ReservationValidator;
 import com.example.seaSideEscape.model.Reservation;
 import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.repository.ReservationRepository;
@@ -22,19 +23,19 @@ public class ReservationService {
     }
 
     public Reservation bookRoom(Reservation reservation, boolean oceanView, Room.Themes theme) throws Exception {
-        Room room = reservation.getRoom();
-        if(!roomService.roomExists(reservation.getId())){
-            throw new Exception("Room does not exist");
-        }
-        Optional<Room> availableRoom = roomService.getAvailableRoomWithViewAndTheme(oceanView, theme);
+        ReservationValidator reservationValidator = new ReservationValidator(reservation);
+        if(reservationValidator.isValid()) {
+            Optional<Room> availableRoom = roomService.getAvailableRoomWithViewAndTheme(oceanView, theme);
 
-        if(availableRoom.isPresent()) {
-            Reservation newReservation = reservationRepository.save(reservation);
-            billingService.generateBill(newReservation.getId());
-            return newReservation;
+            if (availableRoom.isPresent()) {
+                Reservation newReservation = reservationRepository.save(reservation);
+                billingService.generateBill(newReservation.getId());
+                return newReservation;
+            } else {
+                throw new Exception("No room available.");
+            }
         }else{
-            throw new Exception("No room available.");
+            throw new Exception("Invalid reservation.");
         }
-
     }
 }
