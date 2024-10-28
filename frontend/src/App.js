@@ -20,7 +20,6 @@ function App() {
                     <Route path="/payment" element={<PaymentScreen />} />
                     <Route path="/events" element={<EventsPage />} />
                     <Route path="/event-reservation/:eventId" element={<EventReservationPage />} />
-                    <Route path="/event-reservation-summary" element={<EventSummaryPage />} />
                     <Route path="/event-confirmation/:eventId" element={<EventConfirmationPage />} />
                 </Routes>
             </Box>
