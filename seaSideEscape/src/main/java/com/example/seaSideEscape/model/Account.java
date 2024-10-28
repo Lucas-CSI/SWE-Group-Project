@@ -11,6 +11,9 @@ public class Account {
     private String password;
     private String salt;
 
+    @Column(name = "is_admin", columnDefinition = "TINYINT(1)")
+    private Boolean isAdmin = false;
+
     public String getSalt() {
         return salt;
     }
@@ -42,4 +45,7 @@ public class Account {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public boolean isAdmin() { return isAdmin; }
+    public void setIsAdmin(Boolean isAdmin) { this.isAdmin = isAdmin; }
 }
