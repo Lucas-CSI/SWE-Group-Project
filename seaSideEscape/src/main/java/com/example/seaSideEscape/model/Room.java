@@ -15,7 +15,6 @@ public class Room {
     private String bedType; // twin, full, queen, king
     private boolean isSmokingAllowed;
     private double maxRate;
-    private boolean isBooked;
     public enum Themes{NATURE_RETREAT, URBAN_ELEGANCE, VINTAGE_CHARM}
     public enum QualityLevel{Economy, Comfort, Business, Executive}
     private boolean oceanView;
@@ -68,12 +67,4 @@ public class Room {
     public double getMaxRate(){return maxRate;}
 
     public void setMaxRate(double maxRate){this.maxRate = maxRate;}
-
-    public boolean isBooked() {
-        return isBooked;
-    }
-
-    public void setBooked(boolean booked) {
-        isBooked = booked;
-    }
 }
