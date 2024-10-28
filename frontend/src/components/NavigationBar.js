@@ -28,7 +28,7 @@ const NavigationBar = () => {
 
     const handleLoginClose = () => {
         setLoginOpen(false);
-        setError(''); // Clear error when closing the dialog
+        setError('');
     };
 
     const handleSignupOpen = () => {
