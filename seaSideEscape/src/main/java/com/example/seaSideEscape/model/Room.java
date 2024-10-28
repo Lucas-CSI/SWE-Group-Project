@@ -27,17 +27,6 @@ public class Room {
         this.oceanView = oceanView;
     }
 
-    @ManyToOne
-    private Reservation reservation;
-
-    public Reservation getReservation() {
-        return reservation;
-    }
-
-    public void setReservation(Reservation reservation) {
-        this.reservation = reservation;
-    }
-
     public Long getId(){return id;}
 
     public void setId(Long id){this.id = id;}
