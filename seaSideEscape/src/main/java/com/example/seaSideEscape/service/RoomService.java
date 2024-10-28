@@ -21,7 +21,7 @@ public class RoomService {
         return roomRepository.existsById(roomId);
     }
 
-    public List<Room> getRoomsByQualityLevelAndBedTypeAndViewAndTheme(Room.QualityLevel qualityLevel, String bedType, boolean oceanView, Room.Themes theme){
-        return roomRepository.findByQualityLevelAndBedTypeAndViewAndTheme(qualityLevel, bedType, oceanView, theme);
+    public List<Room> getRoomsBySmokingAllowedByQualityLevelAndBedTypeAndViewAndTheme(boolean isSmokingAllowed, Room.QualityLevel qualityLevel, String bedType, boolean oceanView, Room.Themes theme){
+        return roomRepository.findBySmokingAllowedByQualityLevelAndBedTypeAndViewAndTheme(isSmokingAllowed, qualityLevel, bedType, oceanView, theme);
     }
 }

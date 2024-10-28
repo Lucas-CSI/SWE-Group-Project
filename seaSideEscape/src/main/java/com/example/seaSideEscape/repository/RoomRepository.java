@@ -14,6 +14,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query("SELECT u FROM Room u WHERE u.theme = ?1")
     Optional<Room> findByTheme(String theme);
 
-    @Query("SELECT u FROM Room u WHERE u.qualityLevel = ?1 AND u.bedType = ?2 AND u.oceanView = ?3 AND u.theme = ?4")
-    List<Room> findByQualityLevelAndBedTypeAndViewAndTheme(Room.QualityLevel qualityLevel, String bedType, boolean oceanView, Room.Themes theme);
+    @Query("SELECT u FROM Room u WHERE u.isSmokingAllowed = ?1 AND u.qualityLevel = ?2 AND u.bedType = ?3 AND u.oceanView = ?4 AND u.theme = ?5")
+    List<Room> findBySmokingAllowedByQualityLevelAndBedTypeAndViewAndTheme(boolean isSmokingAllowed, Room.QualityLevel qualityLevel, String bedType, boolean oceanView, Room.Themes theme);
 }

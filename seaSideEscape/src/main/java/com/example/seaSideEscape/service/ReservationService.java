@@ -1,3 +1,5 @@
+// TODO: Fix GenerateBill in BillingService and re-enable in ReservationService
+
 package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.validator.ReservationValidator;
@@ -29,13 +31,15 @@ public class ReservationService {
         ReservationValidator reservationValidator = new ReservationValidator(reservation);
         Room room = reservation.getRoom();
         if(reservationValidator.isValid()) {
-            List<Room> rooms = roomService.getRoomsByQualityLevelAndBedTypeAndViewAndTheme(
+            List<Room> rooms = roomService.getRoomsBySmokingAllowedByQualityLevelAndBedTypeAndViewAndTheme(
+                    room.isSmokingAllowed(),
                     room.getQualityLevel(),
                     room.getBedType(),
                     room.isOceanView(),
                     room.getTheme()
             );
-            List<Reservation> reservations = reservationRepository.findByQualityLevelAndBedTypeAndViewAndThemeBetweenCheckInDateAndCheckOutDate(
+            List<Reservation> reservations = reservationRepository.findBySmokingAllowedByQualityLevelAndBedTypeAndViewAndThemeBetweenCheckInDateAndCheckOutDate(
+                    room.isSmokingAllowed(),
                     room.getQualityLevel(),
                     room.getBedType(),
                     room.isOceanView(),
