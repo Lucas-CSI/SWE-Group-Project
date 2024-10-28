@@ -49,6 +49,7 @@ package com.example.seaSideEscape;
 import com.example.seaSideEscape.dto.EventBookingRequest;
 import com.example.seaSideEscape.model.EventBooking;
 import com.example.seaSideEscape.model.Venue;
+import com.example.seaSideEscape.service.EmailService;
 import com.example.seaSideEscape.service.EventBookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -62,14 +63,26 @@ public class EventBookingController {
     @Autowired
     private EventBookingService eventBookingService;
 
+    @Autowired
+    private EmailService emailService;
+
     @PostMapping("/book")
     public EventBooking bookEvent(@RequestBody EventBookingRequest eventBookingRequest) {
-        return eventBookingService.bookEvent(
+        EventBooking bookedEvent = eventBookingService.bookEvent(
                 eventBookingRequest.getVenueId(),
                 eventBookingRequest.getEventDate(),
                 eventBookingRequest.getEventName(),
                 eventBookingRequest.getGuestEmail()
         );
+
+        emailService.sendConfirmationEmail(
+                bookedEvent.getGuestEmail(),
+                bookedEvent.getEventName(),
+                bookedEvent.getEventDate(),
+                bookedEvent.getVenue()
+        );
+
+        return bookedEvent;
     }
 
     @GetMapping("/venues/floor/{floorNumber}")

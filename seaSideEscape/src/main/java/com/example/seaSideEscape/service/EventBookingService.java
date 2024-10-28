@@ -97,6 +97,9 @@ public class EventBookingService {
     @Autowired
     private EventBookingRepository eventBookingRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     public EventBooking bookEvent(Long venueId, LocalDateTime eventDate, String eventName, String guestEmail) {
         Venue venue = venueRepository.findById(venueId)
                 .orElseThrow(() -> new IllegalArgumentException("Venue not found"));
@@ -114,7 +117,11 @@ public class EventBookingService {
         eventBooking.setEventName(eventName);
         eventBooking.setGuestEmail(guestEmail);
 
-        return eventBookingRepository.save(eventBooking);
+
+        EventBooking savedBooking = eventBookingRepository.save(eventBooking);
+        emailService.sendConfirmationEmail(guestEmail, eventName, eventDate, venue);
+
+        return savedBooking;
     }
 
     public List<Venue> getAvailableVenuesByFloor(int floorNumber) {
