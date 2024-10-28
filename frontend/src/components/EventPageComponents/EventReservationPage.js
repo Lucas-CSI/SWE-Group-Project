@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Container, TextField, Typography, Button, Radio, RadioGroup, FormControlLabel, FormLabel, Grid, Box, MenuItem, Select, InputLabel } from '@mui/material';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 
 const EventReservationPage = () => {
+
     const [arrivalDate, setArrivalDate] = useState(new Date().toISOString().split("T")[0]);
     const [departureDate, setDepartureDate] = useState(new Date().toISOString().split("T")[0]);
-    const [selectedFloor, setSelectedFloor] = useState(1); // Default to floor 1
     const [availableVenues, setAvailableVenues] = useState([]);
     const [selectedVenueId, setSelectedVenueId] = useState(null);
     const [venueName, setVenueName] = useState("");
@@ -20,15 +20,19 @@ const EventReservationPage = () => {
         paymentMethod: 'credit-card',
         specialRequests: ''
     });
+    const [errors, setErrors] = useState({}); // State to track validation errors
 
     const navigate = useNavigate();
+    const location = useLocation(); // Access navigation in EventsPage state
+
+    const { selectedEventName, selectedFloor } = location.state || {};  //Gets data from EventPage
 
     // Fetch available venues based on the selected floor
     useEffect(() => {
         const fetchAvailableVenues = async () => {
             try {
                 const response = await axios.get(`http://localhost:8080/events/venues/floor/${selectedFloor}`);
-                setAvailableVenues(response.data); // Set available venues from API response
+                setAvailableVenues(response.data);
             } catch (error) {
                 console.error('Error fetching venues:', error);
             }
@@ -36,13 +40,6 @@ const EventReservationPage = () => {
 
         fetchAvailableVenues();
     }, [selectedFloor]);
-
-    // Handle floor change
-    const handleFloorChange = (event) => {
-        setSelectedFloor(event.target.value);
-        setSelectedVenueId(null); // Reset venue selection when floor changes
-        setVenueName("");
-    };
 
     // Handle venue change
     const handleVenueChange = (event) => {
@@ -69,12 +66,29 @@ const EventReservationPage = () => {
         });
     };
 
-    const handleProceedToSummary = () => {
-        if (!selectedVenueId) {
-            alert('Please select a venue before proceeding to the summary.');
-            return;
-        }
+    // Validate form fields
+    const validateForm = () => {
+        const newErrors = {};
+        const { firstName, lastName, email, phoneNumber, numberOfAdults, numberOfKids } = formData;
 
+        if (!firstName) newErrors.firstName = 'First name is required';
+        if (!lastName) newErrors.lastName = 'Last name is required';
+        if (!email) newErrors.email = 'Email is required';
+        else if (!email.includes('@')) newErrors.email = 'Enter a valid email';
+        if (!phoneNumber) newErrors.phoneNumber = 'Phone number is required';
+        if (numberOfAdults <= 0) newErrors.numberOfAdults = 'At least one adult is required';
+        if (!selectedVenueId) newErrors.selectedVenueId = 'Please select a venue';
+
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0; // Returns true if no errors
+    };
+
+    // Proceed to summary
+    const handleProceedToSummary = () => {
+        if (!validateForm()) return;  // Perform form validation before proceeding
+
+        // Navigate with the selected data
         navigate(`/event-reservation-summary`, {
             state: {
                 formData,
@@ -82,10 +96,10 @@ const EventReservationPage = () => {
                 departureDate,
                 selectedVenueId,
                 selectedFloor,
-                venueName // Use the venueName stored in the state
+                venueName: `${venueName}: ${selectedEventName}`,  // Using event name passed from EventsPage
+                selectedEventName
             }
         });
-
     };
 
     const handleSubmit = (e) => {
@@ -128,6 +142,8 @@ const EventReservationPage = () => {
                                     onChange={handleChange}
                                     fullWidth
                                     required
+                                    error={!!errors.firstName}
+                                    helperText={errors.firstName}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -138,6 +154,8 @@ const EventReservationPage = () => {
                                     onChange={handleChange}
                                     fullWidth
                                     required
+                                    error={!!errors.lastName}
+                                    helperText={errors.lastName}
                                 />
                             </Grid>
 
@@ -150,6 +168,8 @@ const EventReservationPage = () => {
                                     onChange={handleChange}
                                     fullWidth
                                     required
+                                    error={!!errors.email}
+                                    helperText={errors.email}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -160,6 +180,8 @@ const EventReservationPage = () => {
                                     onChange={handleChange}
                                     fullWidth
                                     required
+                                    error={!!errors.phoneNumber}
+                                    helperText={errors.phoneNumber}
                                 />
                             </Grid>
 
@@ -175,6 +197,7 @@ const EventReservationPage = () => {
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
+                                    required
                                 />
                             </Grid>
 
@@ -190,23 +213,14 @@ const EventReservationPage = () => {
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
+                                    required
                                 />
                             </Grid>
-
-                            {/* Floor Selection */}
+                            {/* Display Selected Floor */}
                             <Grid item xs={12}>
-                                <InputLabel id="floor-label">Select Floor</InputLabel>
-                                <Select
-                                    labelId="floor-label"
-                                    value={selectedFloor}
-                                    onChange={handleFloorChange}
-                                    fullWidth
-                                    required
-                                >
-                                    <MenuItem value={1}>Floor 1</MenuItem>
-                                    <MenuItem value={2}>Floor 2</MenuItem>
-                                    <MenuItem value={3}>Floor 3</MenuItem>
-                                </Select>
+                                <Typography variant="h6">
+                                    Selected Floor: {selectedFloor}
+                                </Typography>
                             </Grid>
 
                             {/* Venue Selection */}
@@ -218,6 +232,7 @@ const EventReservationPage = () => {
                                     onChange={handleVenueChange}
                                     fullWidth
                                     required
+                                    error={!!errors.selectedVenueId}
                                 >
                                     {availableVenues.map((venue) => (
                                         <MenuItem key={venue.id} value={venue.id}>
@@ -225,6 +240,11 @@ const EventReservationPage = () => {
                                         </MenuItem>
                                     ))}
                                 </Select>
+                                {errors.selectedVenueId && (
+                                    <Typography color="error" variant="body2">
+                                        {errors.selectedVenueId}
+                                    </Typography>
+                                )}
                             </Grid>
 
                             <Grid item xs={12} sm={6}>
@@ -236,6 +256,9 @@ const EventReservationPage = () => {
                                     onChange={handleChange}
                                     fullWidth
                                     inputProps={{ min: "0" }}
+                                    required
+                                    error={!!errors.numberOfAdults}
+                                    helperText={errors.numberOfAdults}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -247,6 +270,7 @@ const EventReservationPage = () => {
                                     onChange={handleChange}
                                     fullWidth
                                     inputProps={{ min: "0" }}
+                                    required
                                 />
                             </Grid>
 

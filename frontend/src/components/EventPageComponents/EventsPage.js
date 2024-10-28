@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Box, Container, Button, Card, CardContent, CardActions, CardMedia, MenuItem, FormControl, Select, InputLabel } from '@mui/material';
-import { Link } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
 const EventsPage = () => {
     const [selectedFloor, setSelectedFloor] = useState(1); // Default floor 1
     const [venues, setVenues] = useState([]); // Venues for the selected floor
+    const navigate = useNavigate();
+
 
     const events = [
         { id: 1, name: "Wedding Reception", description: "Celebrate your special day with us.", imageUrl: "WeddingReception.jpg" },
@@ -28,6 +30,16 @@ const EventsPage = () => {
 
     const handleFloorChange = (event) => {
         setSelectedFloor(event.target.value);
+    };
+
+    const handleEventSelection = (event) => {
+        const selectedEvent = events.find(e => e.id === event.id);
+        navigate('/event-reservation/:eventId', {
+            state: {
+                selectedEventName: selectedEvent.name,
+                selectedFloor: selectedFloor,
+            }
+        });
     };
 
     return (
@@ -91,8 +103,7 @@ const EventsPage = () => {
                             <Button
                                 variant="contained"
                                 color="primary"
-                                component={Link}
-                                to={`/event-reservation/${event.id}`}
+                                onClick={() => handleEventSelection(event)}
                             >
                                 Reserve for {event.name}
                             </Button>

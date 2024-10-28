@@ -6,14 +6,15 @@ import axios from 'axios';
 const EventReservationSummary = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { formData, arrivalDate, departureDate, selectedVenueId, selectedFloor, venueName } = location.state || {};
+
+    const { formData, arrivalDate, departureDate, selectedVenueId, selectedFloor, venueName, selectedEventName} = location.state || {};
 
     const handleConfirmReservation = async () => {
         try {
             const requestData = {
                 venueId: selectedVenueId,
                 eventDate: `${arrivalDate}T00:00:00`,
-                eventName: formData.specialRequests || 'Default Event Name',
+                eventName: venueName || 'Default Event Name',
                 guestEmail: formData.email
             };
 
@@ -58,6 +59,9 @@ const EventReservationSummary = () => {
                     </Typography>
                     <Typography variant="body1" gutterBottom>
                         <strong>Selected Venue:</strong> {venueName || 'Not Selected'}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                        <strong>Event Name:</strong> {formData?.specialRequests || selectedEventName || 'Not Selected'}
                     </Typography>
                     <Typography variant="body1" gutterBottom>
                         <strong>Floor:</strong> {selectedFloor}
