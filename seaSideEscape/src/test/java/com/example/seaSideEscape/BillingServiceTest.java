@@ -1,6 +1,6 @@
 package com.example.seaSideEscape;
 
-import com.example.seaSideEscape.Service.BillingService;
+import com.example.seaSideEscape.service.BillingService;
 import com.example.seaSideEscape.model.Bill;
 import com.example.seaSideEscape.model.Charge;
 import com.example.seaSideEscape.model.Reservation;

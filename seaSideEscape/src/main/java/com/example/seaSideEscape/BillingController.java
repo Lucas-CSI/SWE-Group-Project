@@ -1,6 +1,6 @@
 package com.example.seaSideEscape;
 
-import com.example.seaSideEscape.Service.BillingService;
+import com.example.seaSideEscape.service.BillingService;
 import com.example.seaSideEscape.model.Bill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

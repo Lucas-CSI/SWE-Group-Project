@@ -1,16 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, TextField, Typography, Button, Radio, RadioGroup, FormControlLabel, FormLabel, Grid, Box, MenuItem, Select, InputLabel } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-
-const venues = [
-    { id: 1, name: "Wedding Reception", description: "Celebrate your special day with us." },
-    { id: 2, name: "Corporate Meeting", description: "Professional and elegant spaces for your business needs." },
-    { id: 3, name: "Gala Dinner", description: "Host a grand dinner for your guests in our luxurious venue." }
-];
+import axios from 'axios';
 
 const EventReservationPage = () => {
     const [arrivalDate, setArrivalDate] = useState(new Date().toISOString().split("T")[0]);
     const [departureDate, setDepartureDate] = useState(new Date().toISOString().split("T")[0]);
+    const [selectedFloor, setSelectedFloor] = useState(1); // Default to floor 1
+    const [availableVenues, setAvailableVenues] = useState([]);
+    const [selectedVenueId, setSelectedVenueId] = useState(null);
+    const [venueName, setVenueName] = useState("");
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -22,15 +21,44 @@ const EventReservationPage = () => {
         specialRequests: ''
     });
 
-    const [selectedVenueId, setSelectedVenueId] = useState(null);
-    const [selectedVenue, setSelectedVenue] = useState(null);
-
     const navigate = useNavigate();
 
+    // Fetch available venues based on the selected floor
+    useEffect(() => {
+        const fetchAvailableVenues = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/events/venues/floor/${selectedFloor}`);
+                setAvailableVenues(response.data); // Set available venues from API response
+            } catch (error) {
+                console.error('Error fetching venues:', error);
+            }
+        };
+
+        fetchAvailableVenues();
+    }, [selectedFloor]);
+
+    // Handle floor change
+    const handleFloorChange = (event) => {
+        setSelectedFloor(event.target.value);
+        setSelectedVenueId(null); // Reset venue selection when floor changes
+        setVenueName("");
+    };
+
+    // Handle venue change
+    const handleVenueChange = (event) => {
+        const venueId = event.target.value;
+        setSelectedVenueId(venueId);
+
+        const selectedVenue = availableVenues.find(v => v.id === parseInt(venueId));
+        if (selectedVenue) {
+            setVenueName(selectedVenue.name || `Venue ${selectedVenue.id} - Floor ${selectedVenue.floorNumber}`);
+        }
+    };
+
+    // Handle input change
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        // Prevent negative numbers for adults and kids
         if ((name === 'numberOfAdults' || name === 'numberOfKids') && value < 0) {
             return;
         }
@@ -41,22 +69,27 @@ const EventReservationPage = () => {
         });
     };
 
-    const handleVenueChange = (event) => {
-        const venueId = event.target.value;
-        const venue = venues.find(v => v.id === venueId);
-        setSelectedVenueId(venueId);
-        setSelectedVenue(venue);
-    };
-
     const handleProceedToSummary = () => {
-        navigate(`/event-reservation-summary/${selectedVenueId}`, {
-            state: { formData, arrivalDate, departureDate, selectedVenue }
+        if (!selectedVenueId) {
+            alert('Please select a venue before proceeding to the summary.');
+            return;
+        }
+
+        navigate(`/event-reservation-summary`, {
+            state: {
+                formData,
+                arrivalDate,
+                departureDate,
+                selectedVenueId,
+                selectedFloor,
+                venueName // Use the venueName stored in the state
+            }
         });
+
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle form submission logic here if needed
     };
 
     return (
@@ -160,6 +193,22 @@ const EventReservationPage = () => {
                                 />
                             </Grid>
 
+                            {/* Floor Selection */}
+                            <Grid item xs={12}>
+                                <InputLabel id="floor-label">Select Floor</InputLabel>
+                                <Select
+                                    labelId="floor-label"
+                                    value={selectedFloor}
+                                    onChange={handleFloorChange}
+                                    fullWidth
+                                    required
+                                >
+                                    <MenuItem value={1}>Floor 1</MenuItem>
+                                    <MenuItem value={2}>Floor 2</MenuItem>
+                                    <MenuItem value={3}>Floor 3</MenuItem>
+                                </Select>
+                            </Grid>
+
                             {/* Venue Selection */}
                             <Grid item xs={12}>
                                 <InputLabel id="venue-label">Select Venue</InputLabel>
@@ -170,9 +219,9 @@ const EventReservationPage = () => {
                                     fullWidth
                                     required
                                 >
-                                    {venues.map((venue) => (
+                                    {availableVenues.map((venue) => (
                                         <MenuItem key={venue.id} value={venue.id}>
-                                            {venue.name}
+                                            {venue.name || `Venue ${venue.id}`}
                                         </MenuItem>
                                     ))}
                                 </Select>

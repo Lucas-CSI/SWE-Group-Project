@@ -1,5 +1,5 @@
-package com.example.seaSideEscape.Service;
-
+/*
+package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.model.EventBooking;
 import com.example.seaSideEscape.model.Venue;
@@ -75,3 +75,62 @@ public class EventBookingService {
         return venueRepository.findByIsBookedAndFloorNumber(false, floorNumber);
     }
 }
+ */
+package com.example.seaSideEscape.service;
+
+import com.example.seaSideEscape.model.EventBooking;
+import com.example.seaSideEscape.model.Venue;
+import com.example.seaSideEscape.repository.EventBookingRepository;
+import com.example.seaSideEscape.repository.VenueRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+public class EventBookingService {
+
+    @Autowired
+    private VenueRepository venueRepository;
+
+    @Autowired
+    private EventBookingRepository eventBookingRepository;
+
+    public EventBooking bookEvent(Long venueId, LocalDateTime eventDate, String eventName, String guestEmail) {
+        Venue venue = venueRepository.findById(venueId)
+                .orElseThrow(() -> new IllegalArgumentException("Venue not found"));
+
+        if (venue.isBooked()) {
+            throw new IllegalArgumentException("Venue is already booked.");
+        }
+
+        venue.setBooked(true);
+        venueRepository.save(venue);
+
+        EventBooking eventBooking = new EventBooking();
+        eventBooking.setVenue(venue);
+        eventBooking.setEventDate(eventDate);
+        eventBooking.setEventName(eventName);
+        eventBooking.setGuestEmail(guestEmail);
+
+        return eventBookingRepository.save(eventBooking);
+    }
+
+    public List<Venue> getAvailableVenuesByFloor(int floorNumber) {
+        return venueRepository.findByIsBookedAndFloorNumber(false, floorNumber);
+    }
+
+    public EventBooking getEventBooking(Long id) {
+        return eventBookingRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
+    }
+
+    public void resetVenueBooking(Long venueId) {
+        Venue venue = venueRepository.findById(venueId)
+                .orElseThrow(() -> new IllegalArgumentException("Venue not found"));
+        venue.setBooked(false);
+        venueRepository.save(venue);
+    }
+}
+
