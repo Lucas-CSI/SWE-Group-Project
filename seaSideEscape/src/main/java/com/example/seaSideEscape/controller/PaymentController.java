@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @RestController
 @RequestMapping("/payments")
 public class PaymentController {
-
+/*
     @Autowired
     private PaymentService paymentService;
 
@@ -20,5 +20,5 @@ public class PaymentController {
                            @RequestParam String billingAddress,
                            @RequestParam BigDecimal amount) {
         return paymentService.processPayment(reservationId, paymentMethod, billingAddress, amount);
-    }
+    }*/
 }

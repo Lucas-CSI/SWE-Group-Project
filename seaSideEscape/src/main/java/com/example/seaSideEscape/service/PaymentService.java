@@ -1,4 +1,4 @@
-package com.example.seaSideEscape.Service;
+package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.model.Payment;
 import com.example.seaSideEscape.model.Reservation;
@@ -23,7 +23,7 @@ public class PaymentService {
 
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
-        
+
         Payment payment = new Payment();
         payment.setReservation(reservation);
         payment.setPaymentMethod(paymentMethod);
