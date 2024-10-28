@@ -7,16 +7,17 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private Long roomId;
+    private Long id;
 
     private String roomNumber;
     private Themes theme; //TBD
-    private String qualityLevel;  // executive, business, comfort, economy
+    private QualityLevel qualityLevel;  // executive, business, comfort, economy
     private String bedType; // twin, full, queen, king
     private boolean isSmokingAllowed;
     private double maxRate;
     private boolean isBooked;
-    public enum Themes{NATURE_RETREAT, URBAN_ELEGANCE, VINTAGE_CHARM};
+    public enum Themes{NATURE_RETREAT, URBAN_ELEGANCE, VINTAGE_CHARM}
+    public enum QualityLevel{Economy, Comfort, Business, Executive}
     private boolean oceanView;
 
     public boolean isOceanView() {
@@ -38,23 +39,23 @@ public class Room {
         this.reservation = reservation;
     }
 
-    public Long getId(){return roomId;}
+    public Long getId(){return id;}
 
-    public void setId(Long id){this.roomId = id;}
+    public void setId(Long id){this.id = id;}
 
     public String getRoomNumber(){return roomNumber;}
 
     public void setRoomNumber(String roomNumber){this.roomNumber = roomNumber;}
 
-    public String getTheme(){
-        return theme.toString();
+    public Themes getTheme(){
+        return theme;
     }
 
     public void setTheme(Themes theme){this.theme = theme;}
 
-    public String getQualityLevel(){return qualityLevel;}
+    public QualityLevel getQualityLevel(){return qualityLevel;}
 
-    public void setQualityLevel(String qualityLevel){this.qualityLevel = qualityLevel;}
+    public void setQualityLevel(QualityLevel qualityLevel){this.qualityLevel = qualityLevel;}
 
     public String getBedType(){return bedType;};
 
