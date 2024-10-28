@@ -21,7 +21,7 @@ public class ReservationValidator implements Validator{
     }
 
     public void validateDate(LocalDate date, String dateType){
-        if(date.isAfter(LocalDate.now()))
+        if(!date.isAfter(LocalDate.now()))
             invalidItems.put(dateType, "Invalid date");
     }
 }
