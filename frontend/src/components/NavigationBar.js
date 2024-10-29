@@ -142,6 +142,7 @@ const NavigationBar = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+            {/*Signup Dialog*/}
             <Dialog open={signupOpen} onClose={handleSignupClose}>
                 <DialogTitle>Create Account</DialogTitle>
                 <DialogContent>
