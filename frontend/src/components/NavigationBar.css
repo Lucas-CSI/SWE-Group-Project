@@ -1,0 +1,44 @@
+/* NavigationBar.css */
+
+.app-bar {
+    background-color: #00008B ; /* Adjusted for better contrast */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.nav-link {
+    position: relative;
+    margin: 0 15px;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #00008B ; /* on hover color */
+    transform: scale(1.1);
+}
+
+.underline {
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background-color: #00008B ; /* underline color */
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    transform-origin: left;
+}
+
+.nav-link:hover .underline {
+    transform: scaleX(1);
+}
+
+.header-title {
+    font-family: 'Merriweather', serif;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}

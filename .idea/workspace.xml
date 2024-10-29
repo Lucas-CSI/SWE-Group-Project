@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Improved EventPage Front-End">
+      <change afterPath="$PROJECT_DIR$/frontend/public/SeaSideEscapeLogo.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/EventPageComponents/EventReservationPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/EventPageComponents/EventReservationPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/EventPageComponents/EventsPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/EventPageComponents/EventsPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/NavigationBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/NavigationBar.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Francisco" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;KGarza1&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Lucas-CSI/SWE-Group-Project.git&quot;,
+    &quot;accountId&quot;: &quot;b13ecf6c-844e-459e-9318-145b133e8ba2&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2ndeCWOdy0RvUvvlvhTy199U1aa" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.SeaSideEscapeApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Francisco&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/bakga/SWE-Group-Project/frontend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend/public" />
+      <recent name="$PROJECT_DIR$/frontend/src/components" />
+      <recent name="C:\Users\bakga\SWE-Group-Project\seaSideEscape" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.example.seaSideEscape" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="SeaSideEscapeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="seaSideEscape" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.seaSideEscape.SeaSideEscapeApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.20224.419" />
+        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-IU-242.20224.419" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="" />
+      <created>1729307253066</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1729307253066</updated>
+      <workItem from="1729307254068" duration="391000" />
+      <workItem from="1729308991092" duration="4748000" />
+      <workItem from="1729383078503" duration="295000" />
+      <workItem from="1729635031706" duration="10103000" />
+      <workItem from="1729660222870" duration="640000" />
+      <workItem from="1729696253495" duration="6481000" />
+      <workItem from="1729718298875" duration="27000" />
+      <workItem from="1729718338426" duration="4584000" />
+      <workItem from="1729746181285" duration="3380000" />
+      <workItem from="1729750713394" duration="1754000" />
+      <workItem from="1730148075776" duration="8419000" />
+      <workItem from="1730161276470" duration="308000" />
+      <workItem from="1730161590159" duration="1506000" />
+      <workItem from="1730163107931" duration="21955000" />
+    </task>
+    <task id="LOCAL-00001" summary="Added Others Implementation">
+      <option name="closed" value="true" />
+      <created>1730146512822</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1730146512824</updated>
+    </task>
+    <task id="LOCAL-00002" summary="BillingService and EventBookingService changes">
+      <option name="closed" value="true" />
+      <created>1730146545243</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1730146545243</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Simple Changes">
+      <option name="closed" value="true" />
+      <created>1730159969920</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1730159969920</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Simple Changes">
+      <option name="closed" value="true" />
+      <created>1730161145204</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1730161145204</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Simple Changes">
+      <option name="closed" value="true" />
+      <created>1730161298868</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1730161298868</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Simple Changes">
+      <option name="closed" value="true" />
+      <created>1730161388787</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1730161388787</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Simple Changes">
+      <option name="closed" value="true" />
+      <created>1730161459053</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1730161459053</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Simple Changes">
+      <option name="closed" value="true" />
+      <created>1730161606022</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1730161606022</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Improved EventPage Front-End">
+      <option name="closed" value="true" />
+      <created>1730177296140</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1730177296141</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/frontend" />
+    </ignored-roots>
+    <MESSAGE value="Added Others Implementation" />
+    <MESSAGE value="BillingService and EventBookingService changes" />
+    <MESSAGE value="Simple Changes" />
+    <MESSAGE value="Improved EventPage Front-End" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improved EventPage Front-End" />
+  </component>
+</project>

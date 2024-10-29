@@ -3,7 +3,7 @@ package com.example.seaSideEscape;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.example.seaSideEscape.Service.EventBookingService;
+import com.example.seaSideEscape.service.EventBookingService;
 import com.example.seaSideEscape.model.EventBooking;
 import com.example.seaSideEscape.model.Venue;
 import com.example.seaSideEscape.repository.EventBookingRepository;

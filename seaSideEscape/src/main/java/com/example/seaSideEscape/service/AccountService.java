@@ -5,6 +5,7 @@ import com.example.seaSideEscape.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -21,6 +22,16 @@ public class AccountService {
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
+
+    public boolean adminExists(String username) {
+        // Checks if an admin account with the given username already exists
+        return accountRepository.findByUsernameAndIsAdmin(username).isPresent();
+    }
+
+    public void saveAccount(Account account) {
+        accountRepository.save(account);
+    }
+
 
     private String createSalt(){
         String SALTCHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
