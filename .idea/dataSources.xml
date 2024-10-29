@@ -15,7 +15,7 @@
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
     <data-source source="LOCAL" name="SeaSideEscapeDB@localhost" uuid="4417201a-e545-4210-855c-5dde015602c3">
-      <driver-ref>com.example.seaSideEscape.model</driver-ref>
+      <driver-ref>mysql</driver-ref>
       <imported>true</imported>
       <configured-by-url>true</configured-by-url>
       <remarks>$PROJECT_DIR$/seaSideEscape/src/main/resources/application.properties</remarks>

@@ -11,6 +11,7 @@ import EventConfirmationPage from "./components/EventPageComponents/EventConfirm
 import ReservationPage from "./components/ReservationPageComponents/ReservationPage";
 import AdminHomePage from "./components/AdminHomePage";
 
+
 function App() {
     return (
         <Router>
@@ -22,9 +23,11 @@ function App() {
                     <Route path="/payment" element={<PaymentScreen />} />
                     <Route path="/events" element={<EventsPage />} />
                     <Route path="/event-reservation/:eventId" element={<EventReservationPage />} />
+                    <Route path="/event-reservation-summary/:eventId" element={<EventSummaryPage />} />
                     <Route path="/event-confirmation/:eventId" element={<EventConfirmationPage />} />
                     <Route path="/reservation" element={<ReservationPage />} />
                     <Route path="/admin/homepage" element={<AdminHomePage />} />
+
                 </Routes>
             </Box>
         </Router>

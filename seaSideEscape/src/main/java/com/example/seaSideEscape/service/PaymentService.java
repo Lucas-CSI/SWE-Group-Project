@@ -24,9 +24,6 @@ public class PaymentService {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
 
-        if(reservation.getTotalAmount().compareTo(amount) != 0){
-            throw new IllegalArgumentException("Amount does not match the total amount due.");
-        }
         Payment payment = new Payment();
         payment.setReservation(reservation);
         payment.setPaymentMethod(paymentMethod);

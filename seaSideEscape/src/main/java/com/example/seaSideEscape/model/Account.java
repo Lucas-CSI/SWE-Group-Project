@@ -8,9 +8,10 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
-
     private String password;
     private String salt;
+
+    @Column(name = "is_admin", columnDefinition = "TINYINT(1)")
     private Boolean isAdmin = false;
 
     public String getSalt() {
@@ -46,7 +47,5 @@ public class Account {
     }
 
     public boolean isAdmin() { return isAdmin; }
-
-    public void setIsAdmin(Boolean isAdmin) {
-        this.isAdmin = isAdmin; }
+    public void setIsAdmin(Boolean isAdmin) { this.isAdmin = isAdmin; }
 }

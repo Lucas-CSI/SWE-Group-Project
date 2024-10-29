@@ -37,7 +37,6 @@ class BillingServiceTest {
         reservation = new Reservation();
         reservation.setId(1L);
         reservation.setRoomRate(new BigDecimal("100.00"));
-        reservation.setTotalAmount(new BigDecimal("100.00"));
 
         List<Charge> charges = new ArrayList<>();
         Charge charge = new Charge();
@@ -55,8 +54,8 @@ class BillingServiceTest {
 
         assertNotNull(bill);
         assertEquals(new BigDecimal("100.00"), bill.getRoomRate());
-        assertEquals(new BigDecimal("120.00"), bill.getTotalAmount()); // Room rate + charge
+        assertEquals(new BigDecimal("120.00"), bill.getSubTotal()); // Room rate + charge
         assertEquals(new BigDecimal("12.00"), bill.getTaxes()); // 10% tax on total amount
-        assertEquals(new BigDecimal("132.00"), bill.getFinalAmount()); // Total + Taxes
+        assertEquals(new BigDecimal("132.00"), bill.getTotalAmount()); // Total + Taxes
     }
 }

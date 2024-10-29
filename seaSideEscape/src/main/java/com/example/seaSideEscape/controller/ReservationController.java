@@ -1,6 +1,7 @@
 package com.example.seaSideEscape.controller;
 
 import com.example.seaSideEscape.model.Reservation;
+import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +17,8 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-//    @PostMapping("/book")
-//    public Reservation bookRoom(@RequestBody Reservation reservation) throws Exception {
-//        return reservationService.bookRoom(reservation);
-//    }
+    @PostMapping("/book")
+    public Reservation bookRoom(@RequestBody Reservation reservation) throws Exception {
+        return reservationService.bookRoom(reservation);
+    }
 }

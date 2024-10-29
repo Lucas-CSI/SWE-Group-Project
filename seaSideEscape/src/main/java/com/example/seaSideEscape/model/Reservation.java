@@ -22,12 +22,10 @@ public class Reservation {
     private LocalDate endDate;
 
     private BigDecimal roomRate;
-    private BigDecimal taxes;
-    private BigDecimal totalAmount;
     private BigDecimal discount;
     private boolean paid;
 
-    @OneToMany(mappedBy = "reservation")
+    @OneToMany
     private List<Charge> charges;
 
     public Long getId(){return id;}
@@ -58,21 +56,15 @@ public class Reservation {
 
     public void setRoomRate(BigDecimal roomRate) {this.roomRate = roomRate;}
 
-    public BigDecimal getTaxes() {return taxes;}
-
-    public void setTaxes(BigDecimal taxes) {this.taxes = taxes;}
-
-    public BigDecimal getTotalAmount() {return totalAmount;}
-
-    public void setTotalAmount(BigDecimal totalAmount) {this.totalAmount = totalAmount;}
-
-    public List<Charge> getCharges() {return charges;}
-
-    public void setCharges(List<Charge> charges) {this.charges = charges;}
-
     public boolean isPaid() {return paid;}
 
     public void setPaid(boolean paid) {this.paid = paid;}
 
+    public List<Charge> getCharges() {
+        return charges;
+    }
 
+    public void setCharges(List<Charge> charges) {
+        this.charges = charges;
+    }
 }

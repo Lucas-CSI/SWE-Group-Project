@@ -5,6 +5,7 @@ import com.example.seaSideEscape.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -23,12 +24,14 @@ public class AccountService {
     }
 
     public boolean adminExists(String username) {
+        // Checks if an admin account with the given username already exists
         return accountRepository.findByUsernameAndIsAdmin(username).isPresent();
     }
 
     public void saveAccount(Account account) {
         accountRepository.save(account);
     }
+
 
     private String createSalt(){
         String SALTCHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -78,6 +81,7 @@ public class AccountService {
         }
     }
 
+    /*
     public Optional<Account> canLogin(Account account) throws NoSuchAlgorithmException {
         Optional<Account> acc = accountRepository.findByUsername(account.getUsername());
         String password;
@@ -91,4 +95,17 @@ public class AccountService {
         return Optional.empty();
     }
 
+     */
+
+    public Optional<Account> canLogin(Account account) {
+        // Finds an account by username and verifies the password with BCrypt
+        Optional<Account> storedAccount = accountRepository.findByUsername(account.getUsername());
+        if (storedAccount.isPresent()) {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            if (encoder.matches(account.getPassword(), storedAccount.get().getPassword())) {
+                return storedAccount;
+            }
+        }
+        return Optional.empty();
+    }
 }
