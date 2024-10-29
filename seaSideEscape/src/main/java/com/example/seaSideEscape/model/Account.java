@@ -5,11 +5,13 @@ import jakarta.persistence.*;
 @Entity
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String password;
     private String salt;
+
+    private Boolean isAdmin = false;
 
     public String getSalt() {
         return salt;
@@ -42,4 +44,7 @@ public class Account {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public boolean isAdmin() { return isAdmin; }
+    public void setIsAdmin(Boolean isAdmin) { this.isAdmin = isAdmin; }
 }

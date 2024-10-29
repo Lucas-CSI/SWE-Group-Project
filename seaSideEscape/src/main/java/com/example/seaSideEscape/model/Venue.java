@@ -16,6 +16,7 @@ public class Venue {
     private String location;
     private int capacity;
     private boolean isBooked;
+    private int floorNumber;
 
     public Long getId(){return id;}
 
@@ -36,5 +37,9 @@ public class Venue {
     public boolean isBooked(){return isBooked;}
 
     public void setBooked(boolean booked){this.isBooked = booked;}
+
+    public int getFloorNumber() { return floorNumber; }
+
+    public void setFloorNumber(int floorNumber) { this.floorNumber = floorNumber; }
 }
 

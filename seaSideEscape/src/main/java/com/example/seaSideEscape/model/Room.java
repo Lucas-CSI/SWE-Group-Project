@@ -1,9 +1,6 @@
 package com.example.seaSideEscape.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.*;
 
 @Entity
 public class Room {
@@ -13,11 +10,22 @@ public class Room {
     private Long id;
 
     private String roomNumber;
-    private String theme; //TBD
-    private String qualityLevel;  // executive, business, comfort, economy
+    private Themes theme; //TBD
+    private QualityLevel qualityLevel;  // executive, business, comfort, economy
     private String bedType; // twin, full, queen, king
     private boolean isSmokingAllowed;
     private double maxRate;
+    public enum Themes{NATURE_RETREAT, URBAN_ELEGANCE, VINTAGE_CHARM}
+    public enum QualityLevel{Economy, Comfort, Business, Executive}
+    private boolean oceanView;
+
+    public boolean isOceanView() {
+        return oceanView;
+    }
+
+    public void setOceanView(boolean oceanView) {
+        this.oceanView = oceanView;
+    }
 
     public Long getId(){return id;}
 
@@ -27,13 +35,15 @@ public class Room {
 
     public void setRoomNumber(String roomNumber){this.roomNumber = roomNumber;}
 
-    public String getTheme(){return theme;}
+    public Themes getTheme(){
+        return theme;
+    }
 
-    public void setTheme(String theme){this.theme = theme;}
+    public void setTheme(Themes theme){this.theme = theme;}
 
-    public String getQualityLevel(){return qualityLevel;}
+    public QualityLevel getQualityLevel(){return qualityLevel;}
 
-    public void setQualityLevel(String qualityLevel){this.qualityLevel = qualityLevel;}
+    public void setQualityLevel(QualityLevel qualityLevel){this.qualityLevel = qualityLevel;}
 
     public String getBedType(){return bedType;};
 
@@ -46,6 +56,4 @@ public class Room {
     public double getMaxRate(){return maxRate;}
 
     public void setMaxRate(double maxRate){this.maxRate = maxRate;}
-
-
 }

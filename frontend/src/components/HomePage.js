@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
-
+    
 const HomePage = () => {
     return (
         <Box>
@@ -11,7 +11,7 @@ const HomePage = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    backgroundImage: `url("/OceanViewHotel.jpg")`, //Changes the image
+                    backgroundImage: `url("/OceanViewHomePage.jpg")`, //Changes the image
                     backgroundSize: 'cover', //Covers the whole screen(can be changed)
                     backgroundPosition: 'center', //Centers the image
                     backgroundRepeat: 'no-repeat',

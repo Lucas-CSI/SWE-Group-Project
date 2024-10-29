@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface VenueRepository extends JpaRepository<Venue, Long> {
-    List<Venue> findByIsBooked(boolean isBooked);
+    List<Venue> findByIsBookedAndFloorNumber(boolean isBooked, int floorNumber);
 }
+
