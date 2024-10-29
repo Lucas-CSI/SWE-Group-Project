@@ -1,5 +1,18 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
+import {
+    AppBar,
+    Toolbar,
+    Typography,
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    TextField,
+    IconButton
+} from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { login } from "../services/authService";
@@ -51,6 +64,9 @@ const NavigationBar = () => {
         <>
             <AppBar position="fixed" className="app-bar">
                 <Toolbar>
+                    <IconButton edge="start" color="inherit" aria-label="logo" component={Link} to="/">
+                        <img src="/SeaSideEscapeLogo.webp" alt="SeaSideEscape Hotel" style={{ height: '40px', marginRight: '10px' }} />
+                    </IconButton>
                     <Typography variant="h6" className="header-title" onClick={() => navigate('/')}>
                         SeaSideEscape Hotel
                     </Typography>

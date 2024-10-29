@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Container, TextField, Typography, Button, Radio, RadioGroup, FormControlLabel, FormLabel, Grid, Box, MenuItem, Select, InputLabel } from '@mui/material';
+import { Container, TextField, Typography, Button, Radio, RadioGroup, FormControlLabel, FormLabel, Grid, Box, Select, MenuItem, InputLabel, Paper } from '@mui/material';
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 
 const EventReservationPage = () => {
-
     const [arrivalDate, setArrivalDate] = useState(new Date().toISOString().split("T")[0]);
     const [departureDate, setDepartureDate] = useState(new Date().toISOString().split("T")[0]);
     const [availableVenues, setAvailableVenues] = useState([]);
@@ -20,14 +19,17 @@ const EventReservationPage = () => {
         paymentMethod: 'credit-card',
         specialRequests: ''
     });
-    const [errors, setErrors] = useState({}); // State to track validation errors
+    const [errors, setErrors] = useState({});
+    // const [loading, setLoading] = useState(true); // Add loading state
+    // useEffect(() => {
+    //     const timer = setTimeout(() => setLoading(false), 1000); // 1-second delay
+    //     return () => clearTimeout(timer); // Cleanup timer on component unmount
+    // }, []);
 
     const navigate = useNavigate();
-    const location = useLocation(); // Access navigation in EventsPage state
+    const location = useLocation();
+    const { selectedEventName, selectedFloor } = location.state || {};
 
-    const { selectedEventName, selectedFloor } = location.state || {};  //Gets data from EventPage
-
-    // Fetch available venues based on the selected floor
     useEffect(() => {
         const fetchAvailableVenues = async () => {
             try {
@@ -37,41 +39,27 @@ const EventReservationPage = () => {
                 console.error('Error fetching venues:', error);
             }
         };
-
         fetchAvailableVenues();
     }, [selectedFloor]);
 
-    // Handle venue change
     const handleVenueChange = (event) => {
         const venueId = event.target.value;
         setSelectedVenueId(venueId);
-
         const selectedVenue = availableVenues.find(v => v.id === parseInt(venueId));
         if (selectedVenue) {
             setVenueName(selectedVenue.name || `Venue ${selectedVenue.id} - Floor ${selectedVenue.floorNumber}`);
         }
     };
 
-
-
-    // Handle input change
     const handleChange = (e) => {
         const { name, value } = e.target;
-
-        if ((name === 'numberOfAdults' || name === 'numberOfKids') && value < 0) {
-            return;
-        }
-
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+        if ((name === 'numberOfAdults' || name === 'numberOfKids') && value < 0) return;
+        setFormData({ ...formData, [name]: value });
     };
 
-    // Validate form fields
     const validateForm = () => {
         const newErrors = {};
-        const { firstName, lastName, email, phoneNumber, numberOfAdults, numberOfKids } = formData;
+        const { firstName, lastName, email, phoneNumber, numberOfAdults } = formData;
 
         if (!firstName) newErrors.firstName = 'First name is required';
         if (!lastName) newErrors.lastName = 'Last name is required';
@@ -82,15 +70,11 @@ const EventReservationPage = () => {
         if (!selectedVenueId) newErrors.selectedVenueId = 'Please select a venue';
 
         setErrors(newErrors);
-
-        return Object.keys(newErrors).length === 0; // Returns true if no errors
+        return Object.keys(newErrors).length === 0;
     };
 
-    // Proceed to summary
     const handleProceedToSummary = () => {
-        if (!validateForm()) return;  // Perform form validation before proceeding
-
-        // Navigate with the selected data
+        if (!validateForm()) return;
         navigate(`/event-reservation-summary`, {
             state: {
                 formData,
@@ -98,14 +82,10 @@ const EventReservationPage = () => {
                 departureDate,
                 selectedVenueId,
                 selectedFloor,
-                venueName: `${venueName}: ${selectedEventName}`,  // Using event name passed from EventsPage
+                venueName: `${venueName}: ${selectedEventName}`,
                 selectedEventName
             }
         });
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
     };
 
     return (
@@ -120,21 +100,19 @@ const EventReservationPage = () => {
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
                 backgroundAttachment: 'fixed',
+                paddingTop: 8,
+                paddingBottom: 8
             }}
         >
             <Container maxWidth="md" sx={{ mt: 5, mb: 5 }}>
-                <Box
-                    sx={{
-                        padding: '20px',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                        backgroundColor: 'rgba(255, 255, 255, 0.85)',
-                    }}
-                >
-                    <Typography variant="h4" align="center" gutterBottom>
-                        Event Reservation
+                <Paper elevation={3} sx={{ padding: 4, borderRadius: 3, opacity: 0.95 }}>
+                    <Typography variant="h4" align="center" gutterBottom sx={{ color: '#0077b6', fontWeight: 'bold' }}>
+                        Reserve Your Event
                     </Typography>
-                    <form onSubmit={handleSubmit}>
+                    <Typography variant="subtitle1" align="center" gutterBottom>
+                        {selectedEventName} on Floor {selectedFloor}
+                    </Typography>
+                    <form onSubmit={handleProceedToSummary}>
                         <Grid container spacing={3}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -187,7 +165,6 @@ const EventReservationPage = () => {
                                 />
                             </Grid>
 
-                            {/* Arrival Date */}
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     label="Arrival Date"
@@ -196,14 +173,11 @@ const EventReservationPage = () => {
                                     value={arrivalDate}
                                     onChange={(e) => setArrivalDate(e.target.value)}
                                     fullWidth
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
+                                    InputLabelProps={{ shrink: true }}
                                     required
                                 />
                             </Grid>
 
-                            {/* Departure Date */}
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     label="Departure Date"
@@ -212,20 +186,17 @@ const EventReservationPage = () => {
                                     value={departureDate}
                                     onChange={(e) => setDepartureDate(e.target.value)}
                                     fullWidth
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
+                                    InputLabelProps={{ shrink: true }}
                                     required
                                 />
                             </Grid>
-                            {/* Display Selected Floor */}
+
                             <Grid item xs={12}>
-                                <Typography variant="h6">
+                                <Typography variant="h6" sx={{ color: '#0077b6', fontWeight: 'medium' }}>
                                     Selected Floor: {selectedFloor}
                                 </Typography>
                             </Grid>
 
-                            {/* Venue Selection */}
                             <Grid item xs={12}>
                                 <InputLabel id="venue-label">Select Venue</InputLabel>
                                 <Select
@@ -291,7 +262,7 @@ const EventReservationPage = () => {
 
                             <Grid item xs={12}>
                                 <TextField
-                                    label="Do you have any special requests?"
+                                    label="Special Requests"
                                     name="specialRequests"
                                     value={formData.specialRequests}
                                     onChange={handleChange}
@@ -303,26 +274,18 @@ const EventReservationPage = () => {
 
                             <Grid item xs={12}>
                                 <Button
-                                    type="button"
                                     variant="contained"
-                                    color="primary"
                                     fullWidth
                                     onClick={handleProceedToSummary}
-                                    sx={{
-                                        padding: '12px',
-                                        fontSize: '16px',
-                                        backgroundColor: '#1976d2',
-                                        '&:hover': {
-                                            backgroundColor: '#115293',
-                                        },
-                                    }}
+                                    className="event-button"
+                                    sx={{ padding: '12px', fontSize: '16px', background: 'linear-gradient(135deg, #0077b6, #00b4d8)' }}
                                 >
                                     Proceed To Summary
                                 </Button>
                             </Grid>
                         </Grid>
                     </form>
-                </Box>
+                </Paper>
             </Container>
         </Box>
     );

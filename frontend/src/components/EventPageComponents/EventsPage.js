@@ -118,7 +118,7 @@ const EventsPage = () => {
                             <Button
                                 variant="contained"
                                 onClick={() => handleEventSelection(event)}
-                                className="event-button"
+                                className="evcent-button"
                             >
                                 Reserve for {event.name}
                               </Button>
