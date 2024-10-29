@@ -22,6 +22,7 @@ public class BillingService {
         this.reservationRepository = reservationRepository;
     }
 
+    //Generates The Bill
     public Bill generateBill(Long reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
