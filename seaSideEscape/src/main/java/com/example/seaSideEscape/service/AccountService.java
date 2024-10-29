@@ -81,7 +81,6 @@ public class AccountService {
         }
     }
 
-    /*
     public Optional<Account> canLogin(Account account) throws NoSuchAlgorithmException {
         Optional<Account> acc = accountRepository.findByUsername(account.getUsername());
         String password;
@@ -90,20 +89,6 @@ public class AccountService {
             password = getHashedPassword(account);
             if (password.equals(acc.get().getPassword())) {
                 return acc;
-            }
-        }
-        return Optional.empty();
-    }
-
-     */
-
-    public Optional<Account> canLogin(Account account) {
-        // Finds an account by username and verifies the password with BCrypt
-        Optional<Account> storedAccount = accountRepository.findByUsername(account.getUsername());
-        if (storedAccount.isPresent()) {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            if (encoder.matches(account.getPassword(), storedAccount.get().getPassword())) {
-                return storedAccount;
             }
         }
         return Optional.empty();

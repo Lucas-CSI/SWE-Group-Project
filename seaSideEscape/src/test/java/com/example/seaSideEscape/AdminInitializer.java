@@ -1,4 +1,4 @@
-package com.example.seaSideEscape.config;
+package com.example.seaSideEscape;
 
 import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.service.AccountService;

@@ -1,4 +1,4 @@
-package com.example.seaSideEscape.Service;
+package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.model.Bill;
 import com.example.seaSideEscape.model.Charge;
@@ -43,7 +43,6 @@ public class BillingService {
         bill.setCharges(charges);
         bill.setTaxes(taxes);
         bill.setTotalAmount(totalAmount);
-        bill.setFinalAmount(finalAmount);
 
         return bill;
     }

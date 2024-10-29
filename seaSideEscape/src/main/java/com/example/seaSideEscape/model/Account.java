@@ -11,7 +11,6 @@ public class Account {
     private String password;
     private String salt;
 
-    @Column(name = "is_admin", columnDefinition = "TINYINT(1)")
     private Boolean isAdmin = false;
 
     public String getSalt() {

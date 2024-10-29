@@ -52,6 +52,8 @@ const EventReservationPage = () => {
         }
     };
 
+
+
     // Handle input change
     const handleChange = (e) => {
         const { name, value } = e.target;

@@ -5,9 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Simple Changes">
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/Service/BillingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/Service/BillingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/Service/EventBookingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/Service/EventBookingService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/public/OceanViewHomePage.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/EventPageComponents/EventPage.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/EventPageComponents/PageStyling.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/NavigationBar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/EventPageComponents/EventReservationPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/EventPageComponents/EventReservationPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/EventPageComponents/EventsPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/EventPageComponents/EventsPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HomePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/NavigationBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/NavigationBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/config/AdminInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/test/java/com/example/seaSideEscape/AdminInitializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/AccountService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/BillingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/BillingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/EventBookingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/EventBookingService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/Service/BillingService.class" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/Service/BillingService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/Service/ReservationService.class" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/Service/ReservationService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/controller/ReservationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/controller/ReservationController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/model/Account.class" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/model/Account.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/model/Bill.class" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/model/Bill.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/model/Reservation.class" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/model/Reservation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/model/Room.class" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/model/Room.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/repository/ReservationRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/repository/ReservationRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/repository/RoomRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/repository/RoomRepository.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +98,12 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend/src/components" />
+      <recent name="$PROJECT_DIR$/frontend/public" />
       <recent name="C:\Users\bakga\SWE-Group-Project\seaSideEscape" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.example.seaSideEscape" />
     </key>
   </component>
   <component name="RunManager">
@@ -116,6 +143,8 @@
       <workItem from="1729750713394" duration="1754000" />
       <workItem from="1730148075776" duration="8419000" />
       <workItem from="1730161276470" duration="308000" />
+      <workItem from="1730161590159" duration="1506000" />
+      <workItem from="1730163107931" duration="13552000" />
     </task>
     <task id="LOCAL-00001" summary="Added Others Implementation">
       <option name="closed" value="true" />
@@ -173,7 +202,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730161459053</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Simple Changes">
+      <option name="closed" value="true" />
+      <created>1730161606022</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1730161606022</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
