@@ -20,6 +20,8 @@ import './NavigationBar.css';
 
 const NavigationBar = () => {
     const [loginOpen, setLoginOpen] = useState(false);
+    const [signupOpen, setSignupOpen] = useState(false);
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -29,6 +31,15 @@ const NavigationBar = () => {
     const handleLoginClose = () => {
         setLoginOpen(false);
         setError('');
+    };
+
+    const handleSignupOpen = () => {
+        setSignupOpen(true);
+        setLoginOpen(false);
+    };
+
+    const handleSignupClose = () => {
+        setSignupOpen(false);
     };
 
     const handleLoginSubmit = async (e) => {
@@ -123,9 +134,39 @@ const NavigationBar = () => {
                     <Button onClick={handleLoginSubmit}>Login</Button>
                 </DialogActions>
                 <DialogActions>
+                    <Button onClick={handleSignupOpen} color="secondary">
+                        Create Account
+                    </Button>
                     <Button onClick={handleAdminLogin} color="secondary">
                         Admin Login
                     </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog open={signupOpen} onClose={handleSignupClose}>
+                <DialogTitle>Create Account</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>Please enter your account details to sign up.</DialogContentText>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        label="Username"
+                        type="text"
+                        fullWidth
+                        variant="standard"
+                    />
+                    <TextField margin="dense" label="Email" type="email" fullWidth variant="standard" />
+                    <TextField margin="dense" label="Password" type="password" fullWidth variant="standard" />
+                    <TextField
+                        margin="dense"
+                        label="Confirm Password"
+                        type="password"
+                        fullWidth
+                        variant="standard"
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleSignupClose}>Cancel</Button>
+                    <Button onClick={handleSignupClose}>Create Account</Button>
                 </DialogActions>
             </Dialog>
         </>
