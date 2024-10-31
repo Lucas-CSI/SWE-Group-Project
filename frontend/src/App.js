@@ -10,6 +10,9 @@ import EventSummaryPage from "./components/EventPageComponents/EventSummaryPage"
 import EventConfirmationPage from "./components/EventPageComponents/EventConfirmationPage";
 import ReservationPage from "./components/ReservationPageComponents/ReservationPage";
 import AdminHomePage from "./components/AdminHomePage";
+import RoomsSuites from "./components/Rooms/RoomsSuites";
+
+
 import ReservationConfirmationPage from "./components/ReservationPageComponents/ReservationConfirmationPage";
 
 function App() {
@@ -27,6 +30,9 @@ function App() {
                     <Route path="/event-confirmation/:eventId" element={<EventConfirmationPage />} />
                     <Route path="/reservation" element={<ReservationPage />} />
                     <Route path="/admin/homepage" element={<AdminHomePage />} />
+                    <Route path="/rooms" element={<RoomsSuites />} />
+
+
                     <Route path="/reservation/confirmation" element={<ReservationConfirmationPage />} />
                 </Routes>
             </Box>
