@@ -2,16 +2,29 @@ package com.example.seaSideEscape.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
-public class Account {
+public class Account{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String password;
     private String salt;
-
     private Boolean isAdmin = false;
+
+    @ManyToOne
+    private Reservation reservation;
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
 
     public String getSalt() {
         return salt;
