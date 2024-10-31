@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,8 +13,8 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Room room;
+    @OneToMany
+    private List<Room> rooms;
 
     @ManyToOne
     private Guest guest;
@@ -36,9 +37,11 @@ public class Reservation {
 
     public void setId(Long id){this.id = id;}
 
-    public Room getRoom(){return room;}
+    public List<Room> getRooms(){return rooms;}
 
-    public void setRoom(Room room){this.room = room;}
+    public void clearRooms(){ rooms.clear();}
+
+    public void addRoom(Room room){this.rooms.add(room);}
 
     public Guest getGuest(){return guest;}
 

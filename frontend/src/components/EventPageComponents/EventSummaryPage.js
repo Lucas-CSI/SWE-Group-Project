@@ -1,37 +1,39 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Container, Typography, Button, Box } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';  // Import Axios for API calls
+import axios from 'axios';
 
 const EventReservationSummary = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { formData, arrivalDate, departureDate } = location.state || {};  // Access form data and dates
+
+    const { formData, arrivalDate, departureDate, selectedVenueId, selectedFloor, venueName, selectedEventName} = location.state || {};
 
     const handleConfirmReservation = async () => {
         try {
-            const params = new URLSearchParams({
-                venueId: formData.venueId,
-                eventDate: arrivalDate.toISOString(),
-                eventName: formData.specialRequests || 'Default Event Name',
-                guestEmail: formData.email,
-            });
+            const requestData = {
+                venueId: selectedVenueId,
+                eventDate: `${arrivalDate}T00:00:00`,
+                eventName: venueName || 'Default Event Name',
+                guestEmail: formData.email
+            };
 
-            const response = await axios.post(`http://localhost:8080/events/book`, params, {
+            const response = await axios.post(`http://localhost:8080/events/book`, requestData, {
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'application/json'
                 }
             });
 
             if (response.status === 200) {
-                const eventId = response.data.id;  // Assuming the response contains event booking id
+                const eventId = response.data.id;
                 navigate(`/event-confirmation/${eventId}`, { state: { bookingDetails: response.data } });
             }
         } catch (error) {
             console.error('Error booking event:', error);
+            alert('The selected venue is already booked. Please choose another one.');
+            navigate('/event-reservation');
         }
     };
-
 
     return (
         <Box
@@ -54,6 +56,15 @@ const EventReservationSummary = () => {
                 >
                     <Typography variant="h4" align="center" gutterBottom>
                         Reservation Summary
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                        <strong>Selected Venue:</strong> {venueName || 'Not Selected'}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                        <strong>Event Name:</strong> {formData?.specialRequests || selectedEventName || 'Not Selected'}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                        <strong>Floor:</strong> {selectedFloor}
                     </Typography>
                     <Typography variant="body1" gutterBottom>
                         <strong>First Name:</strong> {formData?.firstName || ''}

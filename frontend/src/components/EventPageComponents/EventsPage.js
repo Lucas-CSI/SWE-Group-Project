@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Typography, Box, Container, Button, Card, CardContent, CardActions, CardMedia, MenuItem, FormControl, Select, InputLabel } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './PageStyling.css';
+import './EventPage.css';
+
 
 const EventsPage = () => {
-    const [selectedFloor, setSelectedFloor] = useState(1); // Default floor 1
-    const [venues, setVenues] = useState([]); // Venues for the selected floor
+    const [selectedFloor, setSelectedFloor] = useState(1);
+    const [venues, setVenues] = useState([]);
+    const navigate = useNavigate();
+    const eventRefs = useRef([]);
 
     const events = [
         { id: 1, name: "Wedding Reception", description: "Celebrate your special day with us.", imageUrl: "WeddingReception.jpg" },
@@ -14,7 +19,6 @@ const EventsPage = () => {
     ];
 
     useEffect(() => {
-        // Fetch venues for the selected floor
         const fetchVenues = async () => {
             try {
                 const response = await axios.get(`http://localhost:8080/events/venues/floor/${selectedFloor}`);
@@ -30,10 +34,38 @@ const EventsPage = () => {
         setSelectedFloor(event.target.value);
     };
 
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible'); // Add visible class when in view
+                        observer.unobserve(entry.target); // Stop observing once visible
+                    }
+                });
+            },
+            { threshold: 0.1 } // Trigger when 10% of the card is visible
+        );
+
+        eventRefs.current.forEach(ref => ref && observer.observe(ref));
+        return () => observer.disconnect();
+    }, []);
+
+    const handleEventSelection = (event) => {
+        const selectedEvent = events.find(e => e.id === event.id);
+        navigate('/event-reservation/:eventId', {
+            state: {
+                selectedEventName: selectedEvent.name,
+                selectedFloor: selectedFloor,
+            }
+        });
+    };
+
     return (
         <>
-            {/* Background Image Section */}
-            <Box sx={{
+            <Box
+                className="background-fade-in"
+                sx={{
                 minHeight: '100vh',
                 display: 'flex',
                 justifyContent: 'center',
@@ -49,7 +81,6 @@ const EventsPage = () => {
                 </Typography>
             </Box>
 
-            {/* Floor Selector */}
             <Container sx={{ padding: '20px', textAlign: 'center' }}>
                 <FormControl variant="outlined" sx={{ minWidth: 200 }}>
                     <InputLabel id="floor-select-label">Select Floor</InputLabel>
@@ -67,46 +98,36 @@ const EventsPage = () => {
                 </FormControl>
             </Container>
 
-            {/* Event Details Section with Reservation Button */}
             <Container sx={{ padding: '40px 0', backgroundColor: '#fff' }}>
                 <Typography variant="h4" align="center" gutterBottom>
                     Available Venues on Floor {selectedFloor}
                 </Typography>
 
-                {events.map(event => (
-                    <Card key={event.id} sx={{ maxWidth: 600, margin: '20px auto', padding: '20px' }}>
-                        <CardMedia
-                            component="img"
-                            height="200"
-                            image={event.imageUrl}
-                            alt={event.name}
-                        />
-                        <CardContent>
+                {events.map((event, index) => (
+                    <div
+                        key={event.id}
+                        ref={(el) => (eventRefs.current[index] = el)} // Assign refs to each event card
+                        className={`event-card ${index % 2 === 0 ? 'fade-in-left' : 'fade-in-right'}`}
+                    >
+                        <img src={event.imageUrl} alt={event.name} className="event-image" />
+                        <div className="event-content">
                             <Typography variant="h5" align="center">{event.name}</Typography>
                             <Typography variant="body1" align="center" sx={{ marginBottom: '20px' }}>
                                 {event.description}
                             </Typography>
-                        </CardContent>
-                        <CardActions sx={{ justifyContent: 'center' }}>
                             <Button
                                 variant="contained"
-                                color="primary"
-                                component={Link}
-                                to={`/event-reservation/${event.id}`}
+                                onClick={() => handleEventSelection(event)}
+                                className="evcent-button"
                             >
                                 Reserve for {event.name}
-                            </Button>
-                        </CardActions>
-                    </Card>
+                              </Button>
+                        </div>
+                    </div>
                 ))}
             </Container>
 
-            {/* Additional Section */}
-            <Box sx={{
-                padding: '60px 20px',
-                backgroundColor: '#f4f4f4',
-                textAlign: 'center',
-            }}>
+            <Box sx={{ padding: '60px 20px', backgroundColor: '#f4f4f4', textAlign: 'center' }}>
                 <Typography variant="h4" gutterBottom>
                     Plan Your Next Event with Us
                 </Typography>
@@ -117,19 +138,9 @@ const EventsPage = () => {
                 </Typography>
             </Box>
 
-            {/* Footer Section */}
-            <Box sx={{
-                padding: '40px',
-                backgroundColor: '#333',
-                color: 'white',
-                textAlign: 'center',
-            }}>
-                <Typography variant="h6">
-                    Contact us to book your event!
-                </Typography>
-                <Typography variant="body2">
-                    Email: events@seasideescape.com | Phone: (123) 456-7890
-                </Typography>
+            <Box sx={{ padding: '40px', backgroundColor: '#333', color: 'white', textAlign: 'center' }}>
+                <Typography variant="h6">Contact us to book your event!</Typography>
+                <Typography variant="body2">Email: events@seasideescape.com | Phone: (123) 456-7890</Typography>
             </Box>
         </>
     );

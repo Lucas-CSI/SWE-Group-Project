@@ -13,6 +13,8 @@ import AdminHomePage from "./components/AdminHomePage";
 import RoomsSuites from "./components/Rooms/RoomsSuites";
 
 
+import ReservationConfirmationPage from "./components/ReservationPageComponents/ReservationConfirmationPage";
+
 function App() {
     return (
         <Router>
@@ -24,12 +26,14 @@ function App() {
                     <Route path="/payment" element={<PaymentScreen />} />
                     <Route path="/events" element={<EventsPage />} />
                     <Route path="/event-reservation/:eventId" element={<EventReservationPage />} />
-                    <Route path="/event-reservation-summary/:eventId" element={<EventSummaryPage />} />
+                    <Route path="/event-reservation-summary" element={<EventSummaryPage />} />
                     <Route path="/event-confirmation/:eventId" element={<EventConfirmationPage />} />
                     <Route path="/reservation" element={<ReservationPage />} />
                     <Route path="/admin/homepage" element={<AdminHomePage />} />
                     <Route path="/rooms" element={<RoomsSuites />} />
 
+
+                    <Route path="/reservation/confirmation" element={<ReservationConfirmationPage />} />
                 </Routes>
             </Box>
         </Router>

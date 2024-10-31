@@ -1,127 +1,209 @@
-// src/components/ReservationForm.js
+import React, { useState } from 'react';
+import {
+    TextField,
+    MenuItem,
+    FormControlLabel,
+    Checkbox,
+    Button,
+    Typography,
+    Container,
+    Box,
+    Card,
+    CardMedia, CardContent, CardActions,
+    Grid2
+} from '@mui/material';
+import axios from 'axios';
+import {Link, useNavigate} from "react-router-dom";
 
-import React, { useState } from "react";
-import axios from "axios";
+// Enums for the select fields
+const themes = ['Nature Retreat', 'Urban Elegance', 'Vintage Charm'];
+const qualityLevels = ['Economy', 'Standard', 'Premium', 'Luxury'];
+const themeMap = {};
+const qualityMap = {};
+var cardStyle = {
+    display: 'block',
+    width: '25vw',
+    height: '43vw'
+}
 
-const ReservationPage = () => {
-    const [formData, setFormData] = useState({
-        startDate: "",
-        endDate: "",
-        specialRequests: "",
+for(let i = 0; i < themes.length; ++i){
+    themeMap[themes[i]] = i;
+    qualityMap[qualityLevels[i]] = i;
+}
+
+const events = [
+    { id: 1, name: "Nature Retreat", description: "Celebrate your special day with us.", imageUrl: "WeddingReception.jpg" },
+    { id: 2, name: "Urban Elegance", description: "Professional and elegant spaces for your business needs.", imageUrl: "CorporateMeeting.jpg" },
+    { id: 3, name: "Vintage Charm", description: "Host a grand dinner for your guests in our luxurious venue.", imageUrl: "GalaDinner.jpg" }
+];
+
+export default function ReservationPage() {
+    const navigate = useNavigate();
+    const [reservation, setReservation] = useState({
+        startDate: '',
+        endDate: '',
         room: {
-            theme: 1,
-            qualityLevel: 1,
+            bedType: '',
+            theme: '',
+            qualityLevel: '',
             smokingAllowed: false,
-            bedType: "Suite",
-            oceanView: 1,
+            oceanView: false,
         }
     });
 
-    const [loading, setLoading] = useState(false); // Loading state
-    const [error, setError] = useState(""); // Error state
-    const [success, setSuccess] = useState(""); // Success state
-
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const { name, value, type, checked } = e.target;
+        const isRoomProperty = ['bedType', 'theme', 'qualityLevel', 'smokingAllowed', 'oceanView'].includes(name);
+
+        setReservation((prev) => ({
+            ...prev,
+            ...(isRoomProperty ? { room: { ...prev.room, [name]: type === 'checkbox' ? checked : value } } : { [name]: type === 'checkbox' ? checked : value })
+        }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true); // Set loading state
-        setError(""); // Clear previous errors
-        setSuccess(""); // Clear success message
-
-        // The URL where you want to send the data (replace this with your own API endpoint)
-        const url = "http://localhost:8080/reservation/book";
-
         try {
-            const response = await axios.post(url, formData);
-            console.log("Response:", response.data);
-            setSuccess("Reservation submitted successfully!");
-        } catch (err) {
-            console.error("Error:", err);
-            setError("Failed to submit reservation. Please try again.");
-        } finally {
-            setLoading(false); // End loading state
+            console.log(reservation)
+            reservation.room.theme = themeMap[reservation.room.theme];
+            reservation.room.qualityLevel = qualityMap[reservation.room.qualityLevel];
+            await axios.post('http://localhost:8080/reservation/book', reservation, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            navigate(`/reservation/confirmation`);
+        } catch (error) {
+            console.error('Error submitting reservation', error);
+            alert('There was an error submitting your reservation.');
         }
     };
 
     return (
-        <div className="reservation-form">
-            <h2>Make a Reservation</h2>
-            {loading && <p>Submitting reservation...</p>}
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            {success && <p style={{ color: "green" }}>{success}</p>}
-
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="startDate">Check-In Date:</label>
-                    <input
-                        type="date"
-                        id="startDate"
-                        name="startDate"
-                        value={formData.startDate}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="endDate">Check-Out Date:</label>
-                    <input
-                        type="date"
-                        id="endDate"
-                        name="endDate"
-                        value={formData.endDate}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="theme">Theme:</label>
-                    <input
-                        type="number"
-                        id="theme"
-                        name="theme"
-                        value={formData.room.theme}
-                        onChange={handleChange}
-                        min="1"
-                        max="10"
-                        required
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="roomType">Room Type:</label>
-                    <select
-                        id="roomType"
-                        name="roomType"
-                        value={formData.room.bedType}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="Standard">Standard</option>
-                        <option value="Deluxe">Deluxe</option>
-                        <option value="Suite">Suite</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label htmlFor="specialRequests">Special Requests:</label>
-                    <textarea
-                        id="specialRequests"
-                        name="specialRequests"
-                        value={formData.specialRequests}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <button type="submit" disabled={loading}>Submit Reservation</button>
-            </form>
-        </div>
+        <Grid2 container justifyContent="center" alignItems="center" spacing={10} mt={35    }>
+            {events.map(event => (
+                <Grid2 item style={cardStyle}>
+                    <Card key={event.id}>
+                        <CardMedia
+                            component="img"
+                            height="200"
+                            image={event.imageUrl}
+                            alt={event.name}
+                        />
+                        <CardContent>
+                            <Typography variant="h5" align="center">{event.name}</Typography>
+                            <Typography variant="body1" align="center" sx={{ marginBottom: '20px' }}>
+                                {event.description}
+                            </Typography>
+                        </CardContent>
+                        <CardActions sx={{ justifyContent: 'center' }}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                component={Link}
+                                to={`/event-reservation/${event.id}`}
+                            >
+                                Reserve for {event.name}
+                            </Button>
+                        </CardActions>
+                    </Card>
+                </Grid2>
+            ))}
+        </Grid2>
     );
-};
-
-export default ReservationPage;
+    /*
+    return (
+        <Container maxWidth="sm">
+            <Box mt={4} mb={2}>
+                <Typography variant="h4" gutterBottom>Book Your Reservation</Typography>
+            </Box>
+            <form onSubmit={handleSubmit}>
+                <TextField
+                    label="Check-in Date"
+                    type="date"
+                    name="startDate"
+                    value={reservation.startDate}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                />
+                <TextField
+                    label="Check-out Date"
+                    type="date"
+                    name="endDate"
+                    value={reservation.endDate}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                />
+                <TextField
+                    label="Bed Type"
+                    name="bedType"
+                    value={reservation.room.bedType}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                />
+                <TextField
+                    label="Theme"
+                    name="theme"
+                    select
+                    value={reservation.room.theme}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                >
+                    {themes.map((option) => (
+                        <MenuItem key={option} value={option}>
+                            {option}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField
+                    label="Quality Level"
+                    name="qualityLevel"
+                    select
+                    value={reservation.room.qualityLevel}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                >
+                    {qualityLevels.map((option) => (
+                        <MenuItem key={option} value={option}>
+                            {option}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            name="smokingAllowed"
+                            checked={reservation.room.smokingAllowed}
+                            onChange={handleChange}
+                        />
+                    }
+                    label="Smoking Allowed"
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            name="oceanView"
+                            checked={reservation.room.oceanView}
+                            onChange={handleChange}
+                        />
+                    }
+                    label="Ocean View"
+                />
+                <Button type="submit" variant="contained" color="primary" fullWidth>
+                    Submit Reservation
+                </Button>
+            </form>
+        </Container>
+    );*/
+}

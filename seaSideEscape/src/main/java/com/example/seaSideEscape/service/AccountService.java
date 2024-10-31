@@ -5,8 +5,8 @@ import com.example.seaSideEscape.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -17,10 +17,12 @@ import java.util.Random;
 @Service
 public class AccountService {
     private final AccountRepository accountRepository;
+//    private final JwtService jwtService;
 
     @Autowired
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
+//        this.jwtService = jwtService;
     }
 
     public boolean adminExists(String username) {
@@ -31,6 +33,11 @@ public class AccountService {
     public void saveAccount(Account account) {
         accountRepository.save(account);
     }
+
+//    public Optional<Account> getAccountFromToken(String token) {
+//        String username = jwtService.extractUsername(token);
+//        return accountRepository.findByUsername(username);
+//    }
 
 
     private String createSalt(){
@@ -81,7 +88,9 @@ public class AccountService {
         }
     }
 
-    /*
+    public Optional<Account> findAccountByUsername(String username){
+        return accountRepository.findByUsername(username);
+    }
     public Optional<Account> canLogin(Account account) throws NoSuchAlgorithmException {
         Optional<Account> acc = accountRepository.findByUsername(account.getUsername());
         String password;
@@ -90,20 +99,6 @@ public class AccountService {
             password = getHashedPassword(account);
             if (password.equals(acc.get().getPassword())) {
                 return acc;
-            }
-        }
-        return Optional.empty();
-    }
-
-     */
-
-    public Optional<Account> canLogin(Account account) {
-        // Finds an account by username and verifies the password with BCrypt
-        Optional<Account> storedAccount = accountRepository.findByUsername(account.getUsername());
-        if (storedAccount.isPresent()) {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            if (encoder.matches(account.getPassword(), storedAccount.get().getPassword())) {
-                return storedAccount;
             }
         }
         return Optional.empty();

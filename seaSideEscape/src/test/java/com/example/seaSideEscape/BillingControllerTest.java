@@ -1,7 +1,7 @@
 package com.example.seaSideEscape;
 
-import com.example.seaSideEscape.service.BillingService;
 import com.example.seaSideEscape.controller.BillingController;
+import com.example.seaSideEscape.service.BillingService;
 import com.example.seaSideEscape.model.Bill;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,11 +36,11 @@ public class BillingControllerTest {
     @Test
     void getPaymentInformationTest() throws Exception {
         Bill bill = new Bill();
-        bill.setTotalAmount(new BigDecimal("132.00"));
+        bill.setFinalAmount(new BigDecimal("132.00"));
         bill.setTaxes(new BigDecimal("12.00"));
-        bill.setSubTotal(new BigDecimal("120.00"));
+        bill.setTotalAmount(new BigDecimal("120.00"));
 
-        //when(billingService.generateBill(1L)).thenReturn(bill);
+        when(billingService.generateBill(1L)).thenReturn(bill);
 
         mockMvc.perform(get("/billing/1"))
                 .andExpect(status().isOk())
