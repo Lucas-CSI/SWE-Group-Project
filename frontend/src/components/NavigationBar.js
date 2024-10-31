@@ -74,6 +74,16 @@ const NavigationBar = () => {
         }
     };
 
+
+    // New function to handle "Rooms & Suites" button click
+    const handleRoomsClick = () => {
+        // Perform any additional action here, e.g., logging, fetching data, or showing a message
+        console.log("Navigating to Rooms & Suites page...");
+
+        // Navigate to /rooms route
+        navigate('/rooms');
+    };
+
     return (
         <>
         <AppBar position="fixed" sx={{ backgroundColor: 'rgba(13,109,131,0.65)' }}>
@@ -101,6 +111,7 @@ const NavigationBar = () => {
                 </Box>
             </Toolbar>
         </AppBar>
+
 
     {/* Login Dialog */}
     <Dialog open={loginOpen} onClose={handleLoginClose}>
