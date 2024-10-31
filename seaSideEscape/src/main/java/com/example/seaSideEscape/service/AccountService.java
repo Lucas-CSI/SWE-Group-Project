@@ -88,6 +88,9 @@ public class AccountService {
         }
     }
 
+    public Optional<Account> findAccountByUsername(String username){
+        return accountRepository.findByUsername(username);
+    }
     public Optional<Account> canLogin(Account account) throws NoSuchAlgorithmException {
         Optional<Account> acc = accountRepository.findByUsername(account.getUsername());
         String password;
