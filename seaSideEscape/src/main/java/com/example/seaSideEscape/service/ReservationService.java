@@ -7,6 +7,7 @@ import com.example.seaSideEscape.validator.ReservationValidator;
 import com.example.seaSideEscape.model.Reservation;
 import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.repository.ReservationRepository;
+import com.example.seaSideEscape.validator.RoomValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.projection.CollectionAwareProjectionFactory;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,11 @@ public class ReservationService {
     }
 
     public Room addRoom(Room room, String username) throws Exception {
+        RoomValidator roomValidator = new RoomValidator(room);
+        if (!roomValidator.isValid()) {
+            throw new Exception("Invalid room details: " + roomValidator.getInvalidItems());
+        }
+
         Optional<Account> account = accountService.findAccountByUsername(username);
         Reservation reservation;
 
