@@ -18,7 +18,12 @@ public class ReservationController {
     }
 
     @PostMapping("/book")
-    public Reservation bookRoom(@RequestBody Reservation reservation) throws Exception {
-        return reservationService.bookRoom(reservation);
+    public Reservation bookReservation(@RequestBody Reservation reservation) throws Exception {
+        return reservationService.bookReservation(reservation);
+    }
+
+    @PostMapping("/addRoom")
+    public Room addRoom(@RequestBody Room room, @CookieValue("username") String username) throws Exception {
+        return reservationService.addRoom(room, username);
     }
 }
