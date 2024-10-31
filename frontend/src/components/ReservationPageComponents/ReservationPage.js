@@ -1,18 +1,41 @@
 import React, { useState } from 'react';
-import { TextField, MenuItem, FormControlLabel, Checkbox, Button, Typography, Container, Box } from '@mui/material';
+import {
+    TextField,
+    MenuItem,
+    FormControlLabel,
+    Checkbox,
+    Button,
+    Typography,
+    Container,
+    Box,
+    Card,
+    CardMedia, CardContent, CardActions,
+    Grid2
+} from '@mui/material';
 import axios from 'axios';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 // Enums for the select fields
-const themes = ['Beach', 'Mountain', 'City', 'Forest'];
+const themes = ['Nature Retreat', 'Urban Elegance', 'Vintage Charm'];
 const qualityLevels = ['Economy', 'Standard', 'Premium', 'Luxury'];
 const themeMap = {};
 const qualityMap = {};
+var cardStyle = {
+    display: 'block',
+    width: '25vw',
+    height: '43vw'
+}
 
 for(let i = 0; i < themes.length; ++i){
     themeMap[themes[i]] = i;
     qualityMap[qualityLevels[i]] = i;
 }
+
+const events = [
+    { id: 1, name: "Nature Retreat", description: "Celebrate your special day with us.", imageUrl: "WeddingReception.jpg" },
+    { id: 2, name: "Urban Elegance", description: "Professional and elegant spaces for your business needs.", imageUrl: "CorporateMeeting.jpg" },
+    { id: 3, name: "Vintage Charm", description: "Host a grand dinner for your guests in our luxurious venue.", imageUrl: "GalaDinner.jpg" }
+];
 
 export default function ReservationPage() {
     const navigate = useNavigate();
@@ -56,6 +79,39 @@ export default function ReservationPage() {
         }
     };
 
+    return (
+        <Grid2 container justifyContent="center" alignItems="center" spacing={10} mt={35    }>
+            {events.map(event => (
+                <Grid2 item style={cardStyle}>
+                    <Card key={event.id}>
+                        <CardMedia
+                            component="img"
+                            height="200"
+                            image={event.imageUrl}
+                            alt={event.name}
+                        />
+                        <CardContent>
+                            <Typography variant="h5" align="center">{event.name}</Typography>
+                            <Typography variant="body1" align="center" sx={{ marginBottom: '20px' }}>
+                                {event.description}
+                            </Typography>
+                        </CardContent>
+                        <CardActions sx={{ justifyContent: 'center' }}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                component={Link}
+                                to={`/event-reservation/${event.id}`}
+                            >
+                                Reserve for {event.name}
+                            </Button>
+                        </CardActions>
+                    </Card>
+                </Grid2>
+            ))}
+        </Grid2>
+    );
+    /*
     return (
         <Container maxWidth="sm">
             <Box mt={4} mb={2}>
@@ -149,5 +205,5 @@ export default function ReservationPage() {
                 </Button>
             </form>
         </Container>
-    );
+    );*/
 }
