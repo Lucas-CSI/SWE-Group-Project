@@ -15,14 +15,12 @@ import {
 } from '@mui/material';
 import Slider from 'react-slick';
 
-// Import slick-carousel CSS for styling
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-// Image arrays for the slideshow in each category
-const natureImages = ['beachyBed.jpg', 'beachView.jpg', 'beachBed.jpg']; // Replace with actual image URLs
-const urbanImages = ['modernBeachBed.jpg', 'modernBed.jpg', 'urban3.jpg'];
-const vintageImages = ['vintageView.jpg', 'vintageBed.jpg', 'vintage3.jpg'];
+const natureImages = ['beachyBed.jpg', 'beachView.jpg', 'beachBed.jpg'];
+const urbanImages = ['modernBeachBed.jpg', 'urbanpt2.jpeg', 'modernBed.jpg'];
+const vintageImages = ['vintageBed.jpg', 'vintageView.jpg', 'vintageType.jpg'];
 
 const RoomSuites = () => {
     return (
