@@ -4,9 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Improved EventPage Front-End">
+    <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Karina's Login Implementation">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/EventPageComponents/EventReservationPage.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/repository/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/NavigationBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/NavigationBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/EventPageComponents/EventReservationPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/EventPageComponents/EventReservationPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/ReservationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/ReservationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/AccountService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/JwtService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/ReservationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/ReservationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/controller/ReservationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/controller/ReservationController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/model/Account.class" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/model/Account.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,22 +47,22 @@
     &quot;assignee&quot;: &quot;KGarza1&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Lucas-CSI/SWE-Group-Project.git",
-    "accountId": "b13ecf6c-844e-459e-9318-145b133e8ba2"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Lucas-CSI/SWE-Group-Project.git&quot;,
+    &quot;accountId&quot;: &quot;b13ecf6c-844e-459e-9318-145b133e8ba2&quot;
   },
-  "recentNewPullRequestHead": {
-    "server": {
-      "useHttp": false,
-      "host": "github.com",
-      "port": null,
-      "suffix": null
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
     },
-    "owner": "Lucas-CSI",
-    "repository": "SWE-Group-Project"
+    &quot;owner&quot;: &quot;Lucas-CSI&quot;,
+    &quot;repository&quot;: &quot;SWE-Group-Project&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -59,30 +72,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.SeaSideEscapeApplication.executor": "Run",
-    "git-widget-placeholder": "Francisco",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/bakga/SWE-Group-Project/frontend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
-    "ts.external.directory.path": "/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.SeaSideEscapeApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Francisco&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/bakga/SWE-Group-Project/frontend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/frontend/public" />
@@ -131,7 +144,7 @@
       <workItem from="1730148075776" duration="8419000" />
       <workItem from="1730161276470" duration="308000" />
       <workItem from="1730161590159" duration="1506000" />
-      <workItem from="1730163107931" duration="24669000" />
+      <workItem from="1730163107931" duration="52197000" />
     </task>
     <task id="LOCAL-00001" summary="Added Others Implementation">
       <option name="closed" value="true" />
@@ -213,7 +226,23 @@
       <option name="project" value="LOCAL" />
       <updated>1730228720899</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Karina's Login Implementation">
+      <option name="closed" value="true" />
+      <created>1730231254722</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1730231254723</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Karina's Login Implementation">
+      <option name="closed" value="true" />
+      <created>1730231395294</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1730231395294</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -238,6 +267,7 @@
     <MESSAGE value="BillingService and EventBookingService changes" />
     <MESSAGE value="Simple Changes" />
     <MESSAGE value="Improved EventPage Front-End" />
-    <option name="LAST_COMMIT_MESSAGE" value="Improved EventPage Front-End" />
+    <MESSAGE value="Karina's Login Implementation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Karina's Login Implementation" />
   </component>
 </project>
