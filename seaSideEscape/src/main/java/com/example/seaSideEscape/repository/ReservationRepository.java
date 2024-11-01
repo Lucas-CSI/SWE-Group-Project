@@ -18,6 +18,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     @Query("SELECT u FROM Reservation u WHERE u.room.isSmokingAllowed = ?1 AND u.room.qualityLevel = ?2 AND u.room.bedType = ?3 AND u.room.oceanView = ?4 AND u.room.theme = ?5 AND u.endDate BETWEEN ?6 AND ?7")
     List<Reservation> findBySmokingAllowedByQualityLevelAndBedTypeAndViewAndThemeBetweenCheckInDateAndCheckOutDate(boolean isSmokingAllowed, Room.QualityLevel qualityLevel, String bedType, boolean oceanView, Room.Themes theme, LocalDate startDate, LocalDate endDate);
-
 }
 

@@ -1,5 +1,5 @@
 // TODO: Fix GenerateBill in BillingService and re-enable in ReservationService
-
+// TODO: Add cache so less queries have to be made
 package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.model.Account;
@@ -32,22 +32,50 @@ public class ReservationService {
         this.accountService = accountService;
     }
 
-    public Reservation bookReservation(Reservation reservation) throws Exception {
-        ReservationValidator reservationValidator = new ReservationValidator(reservation);
-        if(reservationValidator.isValid()) {
-            return reservationRepository.save(reservation);
-        }else{
-            throw new Exception("Invalid reservation.");
-        }
+    public List<Reservation> bookReservation(String username) throws Exception {
+        Optional<Account> account = accountService.findAccountByUsername(username);
+        if(account.isPresent())
+            accountService.saveAccount(account.get());
+        else
+            throw new Exception("Account not found");
+
+        return account.get().getReservations();
     }
 
-    public Room addRoom(Room room, String username) throws Exception {
+    /*public Room addRoom(Room room, String username) {
         Optional<Account> account = accountService.findAccountByUsername(username);
-        Reservation reservation;
+        Reservation reservation = account.get().getReservation();
+        if(reservation == null) {
+            reservation = new Reservation();
+            account.get().setReservation(reservation);
+        }
+        reservation.addRoom(room);
+        reservationRepository.save(reservation);
+        accountService.saveAccount(account.get());
+        return room;
+    }*/
+    public Room addRoom(Reservation reservation, String username) throws Exception {
+        Optional<Account> account = accountService.findAccountByUsername(username);
+        Account accountObject;
+        List<Reservation> reservations;
+        Room room;
 
         if(account.isPresent()) {
-            reservation = account.get().getReservation();
-            Set<Room> roomSet = new HashSet<>(reservation.getRooms());
+            accountObject = account.get();
+            reservations = accountObject.getReservations();
+            reservation.setGuest(accountObject);
+            room = reservation.getRoom();
+            if(reservations == null) {
+                reservations = new ArrayList<>(){
+                    public boolean add(Reservation mt) {
+                        int index = Collections.binarySearch(this, mt, Reservation.Sort.StartDate);
+                        if (index < 0) index = ~index;
+                        super.add(index, mt);
+                        return true;
+                    }
+                };
+                accountObject.setReservations(reservations);
+            }
             List<Room> rooms = roomService.getRoomsBySmokingAllowedByQualityLevelAndBedTypeAndViewAndTheme(
                     room.isSmokingAllowed(),
                     room.getQualityLevel(),
@@ -55,7 +83,7 @@ public class ReservationService {
                     room.isOceanView(),
                     room.getTheme()
             );
-            List<Reservation> reservations = reservationRepository.findBySmokingAllowedByQualityLevelAndBedTypeAndViewAndThemeBetweenCheckInDateAndCheckOutDate(
+            List<Reservation> reservationsInDB = reservationRepository.findBySmokingAllowedByQualityLevelAndBedTypeAndViewAndThemeBetweenCheckInDateAndCheckOutDate(
                     room.isSmokingAllowed(),
                     room.getQualityLevel(),
                     room.getBedType(),
@@ -64,12 +92,11 @@ public class ReservationService {
                     reservation.getStartDate(),
                     reservation.getEndDate()
             );
-            rooms = rooms.stream()
-                    .filter(roomSet::contains)
-                    .toList();
-            if (rooms.size() - reservations.size() > 0) {
+            if (rooms.size() - reservationsInDB.size() > 0) {
                 room = rooms.getFirst();
-                reservation.addRoom(room);
+                reservation.setRoom(room);
+                accountObject.addReservation(reservation);
+                reservationRepository.save(reservation);
                 // billingService.generateBill(newReservation.getId());
             } else {
                 throw new Exception("No room available.");
