@@ -16,7 +16,7 @@ public class EventBooking {
 
     private LocalDateTime eventDate;
     private String eventName, guestEmail;
-
+    
     public Long getId(){return id;}
 
     public void setId(Long id){this.id = id;}

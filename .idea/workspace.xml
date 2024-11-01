@@ -4,17 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Started User Implementation">
-      <change afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/validator/RoomValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+    <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Implemented the Room Validator and Fixed Reservation Repository">
+      <change afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/PaymentProcess.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/repository/ReservationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/repository/ReservationRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/ReservationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/ReservationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/Service/ReservationService.class" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/Service/ReservationService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/controller/ReservationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/controller/ReservationController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/model/Account.class" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/model/Account.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/model/Reservation.class" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/model/Reservation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/EventBooking.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/EventBooking.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/PaymentService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +20,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -58,6 +54,9 @@
     &quot;repository&quot;: &quot;SWE-Group-Project&quot;
   }
 }</component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/frontend/package.json" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -245,7 +244,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730391110329</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Implemented the Room Validator and Fixed Reservation Repository">
+      <option name="closed" value="true" />
+      <created>1730393526169</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1730393526169</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -272,6 +279,7 @@
     <MESSAGE value="Improved EventPage Front-End" />
     <MESSAGE value="Karina's Login Implementation" />
     <MESSAGE value="Started User Implementation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Started User Implementation" />
+    <MESSAGE value="Implemented the Room Validator and Fixed Reservation Repository" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented the Room Validator and Fixed Reservation Repository" />
   </component>
 </project>
