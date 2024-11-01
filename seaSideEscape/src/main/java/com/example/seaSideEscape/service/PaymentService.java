@@ -2,62 +2,76 @@ package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.model.EventBooking;
 import com.example.seaSideEscape.model.Payment;
+import com.example.seaSideEscape.model.PaymentProcess;
 import com.example.seaSideEscape.model.Reservation;
+import com.example.seaSideEscape.model.Venue;
 import com.example.seaSideEscape.repository.EventBookingRepository;
 import com.example.seaSideEscape.repository.PaymentRepository;
 import com.example.seaSideEscape.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Service
-public class PaymentService {
+public class PaymentService implements PaymentProcess {
+
     private final PaymentRepository paymentRepository;
-    private  final ReservationRepository reservationRepository;
+    private final ReservationRepository reservationRepository;
     private final EventBookingRepository eventBookingRepository;
 
-
     @Autowired
-    public PaymentService(PaymentRepository paymentRepository, ReservationRepository reservationRepository, EventBookingRepository eventBookingRepository){
+    public PaymentService(PaymentRepository paymentRepository, ReservationRepository reservationRepository, EventBookingRepository eventBookingRepository) {
         this.paymentRepository = paymentRepository;
         this.reservationRepository = reservationRepository;
         this.eventBookingRepository = eventBookingRepository;
     }
 
-    public Payment processRoomPayment(Long reservationId, String paymentMethod, String billingAddress){
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
-
-        BigDecimal amount = reservation.getRoomRate();
-        return createAndSavePayment(reservation, paymentMethod, billingAddress, amount);
-    }
-
-//    public Payment processEventPayment(Long eventBookingId, String paymentMethod, String billingAddress){
-//        EventBooking eventBooking = eventBookingRepository.findById(eventBookingId)
-//                .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
-//
-//        BigDecimal amount = calculateEventAmount(eventBooking);  // Custom calculation for event
-//        return createAndSavePayment(eventBooking.getReservation(), paymentMethod, billingAddress, amount);
-//    }
-
-
-
-
-    private Payment createAndSavePayment(Reservation reservation, String paymentMethod, String billingAddress, BigDecimal amount){
+    @Override
+    public Payment processPayment(Long id, String paymentMethod, String billingAddress, BigDecimal amount, boolean isRoomPayment) {
         Payment payment = new Payment();
-        payment.setReservation(reservation);
         payment.setPaymentMethod(paymentMethod);
         payment.setBillingAddress(billingAddress);
-        payment.setAmount(amount);
         payment.setPaymentDate(LocalDateTime.now());
         payment.setSuccess(true);
 
+        // Determine payment amount and associate with reservation or event booking
+        if (isRoomPayment) {
+            Reservation reservation = reservationRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
+            payment.setReservation(reservation);
+
+            amount = calculateRoomTotalAmount(reservation);
+            reservation.setPaid(true);
+            reservationRepository.save(reservation);
+        } else {
+            EventBooking eventBooking = eventBookingRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Event booking not found"));
+            payment.setEventBooking(eventBooking);
+
+            amount = calculateVenueTotalAmount(eventBooking.getVenue());
+        }
+
+        payment.setAmount(amount);  // Set calculated amount
         paymentRepository.save(payment);
-        reservation.setPaid(true);
-        reservationRepository.save(reservation);
+
         return payment;
+    }
+
+    // Calculate total room amount based on room rate and additional charges
+    private BigDecimal calculateRoomTotalAmount(Reservation reservation) {
+        BigDecimal roomRate = reservation.getRoomRate() != null ? reservation.getRoomRate() : BigDecimal.ZERO;
+        BigDecimal additionalCharges = reservation.getCharges().stream()
+                .map(charge -> charge.getAmount())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return roomRate.add(additionalCharges);
+    }
+
+    // Calculate total venue amount based on venue base rate and additional charges
+    private BigDecimal calculateVenueTotalAmount(Venue venue) {
+        BigDecimal baseRate = venue.getBaseRate() != null ? venue.getBaseRate() : BigDecimal.ZERO;
+        BigDecimal additionalCharges = venue.getAdditionalCharges() != null ? venue.getAdditionalCharges() : BigDecimal.ZERO;
+        return baseRate.add(additionalCharges);
     }
 }

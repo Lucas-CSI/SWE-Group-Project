@@ -4,12 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Implemented the Room Validator and Fixed Reservation Repository">
-      <change afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/PaymentProcess.java" afterDir="false" />
+    <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Finished the Events &amp; Room PaymentService">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_23_2024_11_27_AM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_23_2024_11_27_AM__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/EventBooking.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/EventBooking.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Rooms/NatureRetreatOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/NatureRetreatOptions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/PaymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/PaymentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/Payment.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/Payment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/PaymentProcess.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/PaymentProcess.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/Venue.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/Venue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/PaymentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/model/Venue.class" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/target/classes/com/example/seaSideEscape/model/Venue.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,8 +24,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -252,7 +257,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730393526169</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Added processEventPayment and processRoomPayment to PaymentService">
+      <option name="closed" value="true" />
+      <created>1730426298142</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1730426298142</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -280,6 +293,8 @@
     <MESSAGE value="Karina's Login Implementation" />
     <MESSAGE value="Started User Implementation" />
     <MESSAGE value="Implemented the Room Validator and Fixed Reservation Repository" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented the Room Validator and Fixed Reservation Repository" />
+    <MESSAGE value="Added processEventPayment and processRoomPayment to PaymentService" />
+    <MESSAGE value="Finished the Events &amp; Room PaymentService" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finished the Events &amp; Room PaymentService" />
   </component>
 </project>

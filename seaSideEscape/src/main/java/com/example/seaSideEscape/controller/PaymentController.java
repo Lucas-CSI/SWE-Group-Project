@@ -10,15 +10,20 @@ import java.math.BigDecimal;
 @RestController
 @RequestMapping("/payments")
 public class PaymentController {
-/*
+
+    private final PaymentService paymentService;
+
     @Autowired
-    private PaymentService paymentService;
+    public PaymentController(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
 
     @PostMapping("/pay")
-    public Payment payBill(@RequestParam Long reservationId,
+    public Payment payBill(@RequestParam Long id,
                            @RequestParam String paymentMethod,
                            @RequestParam String billingAddress,
-                           @RequestParam BigDecimal amount) {
-        return paymentService.processPayment(reservationId, paymentMethod, billingAddress, amount);
-    }*/
+                           @RequestParam BigDecimal amount,
+                           @RequestParam boolean isRoomPayment) {
+        return paymentService.processPayment(id, paymentMethod, billingAddress, amount, isRoomPayment);
+    }
 }

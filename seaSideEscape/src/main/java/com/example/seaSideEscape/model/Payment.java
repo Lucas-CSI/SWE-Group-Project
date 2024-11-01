@@ -20,6 +20,9 @@ public class Payment {
     private String billingAddress;
     private boolean success;
 
+    @ManyToOne
+    private EventBooking eventBooking;
+
     public Reservation getReservation(){return reservation;}
 
     public void setReservation(Reservation reservation){this.reservation = reservation;}
@@ -43,5 +46,13 @@ public class Payment {
     public boolean getSuccess(){return success;}
 
     public void setSuccess(boolean success){this.success = success;}
+
+    public EventBooking getEventBooking() {
+        return eventBooking;
+    }
+
+    public void setEventBooking(EventBooking eventBooking) {
+        this.eventBooking = eventBooking;
+    }
 }
 

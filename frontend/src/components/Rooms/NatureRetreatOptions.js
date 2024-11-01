@@ -15,10 +15,6 @@ const RoomOption = ({ title }) => {
                     sx={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px' }}
                 />
             </CardMedia>
-..
-
-
-
             <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                 <Typography variant="h6" sx={{ marginBottom: '0.5rem' }}>
                     {title}
