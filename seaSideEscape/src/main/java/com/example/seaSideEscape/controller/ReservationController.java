@@ -6,6 +6,8 @@ import com.example.seaSideEscape.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/reservation")
 public class ReservationController {
@@ -18,12 +20,12 @@ public class ReservationController {
     }
 
     @PostMapping("/book")
-    public Reservation bookReservation(@RequestBody Reservation reservation) throws Exception {
-        return reservationService.bookReservation(reservation);
+    public List<Reservation> bookReservation(@CookieValue("username") String username) throws Exception {
+        return reservationService.bookReservation(username);
     }
 
     @PostMapping("/addRoom")
-    public Room addRoom(@RequestBody Room room, @CookieValue("username") String username) throws Exception {
-        return reservationService.addRoom(room, username);
+    public Room addRoom(@RequestBody Reservation reservation, @CookieValue("username") String username) throws Exception {
+        return reservationService.addRoom(reservation, username);
     }
 }
