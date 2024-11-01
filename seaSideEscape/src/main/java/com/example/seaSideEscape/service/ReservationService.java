@@ -92,15 +92,20 @@ public class ReservationService {
                     reservation.getStartDate(),
                     reservation.getEndDate()
             );
-            if (rooms.size() - reservationsInDB.size() > 0) {
+            List<Room> availableRooms = rooms.stream()
+                    .filter(r -> reservationsInDB.stream()
+                            .noneMatch(res -> res.getRoom().getId().equals(r.getId()))
+                    )
+                    .toList();
+           // if (!availableRooms.isEmpty()) {
                 room = rooms.getFirst();
                 reservation.setRoom(room);
                 accountObject.addReservation(reservation);
                 reservationRepository.save(reservation);
                 // billingService.generateBill(newReservation.getId());
-            } else {
-                throw new Exception("No room available.");
-            }
+          //  } else {
+            //    throw new Exception("No room available.");
+            //z }
         }else{
             throw new Exception("You must be logged in.");
         }

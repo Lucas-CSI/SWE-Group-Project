@@ -45,10 +45,12 @@ const NavigationBar = () => {
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
         try {
-            const data = await login(username, password);
-            if (data) {
-                localStorage.setItem('token', data.token);
+            const response = await axios.post('http://localhost:8080/login', { username, password }, { withCredentials: true });
+            if (response.status === 200) {
                 handleLoginClose();
+                alert("Logged in.");
+            }else{
+                alert("Error: Logged in failed.");
             }
         } catch (error) {
             setError('Login failed. Please check your credentials.');
@@ -71,6 +73,11 @@ const NavigationBar = () => {
         }
     };
 
+    const handleRoomsClick = () => {
+        console.log("Navigating to Rooms & Suites page...");
+        navigate('/rooms');
+    };
+
     return (
         <>
             <AppBar position="fixed" className="app-bar">
@@ -86,7 +93,7 @@ const NavigationBar = () => {
                             Home
                             <span className="underline"></span>
                         </Link>
-                        <Link to="/rooms" className="nav-link">
+                        <Link to="/reservation" className="nav-link">
                             Rooms & Suites
                             <span className="underline"></span>
                         </Link>
@@ -117,6 +124,7 @@ const NavigationBar = () => {
                         label="Username"
                         type="text"
                         fullWidth
+                        variant="standard"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
@@ -125,6 +133,7 @@ const NavigationBar = () => {
                         label="Password"
                         type="password"
                         fullWidth
+                        variant="standard"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
@@ -142,7 +151,8 @@ const NavigationBar = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-            {/*Signup Dialog*/}
+
+            {/* Signup Dialog */}
             <Dialog open={signupOpen} onClose={handleSignupClose}>
                 <DialogTitle>Create Account</DialogTitle>
                 <DialogContent>

@@ -29,11 +29,19 @@ public class AccountController {
     }
 
     @PostMapping("/login")
-    public String login(HttpServletResponse response, @RequestBody Account account) throws NoSuchAlgorithmException {
+    public String login(HttpServletResponse response, @RequestBody Account account) throws Exception {
         Optional<Account> acc = accountService.canLogin(account);
         if(acc.isPresent()){
-            response.addCookie(new Cookie("username", account.getUsername()));
-            response.addCookie(new Cookie("password", acc.get().getPassword()));
+            Cookie username = new Cookie("username", account.getUsername());
+            Cookie password = new Cookie("password", account.getPassword());
+            username.setPath("/");
+            password.setPath("/");
+            username.setMaxAge(24 * 60 * 60);
+            password.setMaxAge(24 * 60 * 60);
+            response.addCookie(username);
+            response.addCookie(password);;
+        }else{
+            throw new Exception("Account not found.");
         }
         return "done";
     }
