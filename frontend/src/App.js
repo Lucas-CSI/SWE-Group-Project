@@ -11,6 +11,9 @@ import EventConfirmationPage from "./components/EventPageComponents/EventConfirm
 import ReservationPage from "./components/ReservationPageComponents/ReservationPage";
 import AdminHomePage from "./components/AdminHomePage";
 import RoomsSuites from "./components/Rooms/RoomsSuites";
+import NatureRetreatOptions from './components/Rooms/NatureRetreatOptions';
+import UrbanElegance from './components/Rooms/UrbanElegance';
+import VintageCharm from './components/Rooms/VintageCharm';
 
 
 import ReservationConfirmationPage from "./components/ReservationPageComponents/ReservationConfirmationPage";
@@ -31,6 +34,9 @@ function App() {
                     <Route path="/reservation" element={<ReservationPage />} />
                     <Route path="/admin/homepage" element={<AdminHomePage />} />
                     <Route path="/rooms" element={<RoomsSuites />} />
+                    <Route path="/natureRetreat" element={<NatureRetreatOptions />} />
+                    <Route path="/UrbanElegance" element={<UrbanElegance />} />
+                    <Route path="/vintageCharm" element={<VintageCharm />} />
 
 
                     <Route path="/reservation/confirmation" element={<ReservationConfirmationPage />} />

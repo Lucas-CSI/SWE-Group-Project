@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import {
     Box,
     Typography,
@@ -27,6 +29,9 @@ const RoomSuites = () => {
         <Box sx={{ padding: '2rem' }}>
             <Typography variant="h4" align="center" sx={{ marginBottom: '2rem' }}>
                 Room Categories
+                <Typography variant="h5" component="div" fontSize={17}>
+                    Available in multiple quality levels and smoking and non-smoking options
+                </Typography>
             </Typography>
             <Grid container spacing={4} justifyContent="center">
                 <Grid item xs={12} md={8}>
@@ -48,9 +53,9 @@ const RoomSuites = () => {
                 <Grid item xs={12} md={8}>
                     <RoomCategory
                         title="Vintage Charm"
-                        description="Standard and Deluxe rooms available. Smoking and Non-smoking options."
+                        description="Standard and Deluxe rooms available."
                         images={vintageImages}
-                        options={['Standard Room (Non-Smoking)', 'Standard Room (Smoking)', 'Deluxe Room']}
+                        options={['Standard Room', 'Standard Room', 'Deluxe Room']}
                     />
                 </Grid>
             </Grid>
@@ -59,7 +64,8 @@ const RoomSuites = () => {
 };
 
 const RoomCategory = ({ title, description, images, options }) => {
-    const [open, setOpen] = useState(false); // State for dialog open/close
+    const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
 
     const sliderSettings = {
         dots: true,
@@ -73,8 +79,20 @@ const RoomCategory = ({ title, description, images, options }) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const handleNavigate = () => {
+        if (title === "Nature Retreat") {
+            navigate('/natureRetreat');
+        }
+        if (title === "Urban Elegance") {
+            navigate('/urbanElegance');
+        }
+        if (title == "Vintage Charm") {
+            navigate('/vintageCharm');
+        }
+    };
+
     return (
-        <Card sx={{ backgroundColor: '#f2f2f2', padding: '1rem' }}>
+        <Card sx={{ backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative' }}>
             {/* Image Carousel */}
             <CardMedia>
                 <Slider {...sliderSettings}>
@@ -117,12 +135,23 @@ const RoomCategory = ({ title, description, images, options }) => {
                                 </li>
                             ))}
                         </ul>
+                        <Divider sx={{ margin: '1rem 0' }} />
                     </DialogContent>
                     <Button onClick={handleClose} color="primary" sx={{ margin: '1rem' }}>
                         Close
                     </Button>
                 </Dialog>
             </CardContent>
+
+            {/* View Rates & Reserve */}
+            <Button
+                onClick={handleNavigate}
+                variant="contained"
+                color="primary"
+                sx={{ position: 'absolute', bottom: 30, right: 30 }}
+            >
+                View Rates & Reserve
+            </Button>
         </Card>
     );
 };
