@@ -71,13 +71,8 @@ const NavigationBar = () => {
         }
     };
 
-
-    // New function to handle "Rooms & Suites" button click
     const handleRoomsClick = () => {
-        // Perform any additional action here, e.g., logging, fetching data, or showing a message
         console.log("Navigating to Rooms & Suites page...");
-
-        // Navigate to /rooms route
         navigate('/rooms');
     };
 
@@ -115,83 +110,6 @@ const NavigationBar = () => {
                 </Toolbar>
             </AppBar>
 
-                </Box>
-            </Toolbar>
-        </AppBar>
-
-
-    {/* Login Dialog */}
-    <Dialog open={loginOpen} onClose={handleLoginClose}>
-        <DialogTitle>Login</DialogTitle>
-        <DialogContent>
-            <DialogContentText>Please enter your login credentials.</DialogContentText>
-            {error && <p style={{ color: 'red' }}>{error}</p>} {/* Show error if login fails */}
-            <TextField
-                autoFocus
-                margin="dense"
-                label="Username"
-                type="text"
-                fullWidth
-                variant="standard"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <TextField
-                margin="dense"
-                label="Password"
-                type="password"
-                fullWidth
-                variant="standard"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-        </DialogContent>
-        <DialogActions>
-            <Button onClick={handleLoginClose}>Cancel</Button>
-            <Button onClick={handleLoginSubmit}>Login</Button>
-        </DialogActions>
-        <DialogActions>
-            <Button onClick={handleSignupOpen} color="secondary">
-                Create Account
-            </Button>
-            {/* New Admin Login button */}
-            <Button onClick={handleAdminLogin} color="secondary">
-                Admin Login
-            </Button>
-        </DialogActions>
-    </Dialog>
-
-    {/* Signup Dialog */}
-    <Dialog open={signupOpen} onClose={handleSignupClose}>
-        <DialogTitle>Create Account</DialogTitle>
-        <DialogContent>
-            <DialogContentText>Please enter your account details to sign up.</DialogContentText>
-            <TextField
-                autoFocus
-                margin="dense"
-                label="Username"
-                type="text"
-                fullWidth
-                variant="standard"
-            />
-            <TextField margin="dense" label="Email" type="email" fullWidth variant="standard" />
-            <TextField margin="dense" label="Password" type="password" fullWidth variant="standard" />
-            <TextField
-                margin="dense"
-                label="Confirm Password"
-                type="password"
-                fullWidth
-                variant="standard"
-            />
-        </DialogContent>
-        <DialogActions>
-            <Button onClick={handleSignupClose}>Cancel</Button>
-            <Button onClick={handleSignupClose}>Create Account</Button>
-        </DialogActions>
-    </Dialog>
-</>
-);
-
             {/* Login Dialog */}
             <Dialog open={loginOpen} onClose={handleLoginClose}>
                 <DialogTitle>Login</DialogTitle>
@@ -204,6 +122,7 @@ const NavigationBar = () => {
                         label="Username"
                         type="text"
                         fullWidth
+                        variant="standard"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
@@ -212,6 +131,7 @@ const NavigationBar = () => {
                         label="Password"
                         type="password"
                         fullWidth
+                        variant="standard"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
@@ -229,7 +149,8 @@ const NavigationBar = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-            {/*Signup Dialog*/}
+
+            {/* Signup Dialog */}
             <Dialog open={signupOpen} onClose={handleSignupClose}>
                 <DialogTitle>Create Account</DialogTitle>
                 <DialogContent>
