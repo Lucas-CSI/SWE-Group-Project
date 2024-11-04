@@ -23,6 +23,7 @@ public class ReservationService {
     private final BillingService billingService;
     private final RoomService roomService;
     private final AccountService accountService;
+    Logger logger = LoggerFactory.getLogger(ReservationService.class);
 
     @Autowired
     public ReservationService(ReservationRepository reservationRepository, BillingService billingService, RoomService roomService, AccountService accountService) {
@@ -59,6 +60,7 @@ public class ReservationService {
         Account accountObject;
         List<Reservation> reservations;
         Room room;
+        Set<Room> takenRooms = new HashSet<>();
 
         if(account.isPresent()) {
             accountObject = account.get();
@@ -92,20 +94,26 @@ public class ReservationService {
                     reservation.getStartDate(),
                     reservation.getEndDate()
             );
-            List<Room> availableRooms = rooms.stream()
-                    .filter(r -> reservationsInDB.stream()
-                            .noneMatch(res -> res.getRoom().getId().equals(r.getId()))
-                    )
+            reservationsInDB.forEach(res -> {
+                takenRooms.add(res.getRoom());
+            });
+            logger.debug("STARTING DEBUG......");
+            logger.debug("Rooms: ");
+            rooms.forEach(rooms2 -> logger.debug(rooms2.getRoomNumber()));
+            logger.debug("-------- Reservations -------");
+            reservationsInDB.forEach(rooms2 -> logger.debug(rooms2.getRoom().getRoomNumber()));
+            rooms = rooms.stream()
+                    .filter(room2 -> !takenRooms.contains(room2))
                     .toList();
-           // if (!availableRooms.isEmpty()) {
+            if (!rooms.isEmpty()) {
                 room = rooms.getFirst();
                 reservation.setRoom(room);
                 accountObject.addReservation(reservation);
                 reservationRepository.save(reservation);
                 // billingService.generateBill(newReservation.getId());
-          //  } else {
-            //    throw new Exception("No room available.");
-            //z }
+            } else {
+                throw new Exception("No room available.");
+            }
         }else{
             throw new Exception("You must be logged in.");
         }
