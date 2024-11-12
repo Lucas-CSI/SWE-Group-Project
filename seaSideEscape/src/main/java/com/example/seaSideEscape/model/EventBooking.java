@@ -16,7 +16,8 @@ public class EventBooking {
 
     private LocalDateTime eventDate;
     private String eventName, guestEmail;
-    
+    private boolean paid;
+
     public Long getId(){return id;}
 
     public void setId(Long id){this.id = id;}
@@ -36,4 +37,8 @@ public class EventBooking {
     public String getGuestEmail(){return guestEmail;}
 
     public void setGuestEmail(String guestEmail){this.guestEmail = guestEmail;}
+
+    public boolean isPaid(){return paid;}
+
+    public void setPaid(boolean paid){this.paid = paid;}
 }

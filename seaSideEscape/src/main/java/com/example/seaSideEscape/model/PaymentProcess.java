@@ -3,5 +3,6 @@ package com.example.seaSideEscape.model;
 import java.math.BigDecimal;
 
 public interface PaymentProcess {
-    Payment processPayment(Long id, String paymentMethod, String billingAddress, BigDecimal amount, boolean isRoomPayment);
+    Payment processPayment(Long reservationOrBookingId, String paymentMethod, String billingAddress, BigDecimal amount,
+                           String cardNumber, String expirationDate, String cvv);
 }

@@ -21,6 +21,7 @@ public class Venue {
     private int floorNumber;
     private BigDecimal baseRate;
     private BigDecimal additionalCharges;
+    private boolean isPaid;
 
     public Long getId(){return id;}
 
@@ -54,5 +55,8 @@ public class Venue {
 
     public void setAdditionalCharges(BigDecimal additionalCharges){this.additionalCharges = additionalCharges;}
 
+    public void setPaid(boolean isPaid) { this.isPaid = isPaid;}
+
+    private boolean getIsPaid(){return isPaid;}
 }
 
