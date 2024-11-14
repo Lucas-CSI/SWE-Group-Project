@@ -39,6 +39,8 @@ function App() {
                     <Route path="/vintageCharm" element={<VintageCharm />} />
 
 
+
+
                     <Route path="/reservation/confirmation" element={<ReservationConfirmationPage />} />
                 </Routes>
             </Box>
