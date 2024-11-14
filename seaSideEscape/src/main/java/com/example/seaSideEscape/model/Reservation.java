@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -13,11 +14,11 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
-    private List<Room> rooms;
+    @ManyToOne
+    private Room room;
 
     @ManyToOne
-    private Guest guest;
+    private Account account;
 
     private LocalDate startDate;
     private LocalDate endDate;
@@ -29,6 +30,14 @@ public class Reservation {
     @OneToMany
     private List<Charge> charges;
 
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
     public Long getId(){return id;}
 
     public BigDecimal getDiscount(){return discount;}
@@ -37,15 +46,9 @@ public class Reservation {
 
     public void setId(Long id){this.id = id;}
 
-    public List<Room> getRooms(){return rooms;}
+    public Account getGuest(){return account;}
 
-    public void clearRooms(){ rooms.clear();}
-
-    public void addRoom(Room room){this.rooms.add(room);}
-
-    public Guest getGuest(){return guest;}
-
-    public void setGuest(Guest guest){this.guest = guest;}
+    public void setGuest(Account guest){this.account = guest;}
 
     public LocalDate getStartDate(){return startDate;}
 
@@ -69,5 +72,18 @@ public class Reservation {
 
     public void setCharges(List<Charge> charges) {
         this.charges = charges;
+    }
+
+    public enum Sort implements Comparator<Reservation> {
+        StartDate {
+            public int compare(Reservation o1, Reservation o2) {
+                Long date1 = o1.getStartDate().toEpochDay();
+                Long date2 = o2.getEndDate().toEpochDay();
+                if(!date1.equals(date2))
+                    return o1.getStartDate().compareTo(o2.getStartDate());
+                else
+                    return o1.getId().compareTo(o2.getId());
+            }
+        }
     }
 }

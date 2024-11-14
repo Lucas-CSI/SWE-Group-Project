@@ -67,51 +67,14 @@ export default function ReservationPage() {
             console.log(reservation)
             reservation.room.theme = themeMap[reservation.room.theme];
             reservation.room.qualityLevel = qualityMap[reservation.room.qualityLevel];
-            await axios.post('http://localhost:8080/reservation/book', reservation, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            navigate(`/reservation/confirmation`);
+            localStorage.setItem("reservation", JSON.stringify(reservation));
+            navigate(`/rooms`);
         } catch (error) {
             console.error('Error submitting reservation', error);
             alert('There was an error submitting your reservation.');
         }
     };
 
-    return (
-        <Grid2 container justifyContent="center" alignItems="center" spacing={10} mt={35    }>
-            {events.map(event => (
-                <Grid2 item style={cardStyle}>
-                    <Card key={event.id}>
-                        <CardMedia
-                            component="img"
-                            height="200"
-                            image={event.imageUrl}
-                            alt={event.name}
-                        />
-                        <CardContent>
-                            <Typography variant="h5" align="center">{event.name}</Typography>
-                            <Typography variant="body1" align="center" sx={{ marginBottom: '20px' }}>
-                                {event.description}
-                            </Typography>
-                        </CardContent>
-                        <CardActions sx={{ justifyContent: 'center' }}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                component={Link}
-                                to={`/event-reservation/${event.id}`}
-                            >
-                                Reserve for {event.name}
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Grid2>
-            ))}
-        </Grid2>
-    );
-    /*
     return (
         <Container maxWidth="sm">
             <Box mt={4} mb={2}>
@@ -142,44 +105,6 @@ export default function ReservationPage() {
                         shrink: true,
                     }}
                 />
-                <TextField
-                    label="Bed Type"
-                    name="bedType"
-                    value={reservation.room.bedType}
-                    onChange={handleChange}
-                    fullWidth
-                    margin="normal"
-                />
-                <TextField
-                    label="Theme"
-                    name="theme"
-                    select
-                    value={reservation.room.theme}
-                    onChange={handleChange}
-                    fullWidth
-                    margin="normal"
-                >
-                    {themes.map((option) => (
-                        <MenuItem key={option} value={option}>
-                            {option}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <TextField
-                    label="Quality Level"
-                    name="qualityLevel"
-                    select
-                    value={reservation.room.qualityLevel}
-                    onChange={handleChange}
-                    fullWidth
-                    margin="normal"
-                >
-                    {qualityLevels.map((option) => (
-                        <MenuItem key={option} value={option}>
-                            {option}
-                        </MenuItem>
-                    ))}
-                </TextField>
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -205,5 +130,5 @@ export default function ReservationPage() {
                 </Button>
             </form>
         </Container>
-    );*/
+    );
 }

@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Finished the EventPage Payment Implementation">
-      <change afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/ChargeAdjustment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/PaymentForm.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/PaymentSummaryScreen.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/BillingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/BillingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/Bill.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/Bill.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/Charge.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/Charge.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/BillingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/BillingService.java" afterDir="false" />
+    <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Improved EventPage Front-End">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/ReservationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/ReservationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,7 +17,6 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -44,7 +38,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Lucas-CSI/SWE-Group-Project.git&quot;,
-    &quot;accountId&quot;: &quot;b13ecf6c-844e-459e-9318-145b133e8ba2&quot;
+    &quot;accountId&quot;: &quot;168b5ab3-6ace-480d-a8e9-9366e289e4e5&quot;
   },
   &quot;recentNewPullRequestHead&quot;: {
     &quot;server&quot;: {
@@ -57,9 +51,6 @@
     &quot;repository&quot;: &quot;SWE-Group-Project&quot;
   }
 }</component>
-  <component name="PackageJsonUpdateNotifier">
-    <dismissed value="$PROJECT_DIR$/frontend/package.json" />
-  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -77,7 +68,7 @@
     &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;Spring Boot.SeaSideEscapeApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Francisco&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Lucas&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/bakga/SWE-Group-Project/frontend&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -85,11 +76,12 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.start.executor&quot;: &quot;Run&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.0.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -103,7 +95,7 @@
       <recent name="com.example.seaSideEscape" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Spring Boot.SeaSideEscapeApplication">
     <configuration name="SeaSideEscapeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="seaSideEscape" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.seaSideEscape.SeaSideEscapeApplication" />
@@ -111,6 +103,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="start" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/seaSideEscape/package.json" />
+      <command value="start" />
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="npm.start" />
+      <item itemvalue="Spring Boot.SeaSideEscapeApplication" />
+    </list>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -141,8 +144,10 @@
       <workItem from="1730148075776" duration="8419000" />
       <workItem from="1730161276470" duration="308000" />
       <workItem from="1730161590159" duration="1506000" />
-      <workItem from="1730163107931" duration="53040000" />
-      <workItem from="1731382727614" duration="15779000" />
+      <workItem from="1730163107931" duration="24669000" />
+      <workItem from="1730659608596" duration="863000" />
+      <workItem from="1730663131604" duration="21000" />
+      <workItem from="1730740639320" duration="2582000" />
     </task>
     <task id="LOCAL-00001" summary="Added Others Implementation">
       <option name="closed" value="true" />
@@ -224,63 +229,7 @@
       <option name="project" value="LOCAL" />
       <updated>1730228720899</updated>
     </task>
-    <task id="LOCAL-00011" summary="Karina's Login Implementation">
-      <option name="closed" value="true" />
-      <created>1730231254722</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1730231254723</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Karina's Login Implementation">
-      <option name="closed" value="true" />
-      <created>1730231395294</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1730231395294</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Started User Implementation">
-      <option name="closed" value="true" />
-      <created>1730391110329</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1730391110329</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Implemented the Room Validator and Fixed Reservation Repository">
-      <option name="closed" value="true" />
-      <created>1730393526169</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1730393526169</updated>
-    </task>
-    <task id="LOCAL-00015" summary="Added processEventPayment and processRoomPayment to PaymentService">
-      <option name="closed" value="true" />
-      <created>1730426298142</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1730426298142</updated>
-    </task>
-    <task id="LOCAL-00016" summary="Finished the Events &amp; Room PaymentService">
-      <option name="closed" value="true" />
-      <created>1730435656472</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1730435656472</updated>
-    </task>
-    <task id="LOCAL-00017" summary="Finished the EventPage Payment Implementation">
-      <option name="closed" value="true" />
-      <created>1731449785358</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1731449785358</updated>
-    </task>
-    <option name="localTasksCounter" value="18" />
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -305,12 +254,6 @@
     <MESSAGE value="BillingService and EventBookingService changes" />
     <MESSAGE value="Simple Changes" />
     <MESSAGE value="Improved EventPage Front-End" />
-    <MESSAGE value="Karina's Login Implementation" />
-    <MESSAGE value="Started User Implementation" />
-    <MESSAGE value="Implemented the Room Validator and Fixed Reservation Repository" />
-    <MESSAGE value="Added processEventPayment and processRoomPayment to PaymentService" />
-    <MESSAGE value="Finished the Events &amp; Room PaymentService" />
-    <MESSAGE value="Finished the EventPage Payment Implementation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finished the EventPage Payment Implementation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improved EventPage Front-End" />
   </component>
 </project>

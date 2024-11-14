@@ -14,15 +14,19 @@ public class Account{
     private String salt;
     private Boolean isAdmin = false;
 
-    @ManyToOne
-    private Reservation reservation;
+    @OneToMany
+    private List<Reservation> reservations;
 
-    public Reservation getReservation() {
-        return reservation;
+    public List<Reservation> getReservations() {
+        return reservations;
     }
 
-    public void setReservation(Reservation reservation) {
-        this.reservation = reservation;
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public void addReservation(Reservation reservation) {
+        this.reservations.add(reservation);
     }
 
 
