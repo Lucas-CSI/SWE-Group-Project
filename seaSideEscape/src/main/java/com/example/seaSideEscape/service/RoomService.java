@@ -24,4 +24,22 @@ public class RoomService {
     public List<Room> getRoomsBySmokingAllowedByQualityLevelAndBedTypeAndViewAndTheme(boolean isSmokingAllowed, Room.QualityLevel qualityLevel, String bedType, boolean oceanView, Room.Themes theme){
         return roomRepository.findBySmokingAllowedByQualityLevelAndBedTypeAndViewAndTheme(isSmokingAllowed, qualityLevel, bedType, oceanView, theme);
     }
+    static String[] bedTypes = {"Queen", "King"};
+    public void setupDB(){
+        for(int i = 0; i < 100; ++i){
+            Room room = new Room();
+            room.setSmokingAllowed((int) (Math.random() * 5) == 0);
+            room.setBedType(bedTypes[(int) (Math.random() * 2)]);
+            room.setRoomNumber(String.valueOf(i));
+            room.setId((long) (-i));
+            room.setTheme(Room.Themes.values()[(int) (Math.random() * 3)]);
+            room.setOceanView((int)(Math.random() * 2) == 0);
+            room.setQualityLevel(Room.QualityLevel.values()[(int)(Math.random() * 4)]);
+            addRoomToDB(room);
+        }
+    }
+    public void addRoomToDB(Room room){
+        roomRepository.save(room);
+    }
+
 }

@@ -20,7 +20,30 @@ public class Payment {
     private String billingAddress;
     private boolean success;
 
+    private String cardNumber;
+    private String expirationDate;
+    private String csv;
+
+    @ManyToOne
+    private EventBooking eventBooking;
+
     public Reservation getReservation(){return reservation;}
+
+    public String getCardNumber(){
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber){
+        this.cardNumber = cardNumber;
+    }
+
+    public String getExpirationDate(){ return expirationDate;}
+
+    public void setExpirationDate(String expirationDate){ this.expirationDate = expirationDate;}
+
+    public String getCSV(){return csv;}
+
+    public void setCSV(String csv){this.csv = csv;}
 
     public void setReservation(Reservation reservation){this.reservation = reservation;}
 
@@ -43,5 +66,13 @@ public class Payment {
     public boolean getSuccess(){return success;}
 
     public void setSuccess(boolean success){this.success = success;}
+
+    public EventBooking getEventBooking() {
+        return eventBooking;
+    }
+
+    public void setEventBooking(EventBooking eventBooking) {
+        this.eventBooking = eventBooking;
+    }
 }
 
