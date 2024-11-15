@@ -110,7 +110,11 @@ public class ReservationService {
                 reservation.setRoom(room);
                 accountObject.addReservation(reservation);
                 reservationRepository.save(reservation);
+<<<<<<< HEAD
                 // billingService.generateBill(newReservation.getId());
+=======
+                //billingService.generateBill(reservation.getId());
+>>>>>>> main
             } else {
                 throw new Exception("No room available.");
             }

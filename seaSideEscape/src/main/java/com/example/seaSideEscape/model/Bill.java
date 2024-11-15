@@ -19,11 +19,17 @@ public class Bill {
     private BigDecimal taxes;
     private BigDecimal totalAmount;
     private BigDecimal roomRate;
+    private BigDecimal finalAmount;
+
 
     @OneToMany()
     private List<Charge> charges;
 
     public Reservation getReservation() {return reservation;}
+
+    public BigDecimal getFinalAmount() { return finalAmount; }
+
+    public void setFinalAmount(BigDecimal finalAmount) { this.finalAmount = finalAmount; }
 
     public void setReservation(Reservation reservation) {this.reservation = reservation;}
 
