@@ -14,8 +14,8 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Room room;
+    @OneToMany
+    private List<Room> rooms;
 
     @ManyToOne
     private Account account;
@@ -30,12 +30,16 @@ public class Reservation {
     @OneToMany
     private List<Charge> charges;
 
-    public Room getRoom() {
-        return room;
+    public List<Room> getRooms() {
+        return rooms;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setRoomList(List<Room> room) {
+        this.rooms = room;
+    }
+
+    public void addRoom(Room room){
+        this.rooms.add(room);
     }
 
     public Long getId(){return id;}
