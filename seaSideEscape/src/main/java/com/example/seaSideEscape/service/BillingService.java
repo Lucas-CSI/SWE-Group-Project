@@ -30,13 +30,11 @@ public class BillingService {
 
         System.out.println("Generating bill for reservation: " + reservation.getId());
 
-        // Step 1: Retrieve charges and finalize them if necessary
         List<Charge> charges = reservation.getCharges();
         if (charges.stream().anyMatch(charge -> !charge.isFinalized())) {
             throw new IllegalStateException("Not all charges are finalized for this reservation.");
         }
 
-        // Step 2: Calculate room rate, total amount, and apply discounts
         BigDecimal roomRate = reservation.getRoomRate();
         BigDecimal subTotal = calculateTotalAmount(charges, roomRate);
         BigDecimal taxes = calculateTaxes(subTotal);
@@ -70,7 +68,6 @@ public class BillingService {
     }
 
     public Bill adjustCharges(Long reservationId, List<ChargeAdjustment> adjustments) {
-        // Retrieve reservation and charges
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
 
@@ -80,13 +77,11 @@ public class BillingService {
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("Charge not found"));
 
-            // Apply adjustment if approved
             if (adjustment.isApproved()) {
                 charge.setAmount(adjustment.getNewAmount());
             }
         }
 
-        // Recalculate the bill with adjustments
-        return generateBill(reservationId);
+            return generateBill(reservationId);
     }
 }

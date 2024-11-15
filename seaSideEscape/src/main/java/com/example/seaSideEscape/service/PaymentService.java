@@ -49,11 +49,9 @@ public class PaymentService {
     }
 
     public Payment bookAndPayEvent(BookingPaymentRequest bookingPaymentRequest) {
-        // Retrieve the existing event booking using eventBookingId
         EventBooking eventBooking = eventBookingRepository.findById(bookingPaymentRequest.getEventBookingId())
                 .orElseThrow(() -> new IllegalArgumentException("EventBooking not found"));
 
-        // Create the payment
         Payment payment = createPayment(
                 bookingPaymentRequest.getPaymentMethod(),
                 bookingPaymentRequest.getBillingAddress(),
@@ -63,13 +61,10 @@ public class PaymentService {
                 bookingPaymentRequest.getCvv()
         );
 
-        // Associate the payment with the event booking
         payment.setEventBooking(eventBooking);
 
-        // Save the payment
         paymentRepository.save(payment);
 
-        // Mark the venue as paid and save the update
         Venue venue = eventBooking.getVenue();
         venue.setPaid(true);
         venueRepository.save(venue);
