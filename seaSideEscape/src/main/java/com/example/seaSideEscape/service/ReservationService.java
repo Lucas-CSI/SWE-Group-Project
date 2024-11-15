@@ -66,7 +66,7 @@ public class ReservationService {
             accountObject = account.get();
             reservations = accountObject.getReservations();
             reservation.setGuest(accountObject);
-            room = reservation.getRoom();
+            room = reservation.getRooms().getFirst();
             if(reservations == null) {
                 reservations = new ArrayList<>(){
                     public boolean add(Reservation mt) {
@@ -95,19 +95,17 @@ public class ReservationService {
                     reservation.getEndDate()
             );
             reservationsInDB.forEach(res -> {
-                takenRooms.add(res.getRoom());
+                takenRooms.addAll(res.getRooms());
             });
             logger.debug("STARTING DEBUG......");
             logger.debug("Rooms: ");
             rooms.forEach(rooms2 -> logger.debug(rooms2.getRoomNumber()));
-            logger.debug("-------- Reservations -------");
-            reservationsInDB.forEach(rooms2 -> logger.debug(rooms2.getRoom().getRoomNumber()));
             rooms = rooms.stream()
                     .filter(room2 -> !takenRooms.contains(room2))
                     .toList();
             if (!rooms.isEmpty()) {
                 room = rooms.getFirst();
-                reservation.setRoom(room);
+                reservation.addRoom(room);
                 accountObject.addReservation(reservation);
                 reservationRepository.save(reservation);
                 //billingService.generateBill(reservation.getId());
