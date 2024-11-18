@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Cookies from 'js-cookie';
 import {
     AppBar,
     Toolbar,
@@ -33,6 +34,10 @@ const NavigationBar = () => {
         setError('');
     };
 
+    async function generateRequest(endpoint, params){
+        return await axios.post('http://localhost:8080/'+endpoint, params, { withCredentials: true });
+    }
+
     const handleSignupOpen = () => {
         setSignupOpen(true);
         setLoginOpen(false);
@@ -45,7 +50,7 @@ const NavigationBar = () => {
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/login', { username, password }, { withCredentials: true });
+            const response = generateRequest("login", {username, password});
             if (response.status === 200) {
                 handleLoginClose();
                 alert("Logged in.");
@@ -56,6 +61,16 @@ const NavigationBar = () => {
             setError('Login failed. Please check your credentials.');
         }
     };
+
+    const handleLogout = async () => {
+        const response = generateRequest("logout", {});
+        if (response.status === 200) {
+            navigate("/");
+            alert("Logged in.");
+        } else {
+            alert("Error: Logged in failed.");
+        }
+    }
 
     const handleAdminLogin = async () => {
         try {
@@ -106,9 +121,11 @@ const NavigationBar = () => {
                             <span className="underline"></span>
                         </Link>
                     </Box>
-                    <Button color="inherit" onClick={handleLoginOpen} style={{ fontWeight: 'bold' }}>
+                    {!Cookies.get('username') || Cookies.get('username') === "" ? <Button color="inherit" onClick={handleLoginOpen} style={{ fontWeight: 'bold' }}>
                         Login
-                    </Button>
+                    </Button> : <Button color="inherit" onClick={handleLogout} style={{ fontWeight: 'bold' }}>
+                        Logout
+                    </Button>}
                 </Toolbar>
             </AppBar>
 
@@ -145,9 +162,6 @@ const NavigationBar = () => {
                 <DialogActions>
                     <Button onClick={handleSignupOpen} color="secondary">
                         Create Account
-                    </Button>
-                    <Button onClick={handleAdminLogin} color="secondary">
-                        Admin Login
                     </Button>
                 </DialogActions>
             </Dialog>
