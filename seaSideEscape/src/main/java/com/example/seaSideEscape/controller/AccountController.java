@@ -39,10 +39,23 @@ public class AccountController {
             username.setMaxAge(24 * 60 * 60);
             password.setMaxAge(24 * 60 * 60);
             response.addCookie(username);
-            response.addCookie(password);;
+            response.addCookie(password);
         }else{
             throw new Exception("Account not found.");
         }
+        return "done";
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpServletResponse response, @RequestBody Account account) throws Exception {
+        Cookie username = new Cookie("username", null);
+        Cookie password = new Cookie("password", null);
+        username.setPath("/");
+        password.setPath("/");
+        username.setMaxAge(0);
+        password.setMaxAge(0);
+        response.addCookie(username);
+        response.addCookie(password);
         return "done";
     }
 
