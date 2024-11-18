@@ -29,7 +29,7 @@ public class AccountController {
     }
 
     @PostMapping("/login")
-    public String login(HttpServletResponse response, @RequestBody Account account) throws Exception {
+    public ResponseEntity<String> login(HttpServletResponse response, @RequestBody Account account) throws Exception {
         Optional<Account> acc = accountService.canLogin(account);
         if(acc.isPresent()){
             Cookie username = new Cookie("username", account.getUsername());
@@ -41,9 +41,9 @@ public class AccountController {
             response.addCookie(username);
             response.addCookie(password);
         }else{
-            throw new Exception("Account not found.");
+            return new ResponseEntity<>("Account not found.", HttpStatus.CONFLICT);
         }
-        return "done";
+        return new ResponseEntity<>("Successfully logged into account.", HttpStatus.OK);
     }
 
     @PostMapping("/logout")
@@ -115,10 +115,5 @@ public class AccountController {
     @PostMapping("/createAccount")
     public ResponseEntity<String> createAccount(@RequestBody Account account) throws NoSuchAlgorithmException {
         return accountService.createAccount(account);
-    }
-
-    @GetMapping("/createAccount")
-    public String createAccountPage(){
-        return "create acccount";
     }
 }
