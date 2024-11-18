@@ -10,6 +10,7 @@ public class ReservationValidator implements Validator{
     public ReservationValidator(Reservation reservation){
         validateDate(reservation.getStartDate(), "Start Date");
         validateDate(reservation.getEndDate(), "End Date");
+        validateDateRange(reservation.getStartDate(), reservation.getEndDate());
     }
 
     public HashMap<String, String> getInvalidItems() {
@@ -20,12 +21,12 @@ public class ReservationValidator implements Validator{
         return invalidItems.isEmpty();
     }
 
-    public void validateDate(LocalDate date, String dateType){
+    private void validateDate(LocalDate date, String dateType){
         if(!date.isAfter(LocalDate.now()))
             invalidItems.put(dateType, "Invalid date");
     }
 
-    public void validateDateRange(LocalDate startDate, LocalDate endDate){
+    private void validateDateRange(LocalDate startDate, LocalDate endDate){
         if(endDate.isAfter(startDate))
             invalidItems.put("Date Range", "Invalid date range");
     }
