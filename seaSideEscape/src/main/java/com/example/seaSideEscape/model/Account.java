@@ -12,6 +12,7 @@ public class Account{
     private String username;
     private String password;
     private String salt;
+    private String email;
     private Boolean isAdmin = false;
 
     @OneToMany
@@ -29,6 +30,13 @@ public class Account{
         this.reservations.add(reservation);
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getSalt() {
         return salt;
