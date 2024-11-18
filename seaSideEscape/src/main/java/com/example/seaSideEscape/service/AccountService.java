@@ -2,6 +2,7 @@ package com.example.seaSideEscape.service;
 import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.repository.AccountRepository;
 
+import com.example.seaSideEscape.validator.AccountValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -75,14 +76,19 @@ public class AccountService {
     }
 
     public ResponseEntity<String> createAccount(Account account) throws NoSuchAlgorithmException {
+        AccountValidator validator = new AccountValidator(account);
         if(accountRepository.findByUsername(account.getUsername()).isEmpty()) {
-            String saltStr = createSalt();
-            account.setSalt(saltStr);
-            String password = getHashedPassword(account);
+            if(validator.isValid()) {
+                String saltStr = createSalt();
+                account.setSalt(saltStr);
+                String password = getHashedPassword(account);
 
-            account.setPassword(password);
-            accountRepository.save(account);
-            return new ResponseEntity<>("Successfully created account.", HttpStatus.OK);
+                account.setPassword(password);
+                accountRepository.save(account);
+                return new ResponseEntity<>("Successfully created account.", HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>(validator.getInvalidItems().values().stream().findFirst().get(), HttpStatus.CONFLICT);
+            }
         }else{
             return new ResponseEntity<>("Account already exists.", HttpStatus.CONFLICT);
         }
