@@ -25,7 +25,10 @@ const NavigationBar = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [canCreateAccount, setCanCreateAccount] = useState(true);
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const navigate = useNavigate();
 
     const handleLoginOpen = () => setLoginOpen(true);
@@ -45,7 +48,29 @@ const NavigationBar = () => {
 
     const handleSignupClose = () => {
         setSignupOpen(false);
+        setSuccess('');
+        setError('');
     };
+
+    const handleCreateAccount = async () => {
+        if(canCreateAccount) {
+            try {
+                const response = generateRequest("createAccount", {username, password});
+                if (response.status === 200) {
+                    setSuccess('Account created successfully.');
+                    setTimeout(() => {
+                        handleSignupClose();
+                        handleLoginOpen();
+                    }, 1000);
+                } else {
+                    setError("Error: " + response.data);
+                }
+            } catch (error) {
+                setError('An error occured while creating your account.');
+            }
+        }
+    }
+
 
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
@@ -55,7 +80,7 @@ const NavigationBar = () => {
                 handleLoginClose();
                 alert("Logged in.");
             }else{
-                alert("Error: Logged in failed.");
+                setError("Error: " + response.data);
             }
         } catch (error) {
             setError('Login failed. Please check your credentials.');
@@ -74,7 +99,7 @@ const NavigationBar = () => {
 
     const handleAdminLogin = async () => {
         try {
-            const response = await axios.post('http://localhost:8080/adminLogin', { username, password });
+            const response = await axios.post('http://localhost:8080/adminLogin', { username, password, email });
             if (response.status === 200) {
                 localStorage.setItem('admin', 'true');
                 navigate('/admin/homepage');
@@ -171,6 +196,8 @@ const NavigationBar = () => {
                 <DialogTitle>Create Account</DialogTitle>
                 <DialogContent>
                     <DialogContentText>Please enter your account details to sign up.</DialogContentText>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {success && <p style={{ color: 'green' }}>{success}</p>}
                     <TextField
                         autoFocus
                         margin="dense"
@@ -178,20 +205,30 @@ const NavigationBar = () => {
                         type="text"
                         fullWidth
                         variant="standard"
+                        onChange={(e) => setUsername(e.target.value)}
                     />
                     <TextField margin="dense" label="Email" type="email" fullWidth variant="standard" />
-                    <TextField margin="dense" label="Password" type="password" fullWidth variant="standard" />
+                    <TextField margin="dense" label="Password" type="password" fullWidth variant="standard" onChange={(e) => setPassword(e.target.value)}/>
                     <TextField
                         margin="dense"
                         label="Confirm Password"
                         type="password"
                         fullWidth
                         variant="standard"
+                        onChange={(e) => {
+                            if(e.target.value !== password) {
+                                setError("Passwords do not match.");
+                                setCanCreateAccount(false);
+                            }else {
+                                setError('');
+                                setCanCreateAccount(true);
+                            }
+                        }}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleSignupClose}>Cancel</Button>
-                    <Button onClick={handleSignupClose}>Create Account</Button>
+                    <Button onClick={handleCreateAccount}>Create Account</Button>
                 </DialogActions>
             </Dialog>
         </>
