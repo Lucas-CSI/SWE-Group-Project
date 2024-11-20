@@ -84,10 +84,10 @@ const NavigationBar = () => {
     };
 
     const handleLogout = async () => {
-        const response = generateRequest("logout", {});
+        const response = generateRequest("logoutAccount", {});
         if (response) {
             navigate("/");
-            alert("Logged in.");
+            alert("Logged out.");
         }
     }
 

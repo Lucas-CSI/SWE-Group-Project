@@ -46,8 +46,8 @@ public class AccountController {
         return new ResponseEntity<>("Successfully logged into account.", HttpStatus.OK);
     }
 
-    @PostMapping("/logout")
-    public String logout(HttpServletResponse response, @RequestBody Account account) throws Exception {
+    @PostMapping("/logoutAccount")
+    public String logout(HttpServletResponse response) throws Exception {
         Cookie username = new Cookie("username", null);
         Cookie password = new Cookie("password", null);
         username.setPath("/");
