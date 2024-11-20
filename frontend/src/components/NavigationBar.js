@@ -38,7 +38,14 @@ const NavigationBar = () => {
     };
 
     async function generateRequest(endpoint, params){
-        return await axios.post('http://localhost:8080/'+endpoint, params, { withCredentials: true });
+        let successful = true;
+        try {
+            await axios.post('http://localhost:8080/' + endpoint, params, {withCredentials: true});
+        }catch (e) {
+            setError("Error: " + e.response.data);
+            successful = false
+        }
+        return successful;
     }
 
     const handleSignupOpen = () => {
@@ -54,19 +61,14 @@ const NavigationBar = () => {
 
     const handleCreateAccount = async () => {
         if(canCreateAccount) {
-            try {
-                const response = generateRequest("createAccount", {username, password});
-                if (response.status === 200) {
-                    setSuccess('Account created successfully.');
-                    setTimeout(() => {
-                        handleSignupClose();
-                        handleLoginOpen();
-                    }, 1000);
-                } else {
-                    setError("Error: " + response.data);
-                }
-            } catch (error) {
-                setError('An error occured while creating your account.');
+            const response = generateRequest("createAccount", {username, password, email});
+            if (response) {
+                setError('');
+                setSuccess('Account created successfully.');
+                setTimeout(() => {
+                    handleSignupClose();
+                    handleLoginOpen();
+                }, 1000);
             }
         }
     }
@@ -74,32 +76,24 @@ const NavigationBar = () => {
 
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = generateRequest("login", {username, password});
-            if (response.status === 200) {
-                handleLoginClose();
-                alert("Logged in.");
-            }else{
-                setError("Error: " + response.data);
-            }
-        } catch (error) {
-            setError('Login failed. Please check your credentials.');
+        const response = generateRequest("login", {username, password});
+        if (response) {
+            handleLoginClose();
+            alert("Logged in.");
         }
     };
 
     const handleLogout = async () => {
         const response = generateRequest("logout", {});
-        if (response.status === 200) {
+        if (response) {
             navigate("/");
             alert("Logged in.");
-        } else {
-            alert("Error: Logged in failed.");
         }
     }
 
     const handleAdminLogin = async () => {
         try {
-            const response = await axios.post('http://localhost:8080/adminLogin', { username, password, email });
+            const response = await axios.post('http://localhost:8080/adminLogin', { username, password });
             if (response.status === 200) {
                 localStorage.setItem('admin', 'true');
                 navigate('/admin/homepage');
@@ -207,7 +201,7 @@ const NavigationBar = () => {
                         variant="standard"
                         onChange={(e) => setUsername(e.target.value)}
                     />
-                    <TextField margin="dense" label="Email" type="email" fullWidth variant="standard" />
+                    <TextField margin="dense" label="Email" type="email" fullWidth variant="standard" onChange={(e) => { setEmail(e.target.value) }}/>
                     <TextField margin="dense" label="Password" type="password" fullWidth variant="standard" onChange={(e) => setPassword(e.target.value)}/>
                     <TextField
                         margin="dense"
