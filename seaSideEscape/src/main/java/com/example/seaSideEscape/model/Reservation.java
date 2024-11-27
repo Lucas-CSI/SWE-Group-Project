@@ -15,7 +15,7 @@ public class Reservation {
     private Long id;
 
     @OneToMany
-    private List<Room> rooms;
+    private List<Booking> bookings;
 
     @ManyToOne
     private Account account;
@@ -30,16 +30,16 @@ public class Reservation {
     @OneToMany
     private List<Charge> charges;
 
-    public List<Room> getRooms() {
-        return rooms;
+    public List<Booking> getBookings() {
+        return bookings;
     }
 
-    public void setRoomList(List<Room> room) {
-        this.rooms = room;
+    public void setRoomList(List<Booking> booking) {
+        this.bookings = booking;
     }
 
-    public void addRoom(Room room){
-        this.rooms.add(room);
+    public void addRoom(Booking booking){
+        this.bookings.add(booking);
     }
 
     public Long getId(){return id;}
