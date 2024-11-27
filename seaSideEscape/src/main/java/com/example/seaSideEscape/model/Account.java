@@ -15,8 +15,20 @@ public class Account{
     private String email;
     private Boolean isAdmin = false;
 
-    @OneToMany
+    @ManyToOne
+    private Reservation unbookedReservation;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id")
     private List<Reservation> reservations;
+
+    public Reservation getUnbookedReservation() {
+        return unbookedReservation;
+    }
+
+    public void setUnbookedReservation(Reservation unbookedReservation) {
+        this.unbookedReservation = unbookedReservation;
+    }
 
     public List<Reservation> getReservations() {
         return reservations;
