@@ -20,8 +20,8 @@ public class Reservation {
     @ManyToOne
     private Account account;
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
 
     private BigDecimal roomRate;
     private BigDecimal discount;
@@ -34,11 +34,11 @@ public class Reservation {
         return bookings;
     }
 
-    public void setRoomList(List<Booking> booking) {
+    public void setBookingList(List<Booking> booking) {
         this.bookings = booking;
     }
 
-    public void addRoom(Booking booking){
+    public void addBooking(Booking booking){
         this.bookings.add(booking);
     }
 
@@ -54,13 +54,13 @@ public class Reservation {
 
     public void setGuest(Account guest){this.account = guest;}
 
-    public LocalDate getStartDate(){return startDate;}
+    public LocalDate getCheckInDate(){return checkInDate;}
 
-    public void setStartDate(LocalDate startDate){this.startDate = startDate;}
+    public void setCheckInDate(LocalDate checkInDate){this.checkInDate = checkInDate;}
 
-    public LocalDate getEndDate(){return endDate;}
+    public LocalDate getCheckOutDate(){return checkOutDate;}
 
-    public void setEndDate(LocalDate endDate){this.endDate = endDate;}
+    public void setCheckOutDate(LocalDate checkOutDate){this.checkOutDate = checkOutDate;}
 
     public BigDecimal getRoomRate() {return roomRate;}
 
