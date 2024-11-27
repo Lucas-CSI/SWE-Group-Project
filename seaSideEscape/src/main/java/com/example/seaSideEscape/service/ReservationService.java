@@ -7,10 +7,13 @@ import com.example.seaSideEscape.validator.ReservationValidator;
 import com.example.seaSideEscape.model.Reservation;
 import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.repository.ReservationRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.projection.CollectionAwareProjectionFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.beans.Transient;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,14 +36,24 @@ public class ReservationService {
         this.accountService = accountService;
     }
 
-    public List<Reservation> bookReservation(String username) throws Exception {
-        Optional<Account> account = accountService.findAccountByUsername(username);
-        if(account.isPresent())
-            accountService.saveAccount(account.get());
-        else
-            throw new Exception("Account not found");
+    @Transactional
+    public ResponseEntity<String> bookReservation(String username) throws Exception {
+        Optional<Account> optionalAccount = accountService.findAccountByUsername(username);
+        Account account;
+        if (optionalAccount.isPresent()) {
+            account = optionalAccount.get();
+            if (account.getUnbookedReservation() != null) {
+                account.addReservation(account.getUnbookedReservation());
+                account.setUnbookedReservation(null);
+                accountService.saveAccount(account);
+                reservationRepository.save(account.getUnbookedReservation());
+            } else
+                return ResponseEntity.badRequest().body("No reservation to book.");
+        }else{
+            return ResponseEntity.badRequest().body("Account not found");
+        }
 
-        return account.get().getReservations();
+        return ResponseEntity.ok().body("Reservation booked");
     }
 
     /*public Room addRoom(Room room, String username) {
@@ -55,18 +68,20 @@ public class ReservationService {
         accountService.saveAccount(account.get());
         return room;
     }*/
+
+
+
     public Room addRoom(Reservation reservation, String username) throws Exception {
         Optional<Account> account = accountService.findAccountByUsername(username);
         Account accountObject;
         List<Reservation> reservations;
         Room room;
-        Set<Room> takenRooms = new HashSet<>();
 
         if(account.isPresent()) {
             accountObject = account.get();
             reservations = accountObject.getReservations();
             reservation.setGuest(accountObject);
-            room = reservation.getRooms().getFirst();
+            room = reservation.getBookings().getFirst();
             if(reservations == null) {
                 reservations = new ArrayList<>(){
                     public boolean add(Reservation mt) {
@@ -78,22 +93,7 @@ public class ReservationService {
                 };
                 accountObject.setReservations(reservations);
             }
-            List<Room> rooms = roomService.getRoomsBySmokingAllowedByQualityLevelAndBedTypeAndViewAndTheme(
-                    room.isSmokingAllowed(),
-                    room.getQualityLevel(),
-                    room.getBedType(),
-                    room.isOceanView(),
-                    room.getTheme()
-            );
-            List<Reservation> reservationsInDB = reservationRepository.findBySmokingAllowedByQualityLevelAndBedTypeAndViewAndThemeBetweenCheckInDateAndCheckOutDate(
-                    room.isSmokingAllowed(),
-                    room.getQualityLevel(),
-                    room.getBedType(),
-                    room.isOceanView(),
-                    room.getTheme(),
-                    reservation.getStartDate(),
-                    reservation.getEndDate()
-            );
+
             reservationsInDB.forEach(res -> {
                 takenRooms.addAll(res.getRooms());
             });
@@ -118,3 +118,23 @@ public class ReservationService {
         return room;
     }
 }
+
+/*
+OLD QUERY (In case we want to use it later
+            List<Room> rooms = roomService.getRoomsBySmokingAllowedByQualityLevelAndBedTypeAndViewAndTheme(
+                    room.isSmokingAllowed(),
+                    room.getQualityLevel(),
+                    room.getBedType(),
+                    room.isOceanView(),
+                    room.getTheme()
+            );
+            List<Reservation> reservationsInDB = reservationRepository.findBySmokingAllowedByQualityLevelAndBedTypeAndViewAndThemeBetweenCheckInDateAndCheckOutDate(
+                    room.isSmokingAllowed(),
+                    room.getQualityLevel(),
+                    room.getBedType(),
+                    room.isOceanView(),
+                    room.getTheme(),
+                    reservation.getCheckInDate(),
+                    reservation.getCheckOutDate()
+            );
+ */
