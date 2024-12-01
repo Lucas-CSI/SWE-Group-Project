@@ -81,10 +81,10 @@ public class Reservation {
     public enum Sort implements Comparator<Reservation> {
         StartDate {
             public int compare(Reservation o1, Reservation o2) {
-                Long date1 = o1.getStartDate().toEpochDay();
-                Long date2 = o2.getEndDate().toEpochDay();
+                Long date1 = o1.getCheckInDate().toEpochDay();
+                Long date2 = o2.getCheckOutDate().toEpochDay();
                 if(!date1.equals(date2))
-                    return o1.getStartDate().compareTo(o2.getStartDate());
+                    return o1.getCheckInDate().compareTo(o2.getCheckInDate());
                 else
                     return o1.getId().compareTo(o2.getId());
             }
