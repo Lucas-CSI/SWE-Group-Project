@@ -8,9 +8,9 @@ public class ReservationValidator implements Validator{
     HashMap<String, String> invalidItems = new HashMap<String, String>();
 
     public ReservationValidator(Reservation reservation){
-        validateDate(reservation.getStartDate(), "Start Date");
-        validateDate(reservation.getEndDate(), "End Date");
-        validateDateRange(reservation.getStartDate(), reservation.getEndDate());
+        validateDate(reservation.getCheckInDate(), "Start Date");
+        validateDate(reservation.getCheckOutDate(), "End Date");
+        validateDateRange(reservation.getCheckInDate(), reservation.getCheckOutDate());
     }
 
     public HashMap<String, String> getInvalidItems() {
