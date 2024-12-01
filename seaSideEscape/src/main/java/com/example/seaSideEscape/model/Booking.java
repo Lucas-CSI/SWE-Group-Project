@@ -14,6 +14,11 @@ public class Booking {
     @ManyToOne
     private Room room;
 
+    public Booking(Reservation reservation, Room room) {
+        this.reservation = reservation;
+        this.room = room;
+    }
+
     public Reservation getReservation() {
         return reservation;
     }
