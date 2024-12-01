@@ -3,6 +3,8 @@
 package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.model.Account;
+import com.example.seaSideEscape.model.Booking;
+import com.example.seaSideEscape.repository.AccountRepository;
 import com.example.seaSideEscape.validator.ReservationValidator;
 import com.example.seaSideEscape.model.Reservation;
 import com.example.seaSideEscape.model.Room;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.beans.Transient;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,14 +29,18 @@ public class ReservationService {
     private final BillingService billingService;
     private final RoomService roomService;
     private final AccountService accountService;
+    private final BookingService bookingService;
+    private final AccountRepository accountRepository;
     Logger logger = LoggerFactory.getLogger(ReservationService.class);
 
     @Autowired
-    public ReservationService(ReservationRepository reservationRepository, BillingService billingService, RoomService roomService, AccountService accountService) {
+    public ReservationService(ReservationRepository reservationRepository, BillingService billingService, RoomService roomService, AccountService accountService, BookingService bookingService, AccountRepository accountRepository) {
         this.reservationRepository = reservationRepository;
         this.billingService = billingService;
         this.roomService = roomService;
         this.accountService = accountService;
+        this.bookingService = bookingService;
+        this.accountRepository = accountRepository;
     }
 
     @Transactional
@@ -69,19 +76,58 @@ public class ReservationService {
         return room;
     }*/
 
-
-
-    public Room addRoom(Reservation reservation, String username) throws Exception {
+    public ResponseEntity<String> createReservation(LocalDate checkInDate, LocalDate checkOutDate, String username) throws Exception {
         Optional<Account> account = accountService.findAccountByUsername(username);
+        Reservation reservation;
         Account accountObject;
-        List<Reservation> reservations;
-        Room room;
 
         if(account.isPresent()) {
             accountObject = account.get();
-            reservations = accountObject.getReservations();
+            reservation = new Reservation();
+            reservation.setCheckInDate(checkInDate);
+            reservation.setCheckOutDate(checkOutDate);
             reservation.setGuest(accountObject);
-            room = reservation.getBookings().getFirst();
+            accountObject.setUnbookedReservation(reservation);
+            accountRepository.save(accountObject);
+        }else{
+            return ResponseEntity.badRequest().body("Account not found");
+        }
+
+        return ResponseEntity.ok().body("Reservation created");
+    }
+
+    public Room addRoom(Room room, String username) throws Exception {
+        Optional<Account> account = accountService.findAccountByUsername(username);
+        Account accountObject;
+        Reservation accountsReservation;
+
+        if(account.isPresent()) {
+            accountObject = account.get();
+            accountsReservation = accountObject.getUnbookedReservation();
+            if (roomService.isRoomAvailable(room, accountsReservation.getCheckInDate(), accountsReservation.getCheckOutDate())) {
+                Booking booking = new Booking(accountsReservation, room);
+                accountsReservation.addBooking(booking);
+                accountRepository.save(accountObject);
+            } else {
+                throw new Exception("No room available.");
+            }
+        }else{
+            throw new Exception("You must be logged in.");
+        }
+        return room;
+    }
+}
+
+
+
+/*
+if (!rooms.isEmpty()) {
+                room = rooms.getFirst();
+                reservation.addRoom(room);
+                accountObject.addReservation(reservation);
+                reservationRepository.save(reservation);
+                //billingService.generateBill(reservation.getId());
+reservations = accountObject.getReservations();
             if(reservations == null) {
                 reservations = new ArrayList<>(){
                     public boolean add(Reservation mt) {
@@ -93,33 +139,6 @@ public class ReservationService {
                 };
                 accountObject.setReservations(reservations);
             }
-
-            reservationsInDB.forEach(res -> {
-                takenRooms.addAll(res.getRooms());
-            });
-            logger.debug("STARTING DEBUG......");
-            logger.debug("Rooms: ");
-            rooms.forEach(rooms2 -> logger.debug(rooms2.getRoomNumber()));
-            rooms = rooms.stream()
-                    .filter(room2 -> !takenRooms.contains(room2))
-                    .toList();
-            if (!rooms.isEmpty()) {
-                room = rooms.getFirst();
-                reservation.addRoom(room);
-                accountObject.addReservation(reservation);
-                reservationRepository.save(reservation);
-                //billingService.generateBill(reservation.getId());
-            } else {
-                throw new Exception("No room available.");
-            }
-        }else{
-            throw new Exception("You must be logged in.");
-        }
-        return room;
-    }
-}
-
-/*
 OLD QUERY (In case we want to use it later
             List<Room> rooms = roomService.getRoomsBySmokingAllowedByQualityLevelAndBedTypeAndViewAndTheme(
                     room.isSmokingAllowed(),

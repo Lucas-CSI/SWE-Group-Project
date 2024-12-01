@@ -4,9 +4,13 @@ import com.example.seaSideEscape.model.Reservation;
 import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.service.ReservationService;
 import com.example.seaSideEscape.service.RoomService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -23,15 +27,21 @@ public class ReservationController {
     }
 
     @PostMapping("/book")
-    public List<Reservation> bookReservation(@CookieValue("username") String username) throws Exception {
+    public ResponseEntity<String> bookReservation(@CookieValue("username") String username) throws Exception {
         return reservationService.bookReservation(username);
     }
 
-    @PostMapping("/addRoom")
-    public Room addRoom(@RequestBody Reservation reservation, @CookieValue("username") String username) throws Exception {
-        return reservationService.addRoom(reservation, username);
+    @PostMapping("/new")
+    public ResponseEntity<String> createReservation(@RequestParam("checkInDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate,
+                                                    @RequestParam("checkOutDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOutDate,
+                                                    @CookieValue("username") String username) throws Exception {
+        return reservationService.createReservation(checkInDate, checkOutDate, username);
     }
 
+    @PostMapping("/addRoom")
+    public Room addRoom(@RequestBody Room room, @CookieValue("username") String username) throws Exception {
+        return reservationService.addRoom(room, username);
+    }
 
     @PostMapping("/fillDB")
     public void fillDB() throws Exception {
