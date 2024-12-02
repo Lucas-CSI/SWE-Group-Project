@@ -39,7 +39,7 @@ public class ReservationController {
     }
 
     @PostMapping("/addRoom")
-    public Room addRoom(@RequestBody Room room, @CookieValue("username") String username) throws Exception {
+    public ResponseEntity<String> addRoom(@RequestBody Room room, @CookieValue("username") String username) throws Exception {
         return reservationService.addRoom(room, username);
     }
 
