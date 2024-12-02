@@ -1,10 +1,7 @@
 package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.dto.BookingPaymentRequest;
-import com.example.seaSideEscape.model.EventBooking;
-import com.example.seaSideEscape.model.Payment;
-import com.example.seaSideEscape.model.Reservation;
-import com.example.seaSideEscape.model.Venue;
+import com.example.seaSideEscape.model.*;
 import com.example.seaSideEscape.repository.EventBookingRepository;
 import com.example.seaSideEscape.repository.PaymentRepository;
 import com.example.seaSideEscape.repository.ReservationRepository;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class PaymentService {
@@ -37,8 +35,11 @@ public class PaymentService {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
 
-        amount = amount != null ? amount : reservation.getRoomRate(); // Use room rate if amount is null
-        Payment payment = createPayment(paymentMethod, billingAddress, amount, cardNumber, expirationDate, cvv);
+        BigDecimal roomRate = reservation.getRoomRate();
+        List<Charge> charges = reservation.getCharges();
+        BigDecimal totalAmount = calculateTotalAmount(charges, roomRate);
+
+        Payment payment = createPayment(paymentMethod, billingAddress, totalAmount, cardNumber, expirationDate, cvv);
         payment.setReservation(reservation);
 
         paymentRepository.save(payment);
@@ -94,5 +95,13 @@ public class PaymentService {
         BigDecimal baseRate = venue.getBaseRate() != null ? venue.getBaseRate() : BigDecimal.ZERO;
         BigDecimal additionalCharges = venue.getAdditionalCharges() != null ? venue.getAdditionalCharges() : BigDecimal.ZERO;
         return baseRate.add(additionalCharges);
+    }
+
+    private BigDecimal calculateTotalAmount(List<Charge> charges, BigDecimal roomRate) {
+        BigDecimal total = roomRate;
+        for (Charge charge : charges) {
+            total = total.add(charge.getAmount());
+        }
+        return total;
     }
 }

@@ -26,7 +26,7 @@ function App() {
             <Box sx={{ paddingTop: '64px' }}>  {/* Make sure this padding matches AppBar height */}
                 <Routes>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/payment" element={<PaymentScreen />} />
+                    <Route path="/reservation/payment/:reservationId" element={<PaymentScreen />} />
                     <Route path="/events" element={<EventsPage />} />
                     <Route path="/event-reservation/:eventId" element={<EventReservationPage />} />
                     <Route path="/event-reservation-summary" element={<EventSummaryPage />} />
