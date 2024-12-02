@@ -26,6 +26,7 @@ public class Reservation {
     private BigDecimal roomRate;
     private BigDecimal discount;
     private boolean paid;
+    private boolean booked;
 
     @OneToMany
     private List<Charge> charges;
@@ -36,6 +37,14 @@ public class Reservation {
 
     public void setBookingList(List<Booking> booking) {
         this.bookings = booking;
+    }
+
+    public boolean isBooked() {
+        return booked;
+    }
+
+    public void setBooked(boolean booked) {
+        this.booked = booked;
     }
 
     public void addBooking(Booking booking){

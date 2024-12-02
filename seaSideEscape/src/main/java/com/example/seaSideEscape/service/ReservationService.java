@@ -47,13 +47,17 @@ public class ReservationService {
     public ResponseEntity<String> bookReservation(String username) throws Exception {
         Optional<Account> optionalAccount = accountService.findAccountByUsername(username);
         Account account;
+        Reservation reservation;
+
         if (optionalAccount.isPresent()) {
             account = optionalAccount.get();
             if (account.getUnbookedReservation() != null) {
-                account.addReservation(account.getUnbookedReservation());
+                reservation = account.getUnbookedReservation();
+                reservation.setBooked(true);
+                reservationRepository.save(reservation);
+                account.addReservation(reservation);
                 account.setUnbookedReservation(null);
                 accountService.saveAccount(account);
-                reservationRepository.save(account.getUnbookedReservation());
             } else
                 return ResponseEntity.badRequest().body("No reservation to book.");
         }else{
@@ -76,6 +80,7 @@ public class ReservationService {
         return room;
     }*/
 
+    @Transactional
     public ResponseEntity<String> createReservation(LocalDate checkInDate, LocalDate checkOutDate, String username) throws Exception {
         Optional<Account> account = accountService.findAccountByUsername(username);
         Reservation reservation;
@@ -86,8 +91,11 @@ public class ReservationService {
             reservation = new Reservation();
             reservation.setCheckInDate(checkInDate);
             reservation.setCheckOutDate(checkOutDate);
+            reservation.setBooked(false);
             reservation.setGuest(accountObject);
+
             accountObject.setUnbookedReservation(reservation);
+            reservationRepository.save(reservation);
             accountRepository.save(accountObject);
         }else{
             return ResponseEntity.badRequest().body("Account not found");
@@ -96,7 +104,8 @@ public class ReservationService {
         return ResponseEntity.ok().body("Reservation created");
     }
 
-    public Room addRoom(Room room, String username) throws Exception {
+    @Transactional
+    public ResponseEntity<String> addRoom(Room room, String username) throws Exception {
         Optional<Account> account = accountService.findAccountByUsername(username);
         Account accountObject;
         Reservation accountsReservation;
@@ -106,15 +115,17 @@ public class ReservationService {
             accountsReservation = accountObject.getUnbookedReservation();
             if (roomService.isRoomAvailable(room, accountsReservation.getCheckInDate(), accountsReservation.getCheckOutDate())) {
                 Booking booking = new Booking(accountsReservation, room);
+                bookingService.save(booking);
                 accountsReservation.addBooking(booking);
+                reservationRepository.save(accountsReservation);
                 accountRepository.save(accountObject);
             } else {
-                throw new Exception("No room available.");
+                return ResponseEntity.badRequest().body("No room available.");
             }
         }else{
-            throw new Exception("You must be logged in.");
+            return ResponseEntity.badRequest().body("You must be logged in.");
         }
-        return room;
+        return ResponseEntity.ok().body("Room added");
     }
 }
 
