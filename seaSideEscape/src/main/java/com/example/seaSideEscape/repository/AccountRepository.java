@@ -11,6 +11,8 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query("SELECT u FROM Account u WHERE u.username = ?1")
     Optional<Account> findByUsername(String userName);
 
+    Optional<Account> findByEmail(String email);
+
     @Query("SELECT u FROM Account u WHERE u.username = ?1 AND u.isAdmin = true")
     Optional<Account> findByUsernameAndIsAdmin(String username);
 

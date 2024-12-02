@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Cookies from 'js-cookie';
 import {
     AppBar,
     Toolbar,
@@ -24,7 +25,10 @@ const NavigationBar = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [canCreateAccount, setCanCreateAccount] = useState(true);
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const navigate = useNavigate();
 
     const handleLoginOpen = () => setLoginOpen(true);
@@ -33,6 +37,17 @@ const NavigationBar = () => {
         setError('');
     };
 
+    async function generateRequest(endpoint, params){
+        let successful = true;
+        try {
+            await axios.post('http://localhost:8080/' + endpoint, params, {withCredentials: true});
+        }catch (e) {
+            setError("Error: " + e.response.data);
+            successful = false
+        }
+        return successful;
+    }
+
     const handleSignupOpen = () => {
         setSignupOpen(true);
         setLoginOpen(false);
@@ -40,22 +55,41 @@ const NavigationBar = () => {
 
     const handleSignupClose = () => {
         setSignupOpen(false);
+        setSuccess('');
+        setError('');
     };
+
+    const handleCreateAccount = async () => {
+        if(canCreateAccount) {
+            const response = generateRequest("createAccount", {username, password, email});
+            if (response) {
+                setError('');
+                setSuccess('Account created successfully.');
+                setTimeout(() => {
+                    handleSignupClose();
+                    handleLoginOpen();
+                }, 1000);
+            }
+        }
+    }
+
 
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await axios.post('http://localhost:8080/login', { username, password }, { withCredentials: true });
-            if (response.status === 200) {
-                handleLoginClose();
-                alert("Logged in.");
-            }else{
-                alert("Error: Logged in failed.");
-            }
-        } catch (error) {
-            setError('Login failed. Please check your credentials.');
+        const response = generateRequest("login", {username, password});
+        if (response) {
+            handleLoginClose();
+            alert("Logged in.");
         }
     };
+
+    const handleLogout = async () => {
+        const response = generateRequest("logoutAccount", {});
+        if (response) {
+            navigate("/");
+            alert("Logged out.");
+        }
+    }
 
     const handleAdminLogin = async () => {
         try {
@@ -106,9 +140,11 @@ const NavigationBar = () => {
                             <span className="underline"></span>
                         </Link>
                     </Box>
-                    <Button color="inherit" onClick={handleLoginOpen} style={{ fontWeight: 'bold' }}>
+                    {!Cookies.get('username') || Cookies.get('username') === "" ? <Button color="inherit" onClick={handleLoginOpen} style={{ fontWeight: 'bold' }}>
                         Login
-                    </Button>
+                    </Button> : <Button color="inherit" onClick={handleLogout} style={{ fontWeight: 'bold' }}>
+                        Logout
+                    </Button>}
                 </Toolbar>
             </AppBar>
 
@@ -146,9 +182,6 @@ const NavigationBar = () => {
                     <Button onClick={handleSignupOpen} color="secondary">
                         Create Account
                     </Button>
-                    <Button onClick={handleAdminLogin} color="secondary">
-                        Admin Login
-                    </Button>
                 </DialogActions>
             </Dialog>
 
@@ -157,6 +190,8 @@ const NavigationBar = () => {
                 <DialogTitle>Create Account</DialogTitle>
                 <DialogContent>
                     <DialogContentText>Please enter your account details to sign up.</DialogContentText>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {success && <p style={{ color: 'green' }}>{success}</p>}
                     <TextField
                         autoFocus
                         margin="dense"
@@ -164,20 +199,30 @@ const NavigationBar = () => {
                         type="text"
                         fullWidth
                         variant="standard"
+                        onChange={(e) => setUsername(e.target.value)}
                     />
-                    <TextField margin="dense" label="Email" type="email" fullWidth variant="standard" />
-                    <TextField margin="dense" label="Password" type="password" fullWidth variant="standard" />
+                    <TextField margin="dense" label="Email" type="email" fullWidth variant="standard" onChange={(e) => { setEmail(e.target.value) }}/>
+                    <TextField margin="dense" label="Password" type="password" fullWidth variant="standard" onChange={(e) => setPassword(e.target.value)}/>
                     <TextField
                         margin="dense"
                         label="Confirm Password"
                         type="password"
                         fullWidth
                         variant="standard"
+                        onChange={(e) => {
+                            if(e.target.value !== password) {
+                                setError("Passwords do not match.");
+                                setCanCreateAccount(false);
+                            }else {
+                                setError('');
+                                setCanCreateAccount(true);
+                            }
+                        }}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleSignupClose}>Cancel</Button>
-                    <Button onClick={handleSignupClose}>Create Account</Button>
+                    <Button onClick={handleCreateAccount}>Create Account</Button>
                 </DialogActions>
             </Dialog>
         </>

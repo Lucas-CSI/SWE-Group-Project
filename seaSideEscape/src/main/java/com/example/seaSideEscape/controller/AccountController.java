@@ -29,7 +29,7 @@ public class AccountController {
     }
 
     @PostMapping("/login")
-    public String login(HttpServletResponse response, @RequestBody Account account) throws Exception {
+    public ResponseEntity<String> login(HttpServletResponse response, @RequestBody Account account) throws Exception {
         Optional<Account> acc = accountService.canLogin(account);
         if(acc.isPresent()){
             Cookie username = new Cookie("username", account.getUsername());
@@ -39,10 +39,23 @@ public class AccountController {
             username.setMaxAge(24 * 60 * 60);
             password.setMaxAge(24 * 60 * 60);
             response.addCookie(username);
-            response.addCookie(password);;
+            response.addCookie(password);
         }else{
-            throw new Exception("Account not found.");
+            return new ResponseEntity<>("Account not found.", HttpStatus.CONFLICT);
         }
+        return new ResponseEntity<>("Successfully logged into account.", HttpStatus.OK);
+    }
+
+    @PostMapping("/logoutAccount")
+    public String logout(HttpServletResponse response) throws Exception {
+        Cookie username = new Cookie("username", null);
+        Cookie password = new Cookie("password", null);
+        username.setPath("/");
+        password.setPath("/");
+        username.setMaxAge(0);
+        password.setMaxAge(0);
+        response.addCookie(username);
+        response.addCookie(password);
         return "done";
     }
 
@@ -102,10 +115,5 @@ public class AccountController {
     @PostMapping("/createAccount")
     public ResponseEntity<String> createAccount(@RequestBody Account account) throws NoSuchAlgorithmException {
         return accountService.createAccount(account);
-    }
-
-    @GetMapping("/createAccount")
-    public String createAccountPage(){
-        return "create acccount";
     }
 }
