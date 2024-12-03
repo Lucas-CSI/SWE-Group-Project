@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import {useNavigate} from 'react-router-dom';
+import axios from 'axios';
+
 import { Container, TextField, Typography, Box, Grid, Button, Divider } from '@mui/material';
 
 const PaymentScreen = () => {
@@ -15,6 +18,20 @@ const PaymentScreen = () => {
         expirationYear: '',
         cvv: '',
     });
+    const [reservation, setReservation] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedReservation = JSON.parse(localStorage.getItem('reservation'));
+        console.log('Retrieved reservation:', storedReservation);
+        if (storedReservation) {
+            setReservation(storedReservation);
+        } else {
+            alert("No reservation found. Please select a room.");
+            navigate('/');
+        }
+    }, [navigate]);
+
 
     const handleChange = (e) => {
         setFormData({
@@ -23,10 +40,41 @@ const PaymentScreen = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission, for example, send the data to your backend
-        console.log('Form data submitted:', formData);
+
+        if (!reservation) {
+            alert('No reservation data found.');
+            return;
+        }
+
+        const paymentData = {
+            ...formData,
+            reservation: {
+                ...reservation,
+                room: reservation.room,
+            },
+        };
+
+        try {
+            const response = await axios.post('http://localhost:8080/reservation/confirmPayment', paymentData, {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true,
+            });
+
+            if (response.status === 200) {
+                // Clear reservation data from localStorage
+                localStorage.removeItem('reservation');
+
+                // Navigate to confirmation page
+                navigate(`/reservation/confirmation/${response.data.id}`);
+            } else {
+                alert('Payment or reservation confirmation failed.');
+            }
+        } catch (error) {
+            console.error('Error processing payment:', error);
+            alert('Payment failed. Please try again.');
+        }
     };
 
     return (
@@ -175,8 +223,11 @@ const PaymentScreen = () => {
                 <Grid item xs={12} md={4}>
                     <Box>
                         <Typography variant="h6">Booking Information</Typography>
-                        <Typography variant="body1">Stay Dates: [Placeholder]</Typography>
-                        <Typography variant="body1">Total Stay: [Placeholder]</Typography>
+                        <Typography variant="body1">Check-In Date: {reservation.startDate || '[Placeholder]'}</Typography>
+                        <Typography variant="body1">Check-Out Date: {reservation.endDate || '[Placeholder]'}</Typography>
+                        <Typography varient="body1"> Room Category: {reservation.room.qualityLevel === 2 ? 'Suite Style' : 'Comfort'}</Typography>
+                        <Typography varient="body1">Room Type: {reservation.room.bedType || '[Not Specified]'}</Typography>
+                        <Typography varient="body1">Room Rate: [Placeholder]</Typography>
                         {/* Add inputs for users to fill in the stay dates and total if needed */}
                     </Box>
                 </Grid>

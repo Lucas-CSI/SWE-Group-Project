@@ -1,5 +1,3 @@
-// TODO: Fix GenerateBill in BillingService and re-enable in ReservationService
-// TODO: Add cache so less queries have to be made
 package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.model.Account;
@@ -23,6 +21,10 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Service class for managing reservations in the SeaSide Escape application.
+ * Provides functionality for creating, booking, and managing reservations and their associated rooms.
+ */
 @Service
 public class ReservationService {
     private final ReservationRepository reservationRepository;
@@ -33,6 +35,16 @@ public class ReservationService {
     private final AccountRepository accountRepository;
     Logger logger = LoggerFactory.getLogger(ReservationService.class);
 
+    /**
+     * Constructs a new {@code ReservationService}.
+     *
+     * @param reservationRepository the repository for managing reservations
+     * @param billingService the service for managing billing operations
+     * @param roomService the service for managing rooms
+     * @param accountService the service for managing accounts
+     * @param bookingService the service for managing bookings
+     * @param accountRepository the repository for managing account entities
+     */
     @Autowired
     public ReservationService(ReservationRepository reservationRepository, BillingService billingService, RoomService roomService, AccountService accountService, BookingService bookingService, AccountRepository accountRepository) {
         this.reservationRepository = reservationRepository;
@@ -43,6 +55,14 @@ public class ReservationService {
         this.accountRepository = accountRepository;
     }
 
+    /**
+     * Books a reservation for a given user.
+     * Marks the user's unbooked reservation as booked and saves the updated information.
+     *
+     * @param username the username of the account making the reservation
+     * @return a {@code ResponseEntity} containing a success or error message
+     * @throws Exception if an error occurs during the booking process
+     */
     @Transactional
     public ResponseEntity<String> bookReservation(String username) throws Exception {
         Optional<Account> optionalAccount = accountService.findAccountByUsername(username);
@@ -67,19 +87,15 @@ public class ReservationService {
         return ResponseEntity.ok().body("Reservation booked");
     }
 
-    /*public Room addRoom(Room room, String username) {
-        Optional<Account> account = accountService.findAccountByUsername(username);
-        Reservation reservation = account.get().getReservation();
-        if(reservation == null) {
-            reservation = new Reservation();
-            account.get().setReservation(reservation);
-        }
-        reservation.addRoom(room);
-        reservationRepository.save(reservation);
-        accountService.saveAccount(account.get());
-        return room;
-    }*/
-
+    /**
+     * Creates a new reservation for a given user.
+     *
+     * @param checkInDate the start date of the reservation
+     * @param checkOutDate the end date of the reservation
+     * @param username the username of the account creating the reservation
+     * @return a {@code ResponseEntity} containing a success or error message
+     * @throws Exception if an error occurs during the reservation creation process
+     */
     @Transactional
     public ResponseEntity<String> createReservation(LocalDate checkInDate, LocalDate checkOutDate, String username) throws Exception {
         Optional<Account> account = accountService.findAccountByUsername(username);
@@ -104,6 +120,15 @@ public class ReservationService {
         return ResponseEntity.ok().body("Reservation created");
     }
 
+    /**
+     * Adds a room to the user's unbooked reservation.
+     * Ensures the room is available for the specified check-in and check-out dates.
+     *
+     * @param room the room to be added to the reservation
+     * @param username the username of the account adding the room
+     * @return a {@code ResponseEntity} containing a success or error message
+     * @throws Exception if an error occurs during the room addition process
+     */
     @Transactional
     public ResponseEntity<String> addRoom(Room room, String username) throws Exception {
         Optional<Account> account = accountService.findAccountByUsername(username);
@@ -128,43 +153,3 @@ public class ReservationService {
         return ResponseEntity.ok().body("Room added");
     }
 }
-
-
-
-/*
-if (!rooms.isEmpty()) {
-                room = rooms.getFirst();
-                reservation.addRoom(room);
-                accountObject.addReservation(reservation);
-                reservationRepository.save(reservation);
-                //billingService.generateBill(reservation.getId());
-reservations = accountObject.getReservations();
-            if(reservations == null) {
-                reservations = new ArrayList<>(){
-                    public boolean add(Reservation mt) {
-                        int index = Collections.binarySearch(this, mt, Reservation.Sort.StartDate);
-                        if (index < 0) index = ~index;
-                        super.add(index, mt);
-                        return true;
-                    }
-                };
-                accountObject.setReservations(reservations);
-            }
-OLD QUERY (In case we want to use it later
-            List<Room> rooms = roomService.getRoomsBySmokingAllowedByQualityLevelAndBedTypeAndViewAndTheme(
-                    room.isSmokingAllowed(),
-                    room.getQualityLevel(),
-                    room.getBedType(),
-                    room.isOceanView(),
-                    room.getTheme()
-            );
-            List<Reservation> reservationsInDB = reservationRepository.findBySmokingAllowedByQualityLevelAndBedTypeAndViewAndThemeBetweenCheckInDateAndCheckOutDate(
-                    room.isSmokingAllowed(),
-                    room.getQualityLevel(),
-                    room.getBedType(),
-                    room.isOceanView(),
-                    room.getTheme(),
-                    reservation.getCheckInDate(),
-                    reservation.getCheckOutDate()
-            );
- */

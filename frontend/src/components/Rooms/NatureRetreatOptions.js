@@ -37,10 +37,14 @@ const RoomOption = ({ title }) => {
     const navigate = useNavigate();
 
     const handleReserve = () => {
-        room:{
-            // bedType: title == "Suite Style" ? "King" : "Queen",
-            //      qualityLevel: title == "Suite Style" ? 2 : 1
-        }
+        const reservation = {
+            room: {
+                bedType: title === "Suite Style" ? "King" : "Queen",
+                qualityLevel: title === "Suite Style" ? 2 : 1
+            }
+        };
+        localStorage.setItem("reservation", JSON.stringify(reservation));
+        navigate("/reservation/payment/${reservation.id}");
     };
     return (
         <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
