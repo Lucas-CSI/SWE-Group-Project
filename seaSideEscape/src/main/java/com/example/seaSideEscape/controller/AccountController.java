@@ -13,6 +13,8 @@ import javax.swing.text.html.Option;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
 // Change to RequestMapping????
 @RestController
 public class AccountController {
@@ -58,6 +60,9 @@ public class AccountController {
         response.addCookie(password);
         return "done";
     }
+    // TODO: Get user's reservations
+    //@RequestMapping(value = "/profile/reservations", method = GET)
+    //@ResponseBody
 
     @GetMapping("/adminLogin")
     public String adminLogin(){return "adminLogin";}
