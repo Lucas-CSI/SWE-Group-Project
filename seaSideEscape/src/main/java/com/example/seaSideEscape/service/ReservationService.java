@@ -1,5 +1,6 @@
 // TODO: Fix GenerateBill in BillingService and re-enable in ReservationService
-// TODO: Add cache so less queries have to be made
+// TODO: Add room cache? so less queries have to be made
+// TODO: Add expiration date (5-15min range) to unbooked reservations and a SINGULAR thread that removes expired reservations
 package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.model.Account;
@@ -113,7 +114,8 @@ public class ReservationService {
         if(account.isPresent()) {
             accountObject = account.get();
             accountsReservation = accountObject.getUnbookedReservation();
-            if (roomService.isRoomAvailable(room, accountsReservation.getCheckInDate(), accountsReservation.getCheckOutDate())) {
+            room = roomService.findSpecificAvailableRoom(room, accountsReservation.getCheckInDate(), accountsReservation.getCheckOutDate());
+            if (room != null) {
                 Booking booking = new Booking(accountsReservation, room);
                 bookingService.save(booking);
                 accountsReservation.addBooking(booking);

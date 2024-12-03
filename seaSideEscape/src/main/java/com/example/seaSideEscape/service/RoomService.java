@@ -25,16 +25,13 @@ public class RoomService {
         return roomRepository.existsById(roomId);
     }
     public List<Room> getAvailableRooms(LocalDate checkInDate, LocalDate checkOutDate){
-        return roomRepository.getBookedRooms(checkInDate, checkOutDate);
+        return roomRepository.getAvailableRooms(checkInDate, checkOutDate);
     }
 
-    public boolean isRoomAvailable(Room room, LocalDate checkInDate, LocalDate checkOutDate){
-        return true;
+    public Room findSpecificAvailableRoom(Room room, LocalDate checkInDate, LocalDate checkOutDate){
+        return roomRepository.findSpecificAvailableRooms(room.isSmokingAllowed(),room.getQualityLevel(), room.getBedType(), room.isOceanView(), room.getTheme(), checkInDate, checkOutDate).getFirst();
     }
 
-    public List<Room> getRoomsBySmokingAllowedByQualityLevelAndBedTypeAndViewAndTheme(boolean isSmokingAllowed, Room.QualityLevel qualityLevel, String bedType, boolean oceanView, Room.Themes theme){
-        return roomRepository.findBySmokingAllowedByQualityLevelAndBedTypeAndViewAndTheme(isSmokingAllowed, qualityLevel, bedType, oceanView, theme);
-    }
     static String[] bedTypes = {"Queen", "King"};
     public void setupDB(){
         for(int i = 0; i < 100; ++i){
