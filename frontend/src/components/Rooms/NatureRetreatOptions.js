@@ -1,41 +1,109 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 import { Box, Typography, Divider, Grid, Card, CardContent, Button, CardMedia } from '@mui/material';
+import axios from "axios";
+const sendRequest = async (reservation, navigate) => {
+    localStorage.setItem("reservation", JSON.stringify(reservation));
+    const response = await axios.post('http://localhost:8080/reservation/addRoom', reservation, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        withCredentials: true
+    });
+    if (response.status === 200) {
+        navigate(`/reservation/payment/${reservation.id}`);
+    } else {
+        alert("Error: Room not available.");
+    }
+};
+
+const handleComfort = (navigate) => {
+    let reservation = JSON.parse(localStorage.getItem("reservation"));
+    reservation.room.bedType = "Queen";
+    reservation.room.qualityLevel = 1;
+    sendRequest(reservation, navigate);
+};
+
+const handleSuite = (navigate) => {
+    let reservation = JSON.parse(localStorage.getItem("reservation"));
+    reservation.room.bedType = "King";
+    reservation.room.qualityLevel = 2;
+    sendRequest(reservation, navigate);
+};
+
 
 const RoomOption = ({ title }) => {
+    const navigate = useNavigate();
+
+    const handleReserve = () => {
+        room:{
+            // bedType: title == "Suite Style" ? "King" : "Queen",
+            //      qualityLevel: title == "Suite Style" ? 2 : 1
+        }
+    };
     return (
-        <Card sx={{ backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%' }}>
+        <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
             {/* Placeholder Image */}
             <CardMedia>
                 <Box
                     component="img"
                     src="singleNature.webp"
                     alt={title}
-                    sx={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px' }}
+                    sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px'}}
                 />
             </CardMedia>
-..
-
-
-
-            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                <Typography variant="h6" sx={{ marginBottom: '0.5rem' }}>
+            <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+                <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
                     {title}
                 </Typography>
-                <Typography variant="body2" sx={{ marginBottom: '1rem' }}>
+                <Typography variant="body2" sx={{marginBottom: '1rem'}}>
+                    Text
+                </Typography>
+
+                {/* View Rates & Reserve */}
+                <Button
+                    //component={Link}
+                    onClick={handleReserve}
+                    variant="outlined"
+                    color="primary"
+                    sx={{position: 'absolute', bottom: 10, right: 10}}
+                >
+                    Reserve
+                </Button>
+            </CardContent>
+        </Card>
+    );
+
+    return (
+        <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
+            {/* Placeholder Image */}
+            <CardMedia>
+                <Box
+                    component="img"
+                    src="singleNature.webp"
+                    alt={title}
+                    sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px'}}
+                />
+            </CardMedia>
+
+            <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+                <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
+                    {title}
+                </Typography>
+                <Typography variant="body2" sx={{marginBottom: '1rem'}}>
                     Text
                 </Typography>
 
                 {/* View Rates & Reserve */}
                 <Button
                     component={Link}
-                    to="/natureRetreat"
+                    onClick={handleComfort}
                     variant="outlined"
                     color="primary"
-                    sx={{ position: 'absolute', bottom: 10, right: 10 }}
+                    sx={{position: 'absolute', bottom: 10, right: 10}}
                 >
-                    View Rates & Reserve
+                    Reserve
                 </Button>
             </CardContent>
         </Card>

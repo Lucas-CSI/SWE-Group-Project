@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { login } from "../services/authService";
+import { login } from "../services/authService.js";
 import './NavigationBar.css';
 
 const NavigationBar = () => {
