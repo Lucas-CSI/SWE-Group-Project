@@ -18,6 +18,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { login } from "../services/authService";
 import './NavigationBar.css';
+import { generatePostRequest } from "../services/apiService"
 
 const NavigationBar = () => {
     const [loginOpen, setLoginOpen] = useState(false);
@@ -37,16 +38,6 @@ const NavigationBar = () => {
         setError('');
     };
 
-    async function generateRequest(endpoint, params){
-        let successful = true;
-        try {
-            await axios.post('http://localhost:8080/' + endpoint, params, {withCredentials: true});
-        }catch (e) {
-            setError("Error: " + e.response.data);
-            successful = false
-        }
-        return successful;
-    }
 
     const handleSignupOpen = () => {
         setSignupOpen(true);
@@ -61,14 +52,16 @@ const NavigationBar = () => {
 
     const handleCreateAccount = async () => {
         if(canCreateAccount) {
-            const response = generateRequest("createAccount", {username, password, email});
-            if (response) {
+            const response = await generatePostRequest("createAccount", {username, password, email});
+            if (response.status === 200) {
                 setError('');
                 setSuccess('Account created successfully.');
                 setTimeout(() => {
                     handleSignupClose();
                     handleLoginOpen();
                 }, 1000);
+            }else{
+                setError("Error: " + response.data);
             }
         }
     }
@@ -76,18 +69,22 @@ const NavigationBar = () => {
 
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
-        const response = generateRequest("login", {username, password});
-        if (response) {
+        const response = await generatePostRequest("login", {username, password});
+        if (response.status === 200) {
             handleLoginClose();
             alert("Logged in.");
+        }else{
+            setError("Error: " + response.response.data);
         }
     };
 
     const handleLogout = async () => {
-        const response = generateRequest("logoutAccount", {});
-        if (response) {
+        const response = await generatePostRequest("logoutAccount", {});
+        if (response.status === 200) {
             navigate("/");
             alert("Logged out.");
+        }else{
+            setError("Error: " + response.response.data);
         }
     }
 

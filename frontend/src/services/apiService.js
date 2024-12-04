@@ -18,8 +18,7 @@ export const generatePostRequest = async(endpoint, params, headers = {}) => {
     try {
         successful = await axios.post('http://localhost:8080/' + endpoint, params, {...headers, withCredentials: true});
     }catch (e) {
-        setError("Error: " + e.response.data);
-        successful = false
+        successful = e
     }
     return successful;
 }
