@@ -12,6 +12,18 @@ export const getMessages = async () => {
     }
 };
 
+
+export const generatePostRequest = async(endpoint, params, headers = {}) => {
+    let successful;
+    try {
+        successful = await axios.post('http://localhost:8080/' + endpoint, params, {...headers, withCredentials: true});
+    }catch (e) {
+        setError("Error: " + e.response.data);
+        successful = false
+    }
+    return successful;
+}
+
 export const saveMessage = async (content) => {
     try {
         const response = await axios.post(`${API_URL}/hello`, { content });
