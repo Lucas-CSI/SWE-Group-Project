@@ -35,7 +35,7 @@ public class AccountController {
         Optional<Account> acc = accountService.canLogin(account);
         if(acc.isPresent()){
             Cookie username = new Cookie("username", account.getUsername());
-            Cookie password = new Cookie("password", account.getPassword());
+            Cookie password = new Cookie("password", acc.get().getPassword());
             username.setPath("/");
             password.setPath("/");
             username.setMaxAge(24 * 60 * 60);
@@ -43,7 +43,7 @@ public class AccountController {
             response.addCookie(username);
             response.addCookie(password);
         }else{
-            return new ResponseEntity<>("Account not found.", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Invalid username or password.", HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>("Successfully logged into account.", HttpStatus.OK);
     }
