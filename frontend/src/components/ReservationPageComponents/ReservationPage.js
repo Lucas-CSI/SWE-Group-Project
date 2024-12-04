@@ -57,16 +57,33 @@ export default function ReservationPage() {
 
         setReservation((prev) => ({
             ...prev,
-            ...(isRoomProperty ? { room: { ...prev.room, [name]: type === 'checkbox' ? checked : value } } : { [name]: type === 'checkbox' ? checked : value })
+            ...(isRoomProperty
+                ? { room: { ...prev.room, [name]: type === 'checkbox' ? checked : value } }
+                : { [name]: type === 'checkbox' ? checked : value })
         }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!reservation.startDate || !reservation.endDate) {
+            alert("Please select both check-in and check-out dates.");
+            return;
+        }
+
         try {
             console.log(reservation)
             reservation.room.theme = themeMap[reservation.room.theme];
             reservation.room.qualityLevel = qualityMap[reservation.room.qualityLevel];
+
+            const reservationData = {
+                startDate: reservation.startDate,
+                endDate: reservation.endDate,
+                room: {
+                    ...reservation.room,
+                },
+            };
+
             localStorage.setItem("reservation", JSON.stringify(reservation));
             navigate(`/rooms`);
         } catch (error) {

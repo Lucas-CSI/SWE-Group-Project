@@ -33,14 +33,18 @@ const handleSuite = (navigate) => {
 };
 
 
-const RoomOption = ({ title }) => {
+const RoomOption = ({theme, title}) => {
     const navigate = useNavigate();
 
     const handleReserve = () => {
+        const storedReservation = JSON.parse(localStorage.getItem("reservation"));
         const reservation = {
+            ...storedReservation,
             room: {
-                bedType: title === "Suite Style" ? "King" : "Queen",
-                qualityLevel: title === "Suite Style" ? 2 : 1
+                ...storedReservation.room,
+                bedType: title,
+                theme: theme,
+                qualityLevel: title === "Single Room" ? "Economy" : title === "Double Room" ? "Standard" : "Premium",
             }
         };
         localStorage.setItem("reservation", JSON.stringify(reservation));
@@ -144,13 +148,13 @@ const NatureRetreatOptions = () => (
             <Divider sx={{ marginBottom: '1rem' }} />
             <Grid container spacing={2}>
                 <Grid item xs={12} md={4}>
-                    <RoomOption title="Single Room" />
+                    <RoomOption title="Single Room" theme="Nature Retreat"/>
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <RoomOption title="Double Room" />
+                    <RoomOption title="Double Room" theme="Nature Retreat"/>
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <RoomOption title="Family Room" />
+                    <RoomOption title="Family Room" theme="Nature Retreat"/>
                 </Grid>
             </Grid>
         </Box>

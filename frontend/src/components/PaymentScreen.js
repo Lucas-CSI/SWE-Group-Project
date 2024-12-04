@@ -32,6 +32,11 @@ const PaymentScreen = () => {
         }
     }, [navigate]);
 
+    const formatDate = (dateString) => {
+        if (!dateString) return '[Not Provided]';
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    };
 
     const handleChange = (e) => {
         setFormData({
@@ -39,6 +44,7 @@ const PaymentScreen = () => {
             [e.target.name]: e.target.value,
         });
     };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -50,10 +56,7 @@ const PaymentScreen = () => {
 
         const paymentData = {
             ...formData,
-            reservation: {
-                ...reservation,
-                room: reservation.room,
-            },
+            reservation,
         };
 
         try {
@@ -63,10 +66,8 @@ const PaymentScreen = () => {
             });
 
             if (response.status === 200) {
-                // Clear reservation data from localStorage
                 localStorage.removeItem('reservation');
 
-                // Navigate to confirmation page
                 navigate(`/reservation/confirmation/${response.data.id}`);
             } else {
                 alert('Payment or reservation confirmation failed.');
@@ -76,6 +77,10 @@ const PaymentScreen = () => {
             alert('Payment failed. Please try again.');
         }
     };
+
+    if(!reservation){
+        return null;
+    }
 
     return (
         <Container maxWidth="md">
@@ -223,10 +228,13 @@ const PaymentScreen = () => {
                 <Grid item xs={12} md={4}>
                     <Box>
                         <Typography variant="h6">Booking Information</Typography>
-                        <Typography variant="body1">Check-In Date: {reservation.startDate || '[Placeholder]'}</Typography>
-                        <Typography variant="body1">Check-Out Date: {reservation.endDate || '[Placeholder]'}</Typography>
-                        <Typography varient="body1"> Room Category: {reservation.room.qualityLevel === 2 ? 'Suite Style' : 'Comfort'}</Typography>
-                        <Typography varient="body1">Room Type: {reservation.room.bedType || '[Not Specified]'}</Typography>
+                        <Typography variant="body1">Check-In Date: {formatDate(reservation.startDate) || '[Placeholder]'}</Typography>
+                        <Typography variant="body1">Check-Out Date: {formatDate(reservation.endDate) || '[Placeholder]'}</Typography>
+                        <Typography varient="body1">Room Quality: {reservation?.room.qualityLevel === 2 ? 'Suite Style' : 'Comfort'}</Typography>
+                        <Typography variant="body1">Room Type: {reservation?.room?.bedType || '[Not Provided]'}</Typography>
+                        <Typography variant="body1">Room Theme: {reservation?.room?.theme || '[Not Provided]'}</Typography>
+                        <Typography variant="body1">Smoking Allowed: {reservation?.room?.smokingAllowed ? 'Yes' : 'No'}</Typography>
+                        <Typography variant="body1">Ocean View: {reservation?.room?.oceanView ? 'Yes' : 'No'}</Typography>
                         <Typography varient="body1">Room Rate: [Placeholder]</Typography>
                         {/* Add inputs for users to fill in the stay dates and total if needed */}
                     </Box>

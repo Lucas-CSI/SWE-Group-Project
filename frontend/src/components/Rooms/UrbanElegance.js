@@ -3,7 +3,7 @@ import { Box, Typography, Divider, Grid, Card, CardContent, Button, CardMedia } 
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 
-const sendRequest = async(reservation) => {
+const sendRequest = async(reservation, navigate) => {
     localStorage.setItem("reservation",JSON.stringify(reservation));
     const response = await axios.post('http://localhost:8080/reservation/addRoom', reservation, {
         headers: {
@@ -12,97 +12,112 @@ const sendRequest = async(reservation) => {
         withCredentials: true
     });
     if(response.status === 200){
-        window.location.replace("http://localhost:3000/reservation/confirmation");
+        navigate(`/reservation/payment/${reservation.id}`);
     }else{
         alert("Error: Room not available.");
     }
 }
 
-const handleComfort = async () => {
+const handleComfort = async (navigate) => {
     let reservation = JSON.parse(localStorage.getItem("reservation"));
     reservation.room.bedType = "Queen";
     reservation.room.qualityLevel = 1;
-    sendRequest(reservation)
+    sendRequest(reservation, navigate)
 }
 
-const handleSuite = async () => {
+const handleSuite = async (navigate) => {
     let reservation = JSON.parse(localStorage.getItem("reservation"));
     reservation.room.bedType = "King";
     reservation.room.qualityLevel = 2;
-    sendRequest(reservation)
+    sendRequest(reservation, navigate)
 }
 
 
-const RoomOption = ({ title }) => {
-    if(title === "Suite Style") {
-        return (
-            <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
-                {/* Placeholder Image */}
-                <CardMedia>
-                    <Box
-                        component="img"
-                        src="urbanSuite.jpg"
-                        alt={title}
-                        sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px'}}
-                    />
-                </CardMedia>
+const RoomOption = ({theme, title }) => {
 
-                <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                    <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
-                        {title}
-                    </Typography>
-                    <Typography variant="body2" sx={{marginBottom: '1rem'}}>
-                        Text
-                    </Typography>
+    const navigate = useNavigate();
 
-                    {/* View Rates & Reserve */}
-                    <Button
-                        component={Link}
-                        onClick={handleSuite}
-                        variant="outlined"
-                        color="primary"
-                        sx={{position: 'absolute', bottom: 10, right: 10}}
-                    >
-                        Reserve
-                    </Button>
-                </CardContent>
-            </Card>
-        );
-    }else{
-        return (
-            <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
-                {/* Placeholder Image */}
-                <CardMedia>
-                    <Box
-                        component="img"
-                        src="urbanSuite.jpg"
-                        alt={title}
-                        sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px'}}
-                    />
-                </CardMedia>
+    const handleReserve = () => {
+        const storedReservation = JSON.parse(localStorage.getItem("reservation"));
+        const reservation = {
+            ...storedReservation,
+            room: {
+                ...storedReservation.room,
+                bedType: title,
+                theme: theme,
+                qualityLevel: title === "Single Style" ? "Executive" : title === "Comfort Style" ? "Comfort": "Comfort",
+            }
+        };
+        localStorage.setItem("reservation", JSON.stringify(reservation));
+        navigate("/reservation/payment/${reservation.id}");
+    };
 
-                <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                    <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
-                        {title}
-                    </Typography>
-                    <Typography variant="body2" sx={{marginBottom: '1rem'}}>
-                        Text
-                    </Typography>
+    return (
+        <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
+            {/* Placeholder Image */}
+            <CardMedia>
+                <Box
+                    component="img"
+                    src="urbanSuite.jpg"
+                    alt={title}
+                    sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px'}}
+                />
+            </CardMedia>
 
-                    {/* View Rates & Reserve */}
-                    <Button
-                        component={Link}
-                        onClick={handleComfort}
-                        variant="outlined"
-                        color="primary"
-                        sx={{position: 'absolute', bottom: 10, right: 10}}
-                    >
-                        Reserve
-                    </Button>
-                </CardContent>
-            </Card>
-        );
-    }
+            <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+                <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
+                    {title}
+                </Typography>
+                <Typography variant="body2" sx={{marginBottom: '1rem'}}>
+                    Text
+                </Typography>
+                {/* View Rates & Reserve */}
+                <Button
+                    //component={Link}
+                    onClick={handleReserve}
+                    variant="outlined"
+                    color="primary"
+                    sx={{position: 'absolute', bottom: 10, right: 10}}
+                >
+                    Reserve
+                </Button>
+            </CardContent>
+        </Card>
+    );
+
+    return (
+        <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
+            {/* Placeholder Image */}
+            <CardMedia>
+                <Box
+                    component="img"
+                    src="urbanSuite.jpg"
+                    alt={title}
+                    sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px'}}
+                />
+            </CardMedia>
+
+            <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+                <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
+                    {title}
+                </Typography>
+                <Typography variant="body2" sx={{marginBottom: '1rem'}}>
+                    Text
+                </Typography>
+                {/* View Rates & Reserve */}
+                <Button
+                    component={Link}
+                    onClick={handleComfort}
+                    variant="outlined"
+                    color="primary"
+                    sx={{position: 'absolute', bottom: 10, right: 10}}
+                >
+                    Reserve
+                </Button>
+            </CardContent>
+        </Card>
+    );
+
 };
 
 const UrbanElegance = () => (
@@ -135,10 +150,10 @@ const UrbanElegance = () => (
             <Divider sx={{ marginBottom: '1.5rem' }} />
             <Grid container spacing={4} justifyContent="center">
                 <Grid item xs={12} md={4}>
-                    <RoomOption title="Suite Style" />
+                    <RoomOption title="Suite Style" theme="Urban Elegance"/>
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <RoomOption title="Comfort Style" />
+                    <RoomOption title="Comfort Style" theme="Urban Elegance"/>
                 </Grid>
             </Grid>
         </Box>
