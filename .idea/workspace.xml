@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Merge Changes">
-      <change afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/SerializeModule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/RoomModule.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ReservationPageComponents/ReservationPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ReservationPageComponents/ReservationPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/RoomController.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/RoomController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Rooms/NatureRetreatOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/NatureRetreatOptions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Rooms/UrbanElegance.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/UrbanElegance.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Rooms/VintageCharm.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/VintageCharm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/services/apiService.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/apiService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +22,7 @@
       <list>
         <option value="Interface" />
         <option value="Class" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -98,7 +100,7 @@
       <recent name="com.example.seaSideEscape" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.SeaSideEscapeApplication">
+  <component name="RunManager" selected="npm.start">
     <configuration name="SeaSideEscapeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="seaSideEscape" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.seaSideEscape.SeaSideEscapeApplication" />
@@ -167,7 +169,8 @@
       <workItem from="1733090807942" duration="7858000" />
       <workItem from="1733120024786" duration="127000" />
       <workItem from="1733180935120" duration="4216000" />
-      <workItem from="1733335120705" duration="1099000" />
+      <workItem from="1733335120705" duration="4917000" />
+      <workItem from="1733441265398" duration="788000" />
     </task>
     <task id="LOCAL-00001" summary="Added Others Implementation">
       <option name="closed" value="true" />

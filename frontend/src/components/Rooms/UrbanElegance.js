@@ -3,34 +3,7 @@ import { Box, Typography, Divider, Grid, Card, CardContent, Button, CardMedia } 
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 
-const sendRequest = async(reservation) => {
-    localStorage.setItem("reservation",JSON.stringify(reservation));
-    const response = await axios.post('http://localhost:8080/reservation/addRoom', reservation, {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        withCredentials: true
-    });
-    if(response.status === 200){
-        window.location.replace("http://localhost:3000/reservation/confirmation");
-    }else{
-        alert("Error: Room not available.");
-    }
-}
-
-const handleComfort = async () => {
-    let reservation = JSON.parse(localStorage.getItem("reservation"));
-    reservation.room.bedType = "Queen";
-    reservation.room.qualityLevel = 1;
-    sendRequest(reservation)
-}
-
-const handleSuite = async () => {
-    let reservation = JSON.parse(localStorage.getItem("reservation"));
-    reservation.room.bedType = "King";
-    reservation.room.qualityLevel = 2;
-    sendRequest(reservation)
-}
+import { handleComfort, handleSuite } from './RoomModule'
 
 
 const RoomOption = ({ title }) => {
