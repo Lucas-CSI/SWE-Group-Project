@@ -22,7 +22,7 @@ const HomePage = () => {
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',
                 }}
             >
-                <Typography variant="h2" color="white" align="center">
+                <Typography variant="h2" color="white" align="center" >
                     Welcome to SeaSide Escape!
                 </Typography>
             </Box>
@@ -47,7 +47,7 @@ const HomePage = () => {
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">
-                                    Wellness Spa
+                                    Relaxation
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
                                     Indulge in Tranquility
@@ -67,12 +67,11 @@ const HomePage = () => {
                             <CardMedia
                                 component="img"
                                 height="200"
-                                image="snorkelingPic.jpg"
-                                alt="Snorkeling"
+                                image="barGrillePic.webp"
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">
-                                    Snorkeler's Paradise
+                                    Culture
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
                                     Discover the Depths
@@ -92,12 +91,11 @@ const HomePage = () => {
                             <CardMedia
                                 component="img"
                                 height="200"
-                                image="barGrillePic.webp"
-                                alt="Bar & Grille"
+                                image="snorkelingPic.jpg"
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">
-                                    Bar & Grille
+                                    Adventure
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
                                     Sip, Savor, and Soak in the Views
