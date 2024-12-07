@@ -1,6 +1,14 @@
 const apiService = require("../../services/apiService");
 
 export const formattedGetAvailableRooms = async () => {
+    let cachedRooms = localStorage.getItem("rooms");
+    if(cachedRooms != null){
+        cachedRooms = JSON.parse(cachedRooms);
+        if(Date.now() <= cachedRooms.expiresAt){
+            return cachedRooms;
+        }
+    }
+
     const availableRooms = await apiService.generateGetRequest("/getAvailableRooms");
     let rooms = availableRooms.data;
     let formattedRooms = {
@@ -91,6 +99,7 @@ export const formattedGetAvailableRooms = async () => {
                 },
             }
         },
+        expiresAt: Date.now() + 30000
     };
     if(rooms) {
         for(let i = 0; i < rooms.length; ++i){
@@ -120,6 +129,7 @@ export const formattedGetAvailableRooms = async () => {
         }
     }
     console.log(formattedRooms);
+    localStorage.setItem("rooms", JSON.stringify(formattedRooms));
     return formattedRooms;
 }
 

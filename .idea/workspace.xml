@@ -5,15 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Merge Changes">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/getAvailableRooms.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/Rooms/RoomModule.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/RoomModule.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Rooms/RoomsSuites.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/RoomsSuites.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/apiService.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/apiService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/reservationService.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/reservationService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/RoomController.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/RoomController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/ReservationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/ReservationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/RoomService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/RoomService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Rooms/VintageCharm.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/VintageCharm.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,7 +169,7 @@
       <workItem from="1733335120705" duration="4917000" />
       <workItem from="1733441265398" duration="4640000" />
       <workItem from="1733526594441" duration="8634000" />
-      <workItem from="1733592137369" duration="5286000" />
+      <workItem from="1733592137369" duration="7769000" />
     </task>
     <task id="LOCAL-00001" summary="Added Others Implementation">
       <option name="closed" value="true" />
