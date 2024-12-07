@@ -1,4 +1,6 @@
 const apiService = require("../../services/apiService");
+const themes = ["URBAN_ELEGANCE", "VINTAGE_CHARM", "NATURE_RETREAT"];
+const qualityLevels = ["Comfort", "Suite", "Deluxe", "Economy", "Business", "Executive"];
 
 export const formattedGetAvailableRooms = async () => {
     let cachedRooms = localStorage.getItem("rooms");
@@ -12,124 +14,56 @@ export const formattedGetAvailableRooms = async () => {
     const availableRooms = await apiService.generateGetRequest("/getAvailableRooms");
     let rooms = availableRooms.data;
     let formattedRooms = {
-        "URBAN_ELEGANCE": {
-            "total": 0,
-            "Comfort":{
-                "total": 0,
-                "oceanView": {
-                    "total": 0,
-                    "smokingAllowed": 0,
-                    "noSmokingAllowed": 0
-                },
-                "noOceanView": {
-                    "total": 0,
-                    "smokingAllowed": 0,
-                    "noSmokingAllowed": 0
-                },
-            },
-            "Suite": {
-                "total": 0,
-                "oceanView": {
-                    "total": 0,
-                    "smokingAllowed": 0,
-                    "noSmokingAllowed": 0
-                },
-                "noOceanView": {
-                    "total": 0,
-                    "smokingAllowed": 0,
-                    "noSmokingAllowed": 0
-                },
-            }
-        },
-        "VINTAGE_CHARM": {
-            "total": 0,
-            "Comfort":{
-                "total": 0,
-                "oceanView": {
-                    "total": 0,
-                    "smokingAllowed": 0,
-                    "noSmokingAllowed": 0
-                },
-                "noOceanView": {
-                    "total": 0,
-                    "smokingAllowed": 0,
-                    "noSmokingAllowed": 0
-                },
-            },
-            "Suite": {
-                "total": 0,
-                "oceanView": {
-                    "total": 0,
-                    "smokingAllowed": 0,
-                    "noSmokingAllowed": 0
-                },
-                "noOceanView": {
-                    "total": 0,
-                    "smokingAllowed": 0,
-                    "noSmokingAllowed": 0
-                },
-            }
-        },
-        "NATURE_RETREAT": {
-            "total": 0,
-            "Comfort":{
-                "total": 0,
-                "oceanView": {
-                    "total": 0,
-                    "smokingAllowed": 0,
-                    "noSmokingAllowed": 0
-                },
-                "noOceanView": {
-                    "total": 0,
-                    "smokingAllowed": 0,
-                    "noSmokingAllowed": 0
-                },
-            },
-            "Suite": {
-                "total": 0,
-                "oceanView": {
-                    "total": 0,
-                    "smokingAllowed": 0,
-                    "noSmokingAllowed": 0
-                },
-                "noOceanView": {
-                    "total": 0,
-                    "smokingAllowed": 0,
-                    "noSmokingAllowed": 0
-                },
-            }
-        },
         expiresAt: Date.now() + 30000
     };
+    for(let themeIndex = 0; themeIndex < themes.length; ++themeIndex){
+        formattedRooms[themes[themeIndex]] = {
+            "total": 0
+        }
+        for(let qualityIndex = 0; qualityIndex < qualityLevels.length; ++qualityIndex) {
+            formattedRooms[themes[themeIndex]][qualityLevels[qualityIndex]] = {
+                "total": 0,
+                "oceanView": {
+                    "total": 0,
+                    "smokingAllowed": 0,
+                    "noSmokingAllowed": 0
+                },
+                "noOceanView": {
+                    "total": 0,
+                    "smokingAllowed": 0,
+                    "noSmokingAllowed": 0
+                },
+            }
+        }
+    }
+    console.log(formattedRooms);
     if(rooms) {
         for(let i = 0; i < rooms.length; ++i){
             let themeTable = formattedRooms[rooms[i].theme]
             let room = rooms[i];
-            console.log(room);
-            if(room.qualityLevel === "Comfort" || room.qualityLevel === "Suite") {
-                let toChange = themeTable[room.qualityLevel];
-                toChange.total++;
-                if (room.oceanView){
-                    toChange.oceanView.total++;
-                    if(room.smokingAllowed){
-                        toChange.oceanView.smokingAllowed++;
-                    }else{
-                        toChange.oceanView.noSmokingAllowed++;
-                    }
+            //console.log(room);
+            let toChange = themeTable[room.qualityLevel];
+            toChange.total++;
+            if (room.oceanView){
+                toChange.oceanView.total++;
+                if(room.smokingAllowed){
+                    toChange.oceanView.smokingAllowed++;
                 }else{
-                    toChange.noOceanView.total++;
-                    if(room.smokingAllowed){
-                        toChange.noOceanView.smokingAllowed++;
-                    }else{
-                        toChange.noOceanView.noSmokingAllowed++;
-                    }
+                    toChange.oceanView.noSmokingAllowed++;
+                }
+            }else{
+                toChange.noOceanView.total++;
+                if(room.smokingAllowed){
+                    toChange.noOceanView.smokingAllowed++;
+                }else{
+                    toChange.noOceanView.noSmokingAllowed++;
                 }
             }
             themeTable.total++;
         }
     }
-    console.log(formattedRooms);
     localStorage.setItem("rooms", JSON.stringify(formattedRooms));
+    console.log(formattedRooms);
     return formattedRooms;
 }
 

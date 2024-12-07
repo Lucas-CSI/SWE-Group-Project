@@ -7,6 +7,9 @@ import { handleComfort, handleSuite } from './RoomModule'
 
 
 const RoomOption = ({ title }) => {
+    let rooms = localStorage.getItem("rooms");
+    rooms = JSON.parse(rooms);
+    let isRoomAvailable = rooms["URBAN_ELEGANCE"][title.substring(0,title.indexOf(" "))].total > 0;
     return (
         <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
             {/* Placeholder Image */}
@@ -15,20 +18,20 @@ const RoomOption = ({ title }) => {
                     component="img"
                     src="urbanSuite.jpg"
                     alt={title}
-                    sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px'}}
+                    sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px', opacity: isRoomAvailable ? 1 : 0.3}}
                 />
             </CardMedia>
 
-            <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+            <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', opacity: isRoomAvailable ? 1 : 0.3}}>
                 <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
                     {title}
                 </Typography>
                 <Typography variant="body2" sx={{marginBottom: '1rem'}}>
-                    Text
+                    {isRoomAvailable ? "Available" : "Not available."}
                 </Typography>
 
                 {/* View Rates & Reserve */}
-                {title === "Suite Style" ? <Button
+                {!isRoomAvailable ? null : title === "Suite Style" ? <Button
                     component={Link}
                     onClick={handleSuite}
                     variant="outlined"

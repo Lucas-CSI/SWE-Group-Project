@@ -7,8 +7,11 @@ import { handleComfort, handleSuite } from './RoomModule'
 
 
 const RoomOption = ({ title }) => {
+    let rooms = localStorage.getItem("rooms");
+    rooms = JSON.parse(rooms);
+    let isRoomAvailable = rooms["NATURE_RETREAT"][title.substring(0,title.indexOf(" "))].total > 0;
     return (
-        <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
+        <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%', opacity: isRoomAvailable ? 1 : 0.5}}>
             {/* Placeholder Image */}
             <CardMedia>
                 <Box
@@ -24,11 +27,11 @@ const RoomOption = ({ title }) => {
                     {title}
                 </Typography>
                 <Typography variant="body2" sx={{marginBottom: '1rem'}}>
-                    Text
+                    {isRoomAvailable ? "Available" : "Not available."}
                 </Typography>
 
                 {/* View Rates & Reserve */}
-                {title === "Suite Style" ? <Button
+                {!isRoomAvailable ? null : title === "Suite Style" ? <Button
                     component={Link}
                     onClick={handleSuite}
                     variant="outlined"
@@ -80,13 +83,13 @@ const NatureRetreatOptions = () => (
             <Divider sx={{ marginBottom: '1rem' }} />
             <Grid container spacing={2}>
                 <Grid item xs={12} md={4}>
-                    <RoomOption title="Single Room" />
+                    <RoomOption title="Economy Room" />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <RoomOption title="Double Room" />
+                    <RoomOption title="Comfort Room" />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <RoomOption title="Family Room" />
+                    <RoomOption title="Executive Room" />
                 </Grid>
             </Grid>
         </Box>
