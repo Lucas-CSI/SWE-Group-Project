@@ -16,7 +16,7 @@ export const getMessages = async () => {
 export const generateGetRequest = async(endpoint, headers = {}) => {
     let successful;
     try {
-        if(endpoint.at(0) === '/') endpoint = endpoint.substring(1, endpoint.length - 1);
+        if(endpoint.at(0) === '/') endpoint = endpoint.substring(1, endpoint.length);
         successful = await axios.get('http://localhost:8080/' + endpoint, {...headers, withCredentials: true});
     }catch (e) {
         successful = e
@@ -29,7 +29,7 @@ export const generateGetRequest = async(endpoint, headers = {}) => {
 export const generatePostRequest = async(endpoint, params, headers = {}) => {
     let successful;
     try {
-        if(endpoint.at(0) === '/') endpoint = endpoint.substring(1, endpoint.length - 1);
+        if(endpoint.at(0) === '/') endpoint = endpoint.substring(1, endpoint.length);
         successful = await axios.post('http://localhost:8080/' + endpoint, params, {...headers, withCredentials: true});
     }catch (e) {
         successful = e
