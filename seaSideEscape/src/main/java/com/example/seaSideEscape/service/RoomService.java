@@ -1,5 +1,6 @@
 package com.example.seaSideEscape.service;
 
+import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.model.Booking;
 import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.repository.RoomRepository;
@@ -14,11 +15,13 @@ import java.util.Optional;
 public class RoomService {
     private final RoomRepository roomRepository;
     private final BookingService bookingService;
+    private final AccountService accountService;
 
     @Autowired
-    public RoomService(RoomRepository roomRepository, BookingService bookingService) {
+    public RoomService(RoomRepository roomRepository, BookingService bookingService, AccountService accountService) {
         this.roomRepository = roomRepository;
         this.bookingService = bookingService;
+        this.accountService = accountService;
     }
 
     public boolean roomExists(Long roomId){
@@ -26,6 +29,12 @@ public class RoomService {
     }
     public List<Room> getAvailableRooms(LocalDate checkInDate, LocalDate checkOutDate){
         return roomRepository.getAvailableRooms(checkInDate, checkOutDate);
+    }
+
+    public List<Room> getAvailableRooms(String username){
+        Optional<Account> account = accountService.findAccountByUsername(username);
+        Account accountObject = account.get();
+        return roomRepository.getAvailableRooms(accountObject.getUnbookedReservation().getCheckInDate(), accountObject.getUnbookedReservation().getCheckOutDate());
     }
 
     public Room findSpecificAvailableRoom(Room room, LocalDate checkInDate, LocalDate checkOutDate){
