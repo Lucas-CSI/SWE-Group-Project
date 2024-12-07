@@ -169,14 +169,44 @@ const RoomCategory = ({ title, description, images, options, hide }) => {
                         <DialogContentText>
                             Here are the available options for {title}:
                         </DialogContentText>
-                        <ul>
+                        <Box>
                             {options.map((option, index) => (
-                                <li key={index}>
-                                    <Typography variant="body1">{option}</Typography>
-                                </li>
+                                <Box key={index}>
+                                    <Typography variant="body1">
+                                        <label>
+                                            <input type="checkbox" name={`room-option-${index}`} />
+                                            {option}
+                                        </label>
+                                    </Typography>
+                                </Box>
                             ))}
-                        </ul>
+                        </Box>
                         <Divider sx={{ margin: '1rem 0' }} />
+                        <Box>
+                            <Typography variant="body1" sx={{ marginBottom: '0.5rem' }}>
+                                Smoking Preference:
+                            </Typography>
+                            <label>
+                                <input type="checkbox" name="smoking-preference" />
+                                Smoking
+                            </label>
+                            <label style={{ marginLeft: '1rem' }}>
+                                <input type="checkbox" name="non-smoking-preference" />
+                                Non-Smoking
+                            </label>
+                        </Box>
+                        <Divider sx={{ margin: '1rem 0' }} />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => {
+                                alert('Redirecting to reservation page...');
+                                handleNavigate();
+                            }}
+                            sx={{ marginTop: '1rem' }}
+                        >
+                            Click to Reserve
+                        </Button>
                     </DialogContent>
                     <Button onClick={handleClose} color="primary" sx={{ margin: '1rem' }}>
                         Close

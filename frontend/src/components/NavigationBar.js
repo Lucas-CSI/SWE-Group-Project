@@ -12,17 +12,32 @@ import {
     DialogContentText,
     DialogTitle,
     TextField,
-    IconButton
+    IconButton,
+    Popover,
+    Badge,
+    List,
+    ListItem,
+    ListItemText
 } from '@mui/material';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { login } from "../services/authService";
+import { login } from "../services/authService.js";
 import './NavigationBar.css';
 import { generatePostRequest } from "../services/apiService"
 
 const NavigationBar = () => {
+    const [isPopoverHovered, setIsPopoverHovered] = useState(false);
+
     const [loginOpen, setLoginOpen] = useState(false);
     const [signupOpen, setSignupOpen] = useState(false);
+
+    const [cartAnchorEl, setCartAnchorEl] = useState(null);
+
+    const handleCartOpen = (event) => setCartAnchorEl(event.currentTarget);
+    const handleCartClose = () => setCartAnchorEl(null);
+
+    const isCartOpen = Boolean(cartAnchorEl);
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -109,6 +124,11 @@ const NavigationBar = () => {
         navigate('/rooms');
     };
 
+    const [cartItems, setCartItems] = useState([
+        { name: 'Room Booking', price: 200 },
+        { name: 'Spa Service', price: 50 },
+    ]);
+
     return (
         <>
             <AppBar position="fixed" className="app-bar">
@@ -128,21 +148,60 @@ const NavigationBar = () => {
                             Rooms & Suites
                             <span className="underline"></span>
                         </Link>
-                        <Link to="/reservation" className="nav-link">
-                            Make a Reservation
-                            <span className="underline"></span>
-                        </Link>
                         <Link to="/events" className="nav-link">
                             Events
                             <span className="underline"></span>
                         </Link>
                     </Box>
+
+                    <IconButton
+                        color="inherit"
+                        aria-label="cart"
+                        onClick={(event) => setCartAnchorEl(cartAnchorEl ? null : event.currentTarget)}
+                    >
+                        <Badge badgeContent={cartItems.length} color="secondary">
+                            <ShoppingCartIcon />
+                        </Badge>
+                    </IconButton>
+
+                    <Button color="inherit" onClick={handleLoginOpen} style={{ fontWeight: 'bold' }}>
+
                     {!Cookies.get('username') || Cookies.get('username') === "" ? <Button color="inherit" onClick={handleLoginOpen} style={{ fontWeight: 'bold' }}>
                         Login
                     </Button> : <Button color="inherit" onClick={handleLogout} style={{ fontWeight: 'bold' }}>
                         Logout
                     </Button>}
                 </Toolbar>
+                <Popover
+                    open={isCartOpen}
+                    anchorEl={cartAnchorEl}
+                    onClose={handleCartClose}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    PaperProps={{
+                        style: { padding: '10px', width: '250px' },
+                    }}
+                >
+                    <Typography variant="h6" gutterBottom>
+                        Cart Summary
+                    </Typography>
+                    <List>
+                        {cartItems.map((item, index) => (
+                            <ListItem key={index}>
+                                <ListItemText primary={item.name} secondary={`$${item.price}`} />
+                            </ListItem>
+                        ))}
+                    </List>
+                    <Typography variant="body1" style={{ marginTop: '10px', fontWeight: 'bold' }}>
+                        Total: ${cartItems.reduce((total, item) => total + item.price, 0)}
+                    </Typography>
+                </Popover>
             </AppBar>
 
             {/* Login Dialog */}

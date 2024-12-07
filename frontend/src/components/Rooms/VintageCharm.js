@@ -62,7 +62,7 @@ const VintageCharm = () => (
             sx={{
                 width: '100%',
                 height: '400px',
-                backgroundImage: `url('TBD.jpg')`,
+                backgroundImage: `url('vintCharm.webp')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 display: 'flex',

@@ -1,5 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+    Box, Typography, Divider, Grid, Card, CardContent, Button, CardMedia, Modal, FormControl, FormControlLabel, RadioGroup, Radio,
+} from '@mui/material';
+import axios from "axios";
+
 
 import { Box, Typography, Divider, Grid, Card, CardContent, Button, CardMedia } from '@mui/material';
 import {generateRoomData, handleSubmitRoom} from './RoomModule'
@@ -56,7 +61,6 @@ const RoomOption = ({ title }) => {
 
 const NatureRetreatOptions = () => (
     <Box>
-        {/*  Top */}
         <Box
             sx={{
                 width: '100%',
@@ -76,7 +80,6 @@ const NatureRetreatOptions = () => (
             </Typography>
         </Box>
 
-        {/* Room Options */}
         <Box sx={{ padding: '2rem', paddingBottom: '4rem' }}>
             <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
                 Explore Our Rooms
