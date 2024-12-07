@@ -7,75 +7,47 @@ import { handleComfort, handleSuite } from './RoomModule'
 
 
 const RoomOption = ({ title }) => {
-    if(title === "Suite Style") {
-        return (
-            <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
-                {/* Placeholder Image */}
-                <CardMedia>
-                    <Box
-                        component="img"
-                        src="singleNature.webp"
-                        alt={title}
-                        sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px'}}
-                    />
-                </CardMedia>
+    return (
+        <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
+            {/* Placeholder Image */}
+            <CardMedia>
+                <Box
+                    component="img"
+                    src="singleNature.webp"
+                    alt={title}
+                    sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px'}}
+                />
+            </CardMedia>
 
-                <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                    <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
-                        {title}
-                    </Typography>
-                    <Typography variant="body2" sx={{marginBottom: '1rem'}}>
-                        Text
-                    </Typography>
+            <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+                <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
+                    {title}
+                </Typography>
+                <Typography variant="body2" sx={{marginBottom: '1rem'}}>
+                    Text
+                </Typography>
 
-                    {/* View Rates & Reserve */}
-                    <Button
-                        component={Link}
-                        onClick={handleSuite}
-                        variant="outlined"
-                        color="primary"
-                        sx={{position: 'absolute', bottom: 10, right: 10}}
-                    >
-                        Reserve
-                    </Button>
-                </CardContent>
-            </Card>
-        );
-    }else{
-        return (
-            <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
-                {/* Placeholder Image */}
-                <CardMedia>
-                    <Box
-                        component="img"
-                        src="singleNature.webp"
-                        alt={title}
-                        sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px'}}
-                    />
-                </CardMedia>
-
-                <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                    <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
-                        {title}
-                    </Typography>
-                    <Typography variant="body2" sx={{marginBottom: '1rem'}}>
-                        Text
-                    </Typography>
-
-                    {/* View Rates & Reserve */}
-                    <Button
-                        component={Link}
-                        onClick={handleComfort}
-                        variant="outlined"
-                        color="primary"
-                        sx={{position: 'absolute', bottom: 10, right: 10}}
-                    >
-                        Reserve
-                    </Button>
-                </CardContent>
-            </Card>
-        );
-    }
+                {/* View Rates & Reserve */}
+                {title === "Suite Style" ? <Button
+                    component={Link}
+                    onClick={handleSuite}
+                    variant="outlined"
+                    color="primary"
+                    sx={{position: 'absolute', bottom: 10, right: 10}}
+                >
+                    Reserve
+                </Button> : <Button
+                    component={Link}
+                    onClick={handleComfort}
+                    variant="outlined"
+                    color="primary"
+                    sx={{position: 'absolute', bottom: 10, right: 10}}
+                >
+                    Reserve
+                </Button>}
+            </CardContent>
+        </Card>
+    );
 };
 
 const NatureRetreatOptions = () => (
