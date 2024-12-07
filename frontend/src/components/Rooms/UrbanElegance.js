@@ -3,13 +3,14 @@ import { Box, Typography, Divider, Grid, Card, CardContent, Button, CardMedia } 
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 
-import { handleComfort, handleSuite } from './RoomModule'
+import { handleSubmitRoom, generateRoomData } from './RoomModule'
 
+const theme = "URBAN_ELEGANCE";
 
 const RoomOption = ({ title }) => {
     let rooms = localStorage.getItem("rooms");
     rooms = JSON.parse(rooms);
-    let isRoomAvailable = rooms["URBAN_ELEGANCE"][title.substring(0,title.indexOf(" "))].total > 0;
+    let isRoomAvailable = rooms[theme][title.substring(0,title.indexOf(" "))].total > 0;
     return (
         <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
             {/* Placeholder Image */}
@@ -33,7 +34,7 @@ const RoomOption = ({ title }) => {
                 {/* View Rates & Reserve */}
                 {!isRoomAvailable ? null : title === "Suite Style" ? <Button
                     component={Link}
-                    onClick={handleSuite}
+                    onClick={() => handleSubmitRoom(generateRoomData(theme, 2))}
                     variant="outlined"
                     color="primary"
                     sx={{position: 'absolute', bottom: 10, right: 10}}
@@ -41,7 +42,7 @@ const RoomOption = ({ title }) => {
                     Reserve
                 </Button> : <Button
                     component={Link}
-                    onClick={handleComfort}
+                    onClick={() => handleSubmitRoom(generateRoomData(theme, 1))}
                     variant="outlined"
                     color="primary"
                     sx={{position: 'absolute', bottom: 10, right: 10}}

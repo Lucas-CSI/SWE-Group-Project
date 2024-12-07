@@ -122,18 +122,12 @@ const RoomCategory = ({ title, description, images, options, hide }) => {
     const handleNavigate = () => {
         let reservation = JSON.parse(localStorage.getItem("reservation"));
         if (title === "Nature Retreat") {
-            reservation.room.theme = 0;
-            localStorage.setItem("reservation", JSON.stringify(reservation));
             navigate('/natureRetreat');
         }
         if (title === "Urban Elegance") {
-            reservation.room.theme = 1;
-            localStorage.setItem("reservation", JSON.stringify(reservation));
             navigate('/urbanElegance');
         }
         if (title === "Vintage Charm") {
-            reservation.room.theme = 2;
-            localStorage.setItem("reservation", JSON.stringify(reservation));
             navigate('/vintageCharm');
         }
     };

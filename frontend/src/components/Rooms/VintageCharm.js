@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import { Box, Typography, Divider, Grid, Card, CardContent, Button, CardMedia } from '@mui/material';
 import axios from "axios";
 
-import { handleComfort, handleSuite, formattedGetAvailableRooms } from './RoomModule'
+import { handleSubmitRoom, generateRoomData} from './RoomModule'
+
+const theme = "VINTAGE_CHARM";
 
 const RoomOption = ({ title }) => {
     let rooms = localStorage.getItem("rooms");
     rooms = JSON.parse(rooms);
-    let isRoomAvailable = rooms["VINTAGE_CHARM"][title.substring(0,title.indexOf(" "))].total > 0;
+    let isRoomAvailable = rooms[theme][title.substring(0,title.indexOf(" "))].total > 0;
     return (
         <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
             {/* Placeholder Image */}
@@ -32,7 +34,7 @@ const RoomOption = ({ title }) => {
                 {/* View Rates & Reserve */}
                 {!isRoomAvailable ? null : title === "Suite Style" ? <Button
                     component={Link}
-                    onClick={handleSuite}
+                    onClick={() => handleSubmitRoom(generateRoomData(theme, 2))}
                     variant="outlined"
                     color="primary"
                     sx={{position: 'absolute', bottom: 10, right: 10}}
@@ -40,7 +42,7 @@ const RoomOption = ({ title }) => {
                     Reserve
                 </Button> : <Button
                     component={Link}
-                    onClick={handleComfort}
+                    onClick={() => handleSubmitRoom(generateRoomData(theme, 1))}
                     variant="outlined"
                     color="primary"
                     sx={{position: 'absolute', bottom: 10, right: 10}}

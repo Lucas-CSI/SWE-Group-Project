@@ -1,5 +1,9 @@
 const apiService = require("../../services/apiService");
-const themes = ["URBAN_ELEGANCE", "VINTAGE_CHARM", "NATURE_RETREAT"];
+const themes = ["NATURE_RETREAT", "URBAN_ELEGANCE", "VINTAGE_CHARM"];
+let themesToIndex = {}
+for(let i = 0; i < themes.length; ++i){
+    themesToIndex[themes[i]] = i;
+}
 const qualityLevels = ["Comfort", "Suite", "Deluxe", "Economy", "Business", "Executive"];
 
 export const formattedGetAvailableRooms = async () => {
@@ -36,7 +40,7 @@ export const formattedGetAvailableRooms = async () => {
             }
         }
     }
-    console.log(formattedRooms);
+    //console.log(formattedRooms);
     if(rooms) {
         for(let i = 0; i < rooms.length; ++i){
             let themeTable = formattedRooms[rooms[i].theme]
@@ -63,14 +67,13 @@ export const formattedGetAvailableRooms = async () => {
         }
     }
     localStorage.setItem("rooms", JSON.stringify(formattedRooms));
-    console.log(formattedRooms);
+    //console.log(formattedRooms);
     return formattedRooms;
 }
 
 
 const sendAddRoomRequest = async(reservation) => {
-    localStorage.setItem("reservation",JSON.stringify(reservation));
-    const response = await apiService.generatePostRequest('addRoom', reservation, {
+    const response = await apiService.generatePostRequest('reservation/addRoom', reservation, {
         headers: {
             'Content-Type': 'application/json',
         },
@@ -83,16 +86,17 @@ const sendAddRoomRequest = async(reservation) => {
     }
 }
 
-export const handleComfort = async () => {
-    let reservation = JSON.parse(localStorage.getItem("reservation"));
-    reservation.room.bedType = "Queen";
-    reservation.room.qualityLevel = 1;
-    await sendAddRoomRequest(reservation);
+export const handleSubmitRoom = async (roomInfo) => {
+    await sendAddRoomRequest(roomInfo);
 }
 
-export const handleSuite = async () => {
-    let reservation = JSON.parse(localStorage.getItem("reservation"));
-    reservation.room.bedType = "King";
-    reservation.room.qualityLevel = 2;
-    await sendAddRoomRequest(reservation);
+
+export const generateRoomData = (theme = "", qualityLevel = 0, oceanView = false, isSmokingAllowed = false) => {
+    return {
+        bedType: qualityLevel > 1 ? "King" : "Queen",
+        qualityLevel: qualityLevel,
+        oceanView: oceanView,
+        isSmokingAllowed: isSmokingAllowed,
+        theme: themesToIndex[theme]
+    }
 }
