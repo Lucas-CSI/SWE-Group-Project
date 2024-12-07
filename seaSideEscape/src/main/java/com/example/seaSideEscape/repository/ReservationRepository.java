@@ -13,11 +13,11 @@ import java.util.Optional;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    @Query("SELECT r FROM Reservation r JOIN r.rooms room WHERE room = ?1")
-    Optional<Reservation> findByRoom(Room room);
-
-    @Query("SELECT r FROM Reservation r JOIN r.rooms room WHERE room.isSmokingAllowed = ?1 AND room.qualityLevel = ?2 AND room.bedType = ?3 AND room.oceanView = ?4 AND room.theme = ?5 AND r.endDate BETWEEN ?6 AND ?7")
-    List<Reservation> findBySmokingAllowedByQualityLevelAndBedTypeAndViewAndThemeBetweenCheckInDateAndCheckOutDate(boolean isSmokingAllowed, Room.QualityLevel qualityLevel, String bedType, boolean oceanView, Room.Themes theme, LocalDate startDate, LocalDate endDate);
-
+   // @Query("SELECT u FROM Reservation u JOIN u.rooms rm WHERE " +
+        //    "rm.isSmokingAllowed = ?1 AND rm.qualityLevel = ?2 AND rm.bedType = ?3 AND " +
+      //      "rm.oceanView = ?4 AND rm.theme = ?5 AND u.endDate >= ?6 AND u.startDate <= ?7")
+    //List<Reservation> findBySmokingAllowedByQualityLevelAndBedTypeAndViewAndThemeBetweenCheckInDateAndCheckOutDate(boolean isSmokingAllowed, Room.QualityLevel qualityLevel, String bedType, boolean oceanView, Room.Themes theme, LocalDate startDate, LocalDate endDate);
+    @Query("SELECT res FROM Reservation res JOIN Account acc ON acc = res.account WHERE acc.username = ?1")
+    List<Reservation> findAllReservationsByUser(String username);
 }
 

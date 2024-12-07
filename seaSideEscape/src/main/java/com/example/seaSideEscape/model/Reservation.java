@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -14,20 +15,41 @@ public class Reservation {
     private Long id;
 
     @OneToMany
-    private List<Room> rooms;
+    private List<Booking> bookings;
 
     @ManyToOne
-    private Guest guest;
+    private Account account;
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
 
     private BigDecimal roomRate;
     private BigDecimal discount;
     private boolean paid;
+    private boolean booked;
 
     @OneToMany
     private List<Charge> charges;
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookingList(List<Booking> booking) {
+        this.bookings = booking;
+    }
+
+    public boolean isBooked() {
+        return booked;
+    }
+
+    public void setBooked(boolean booked) {
+        this.booked = booked;
+    }
+
+    public void addBooking(Booking booking){
+        this.bookings.add(booking);
+    }
 
     public Long getId(){return id;}
 
@@ -37,23 +59,17 @@ public class Reservation {
 
     public void setId(Long id){this.id = id;}
 
-    public List<Room> getRooms(){return rooms;}
+    public Account getGuest(){return account;}
 
-    public void clearRooms(){ rooms.clear();}
+    public void setGuest(Account guest){this.account = guest;}
 
-    public void addRoom(Room room){this.rooms.add(room);}
+    public LocalDate getCheckInDate(){return checkInDate;}
 
-    public Guest getGuest(){return guest;}
+    public void setCheckInDate(LocalDate checkInDate){this.checkInDate = checkInDate;}
 
-    public void setGuest(Guest guest){this.guest = guest;}
+    public LocalDate getCheckOutDate(){return checkOutDate;}
 
-    public LocalDate getStartDate(){return startDate;}
-
-    public void setStartDate(LocalDate startDate){this.startDate = startDate;}
-
-    public LocalDate getEndDate(){return endDate;}
-
-    public void setEndDate(LocalDate endDate){this.endDate = endDate;}
+    public void setCheckOutDate(LocalDate checkOutDate){this.checkOutDate = checkOutDate;}
 
     public BigDecimal getRoomRate() {return roomRate;}
 
@@ -69,5 +85,18 @@ public class Reservation {
 
     public void setCharges(List<Charge> charges) {
         this.charges = charges;
+    }
+
+    public enum Sort implements Comparator<Reservation> {
+        StartDate {
+            public int compare(Reservation o1, Reservation o2) {
+                Long date1 = o1.getCheckInDate().toEpochDay();
+                Long date2 = o2.getCheckOutDate().toEpochDay();
+                if(!date1.equals(date2))
+                    return o1.getCheckInDate().compareTo(o2.getCheckInDate());
+                else
+                    return o1.getId().compareTo(o2.getId());
+            }
+        }
     }
 }

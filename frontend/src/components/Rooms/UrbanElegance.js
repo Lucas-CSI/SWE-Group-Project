@@ -1,114 +1,56 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import {
-    Box,
-    Typography,
-    Divider,
-    Grid,
-    Card,
-    CardContent,
-    Button,
-    CardMedia,
-    Modal,
-    FormControl,
-    FormControlLabel,
-    RadioGroup,
-    Radio,
-} from '@mui/material';
+import React from 'react';
+import { Box, Typography, Divider, Grid, Card, CardContent, Button, CardMedia } from '@mui/material';
+import axios from "axios";
+import {Link, useNavigate} from "react-router-dom";
+
+import { handleSubmitRoom, generateRoomData } from './RoomModule'
+
+const theme = "URBAN_ELEGANCE";
 
 const RoomOption = ({ title }) => {
-    const [open, setOpen] = useState(false);
-    const [smokingPreference, setSmokingPreference] = useState('non-smoking');
-
-    const handleReserveClick = () => {
-        setOpen(true);
-    };
-
-    const handleConfirm = () => {
-        setOpen(false);
-        const reservation = {
-            room: {
-                bedType: title === "Suite Style" ? "Suite" : "Deluxe",
-                qualityLevel: title === "Suite Style" ? 2 : 1,
-                smokingPreference,
-            },
-        };
-        console.log("Reservation Details:", reservation);
-        alert(`Reservation confirmed for ${title} with ${smokingPreference} preference.`);
-    };
-
+    let rooms = localStorage.getItem("rooms");
+    rooms = JSON.parse(rooms);
+    let isRoomAvailable = rooms[theme][title.substring(0,title.indexOf(" "))].total > 0;
     return (
-        <>
-            <Card sx={{ backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%' }}>
-                {/* Placeholder Image */}
-                <CardMedia>
-                    <Box
-                        component="img"
-                        src="urbanSuite.jpg"
-                        alt={title}
-                        sx={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px' }}
-                    />
-                </CardMedia>
-
-                <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                    <Typography variant="h6" sx={{ marginBottom: '0.5rem' }}>
-                        {title}
-                    </Typography>
-                    <Typography variant="body2" sx={{ marginBottom: '1rem' }}>
-                        Text
-                    </Typography>
-
-                    {/* Reserve Button */}
-                    <Button
-                        onClick={handleReserveClick}
-                        variant="outlined"
-                        color="primary"
-                        sx={{ position: 'absolute', bottom: 10, right: 10 }}
-                    >
-                        View Rates & Reserve
-                    </Button>
-                </CardContent>
-            </Card>
-
-            {/* Smoking Preference Modal */}
-            <Modal open={open} onClose={() => setOpen(false)}>
+        <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
+            {/* Placeholder Image */}
+            <CardMedia>
                 <Box
-                    sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        bgcolor: 'background.paper',
-                        boxShadow: 24,
-                        p: 4,
-                        borderRadius: '8px',
-                        width: '300px',
-                    }}
+                    component="img"
+                    src="urbanSuite.jpg"
+                    alt={title}
+                    sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px', opacity: isRoomAvailable ? 1 : 0.3}}
+                />
+            </CardMedia>
+
+            <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', opacity: isRoomAvailable ? 1 : 0.3}}>
+                <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
+                    {title}
+                </Typography>
+                <Typography variant="body2" sx={{marginBottom: '1rem'}}>
+                    {isRoomAvailable ? "Available" : "Not available."}
+                </Typography>
+
+                {/* View Rates & Reserve */}
+                {!isRoomAvailable ? null : title === "Suite Style" ? <Button
+                    component={Link}
+                    onClick={() => handleSubmitRoom(generateRoomData(theme, 2))}
+                    variant="outlined"
+                    color="primary"
+                    sx={{position: 'absolute', bottom: 10, right: 10}}
                 >
-                    <Typography variant="h6" sx={{ mb: 2 }}>
-                        Smoking Preference
-                    </Typography>
-                    <FormControl component="fieldset">
-                        <RadioGroup
-                            value={smokingPreference}
-                            onChange={(e) => setSmokingPreference(e.target.value)}
-                        >
-                            <FormControlLabel value="smoking" control={<Radio />} label="Smoking" />
-                            <FormControlLabel value="non-smoking" control={<Radio />} label="Non-Smoking" />
-                        </RadioGroup>
-                    </FormControl>
-                    <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-                        <Button
-                            onClick={handleConfirm}
-                            variant="contained"
-                            color="primary"
-                        >
-                            Confirm
-                        </Button>
-                    </Box>
-                </Box>
-            </Modal>
-        </>
+                    Reserve
+                </Button> : <Button
+                    component={Link}
+                    onClick={() => handleSubmitRoom(generateRoomData(theme, 1))}
+                    variant="outlined"
+                    color="primary"
+                    sx={{position: 'absolute', bottom: 10, right: 10}}
+                >
+                    Reserve
+                </Button>}
+            </CardContent>
+        </Card>
     );
 };
 
@@ -145,7 +87,7 @@ const UrbanElegance = () => (
                     <RoomOption title="Suite Style" />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <RoomOption title="Deluxe Style" />
+                    <RoomOption title="Comfort Style" />
                 </Grid>
             </Grid>
         </Box>

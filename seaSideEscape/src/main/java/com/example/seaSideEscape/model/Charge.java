@@ -11,11 +11,16 @@ public class Charge {
     private Long id;
     private String description;
     private BigDecimal amount;
+    private boolean finalized;
+
 
     @ManyToOne
     private Reservation reservation;
 
     public Long getId(){return id;}
+
+    public boolean isFinalized() { return finalized; }
+    public void setFinalized(boolean finalized) { this.finalized = finalized; }
 
     public void setId(Long id){this.id = id;}
 
