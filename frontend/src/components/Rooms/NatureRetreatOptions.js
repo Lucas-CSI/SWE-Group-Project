@@ -1,8 +1,10 @@
-import React from 'react';
-import {Link, useNavigate} from 'react-router-dom';
-
-import { Box, Typography, Divider, Grid, Card, CardContent, Button, CardMedia } from '@mui/material';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+    Box, Typography, Divider, Grid, Card, CardContent, Button, CardMedia, Modal, FormControl, FormControlLabel, RadioGroup, Radio,
+} from '@mui/material';
 import axios from "axios";
+
 const sendRequest = async (reservation, navigate) => {
     localStorage.setItem("reservation", JSON.stringify(reservation));
     const response = await axios.post('http://localhost:8080/reservation/addRoom', reservation, {
@@ -18,101 +20,101 @@ const sendRequest = async (reservation, navigate) => {
     }
 };
 
-const handleComfort = (navigate) => {
-    let reservation = JSON.parse(localStorage.getItem("reservation"));
-    reservation.room.bedType = "Queen";
-    reservation.room.qualityLevel = 1;
-    sendRequest(reservation, navigate);
-};
-
-const handleSuite = (navigate) => {
-    let reservation = JSON.parse(localStorage.getItem("reservation"));
-    reservation.room.bedType = "King";
-    reservation.room.qualityLevel = 2;
-    sendRequest(reservation, navigate);
-};
-
-
 const RoomOption = ({ title }) => {
+    const [open, setOpen] = useState(false);
+    const [smokingPreference, setSmokingPreference] = useState('non-smoking');
     const navigate = useNavigate();
 
     const handleReserve = () => {
-        room:{
-            // bedType: title == "Suite Style" ? "King" : "Queen",
-            //      qualityLevel: title == "Suite Style" ? 2 : 1
-        }
+        setOpen(true);
     };
-    return (
-        <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
-            {/* Placeholder Image */}
-            <CardMedia>
-                <Box
-                    component="img"
-                    src="singleNature.webp"
-                    alt={title}
-                    sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px'}}
-                />
-            </CardMedia>
-            <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
-                    {title}
-                </Typography>
-                <Typography variant="body2" sx={{marginBottom: '1rem'}}>
-                    Text
-                </Typography>
 
-                {/* View Rates & Reserve */}
-                <Button
-                    //component={Link}
-                    onClick={handleReserve}
-                    variant="outlined"
-                    color="primary"
-                    sx={{position: 'absolute', bottom: 10, right: 10}}
-                >
-                    Reserve
-                </Button>
-            </CardContent>
-        </Card>
-    );
+    const handleConfirm = () => {
+        setOpen(false);
+        const reservation = {
+            room: {
+                bedType: title === "Suite Style" ? "Single" : "Double",
+                qualityLevel: title === "Suite Style" ? 2 : 1,
+                smokingPreference,
+            },
+        };
+        sendRequest(reservation, navigate);
+    };
+
 
     return (
-        <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
-            {/* Placeholder Image */}
-            <CardMedia>
+        <>
+            <Card sx={{ backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%' }}>
+                <CardMedia>
+                    <Box
+                        component="img"
+                        src="singleNature.webp"
+                        alt={title}
+                        sx={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px' }}
+                    />
+                </CardMedia>
+                <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                    <Typography variant="h6" sx={{ marginBottom: '0.5rem' }}>
+                        {title}
+                    </Typography>
+                    <Typography variant="body2" sx={{ marginBottom: '1rem' }}>
+                        Text
+                    </Typography>
+                    <Button
+                        onClick={handleReserve}
+                        variant="outlined"
+                        color="primary"
+                        sx={{ position: 'absolute', bottom: 10, right: 10 }}
+                    >
+                        Reserve
+                    </Button>
+                </CardContent>
+            </Card>
+
+            {/* Smoking Preference Modal */}
+            <Modal open={open} onClose={() => setOpen(false)}>
                 <Box
-                    component="img"
-                    src="singleNature.webp"
-                    alt={title}
-                    sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px'}}
-                />
-            </CardMedia>
-
-            <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
-                    {title}
-                </Typography>
-                <Typography variant="body2" sx={{marginBottom: '1rem'}}>
-                    Text
-                </Typography>
-
-                {/* View Rates & Reserve */}
-                <Button
-                    component={Link}
-                    onClick={handleComfort}
-                    variant="outlined"
-                    color="primary"
-                    sx={{position: 'absolute', bottom: 10, right: 10}}
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        p: 4,
+                        borderRadius: '8px',
+                        width: '300px',
+                    }}
                 >
-                    Reserve
-                </Button>
-            </CardContent>
-        </Card>
+                    <Typography variant="h6" sx={{ mb: 2 }}>
+                        Smoking Preference
+                    </Typography>
+                    <FormControl component="fieldset">
+                        <RadioGroup
+                            value={smokingPreference}
+                            onChange={(e) => setSmokingPreference(e.target.value)}
+                        >
+                            <FormControlLabel value="smoking" control={<Radio />} label="Smoking" />
+                            <FormControlLabel value="non-smoking" control={<Radio />} label="Non-Smoking" />
+                        </RadioGroup>
+                    </FormControl>
+                    <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+                        <Button
+                            onClick={handleConfirm}
+                            variant="contained"
+                            color="primary"
+                        >
+                            Confirm
+                        </Button>
+                    </Box>
+                </Box>
+            </Modal>
+        </>
     );
 };
 
 const NatureRetreatOptions = () => (
     <Box>
-        {/*  Top */}
         <Box
             sx={{
                 width: '100%',
@@ -132,7 +134,6 @@ const NatureRetreatOptions = () => (
             </Typography>
         </Box>
 
-        {/* Room Options */}
         <Box sx={{ padding: '2rem', paddingBottom: '4rem' }}>
             <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
                 Explore Our Rooms

@@ -115,10 +115,6 @@ const NavigationBar = () => {
                             Rooms & Suites
                             <span className="underline"></span>
                         </Link>
-                        <Link to="/reservation" className="nav-link">
-                            Make a Reservation
-                            <span className="underline"></span>
-                        </Link>
                         <Link to="/events" className="nav-link">
                             Events
                             <span className="underline"></span>

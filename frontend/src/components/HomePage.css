@@ -1,0 +1,97 @@
+/* Background Video Container */
+.background-video-container {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+}
+
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: -1;
+}
+
+/* Hero Text Styling */
+.hero-text {
+    z-index: 2;
+    color: white;
+    font-size: 4rem;
+    font-family: 'Script MT Bold', sans-serif;
+    font-weight: 600;
+    text-align: center;
+    text-shadow: 6px 6px 15px rgba(0, 128, 128, 0.8);
+    padding: 1.5rem 2.5rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 6px 15px rgba(0, 128, 128, 0.4);
+    margin-bottom: 2rem;
+}
+
+/* Check-in/Check-out Container */
+.check-in-out-container {
+    z-index: 2;
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    width: fit-content;
+}
+
+/* Individual Box Styling */
+.check-in-out-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Check-in/Check-out Label */
+.check-in-out-label {
+    font-family: 'Arial', sans-serif;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Button Styling */
+.check-in-out-button {
+    background-color: rgba(0, 59, 74, 0.65) !important;
+    color: white;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    z-index: 3;
+}
+
+.check-in-out-button:hover {
+    background-color: rgb(25, 122, 140) !important;
+    transform: scale(1.05);
+}

@@ -1,8 +1,18 @@
 /* NavigationBar.css */
 
 .app-bar {
-    background-color: rgba(13, 109, 131, 0.65); /* Adjusted for better contrast */
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(8px);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.app-bar.scrolled {
+    background-color: rgba(255, 255, 255, 0.6) !important;
 }
 
 .nav-link {
@@ -16,7 +26,7 @@
 }
 
 .nav-link:hover {
-    color: rgba(0, 59, 74, 0.65); /* on hover color */
+    color: rgba(0, 59, 74, 0.65);
     transform: scale(1.1);
 }
 
@@ -26,7 +36,7 @@
     left: 0;
     height: 2px;
     width: 100%;
-    background-color: rgba(0, 59, 74, 0.65); /* underline color */
+    background-color: rgba(0, 59, 74, 0.65);
     transform: scaleX(0);
     transition: transform 0.3s ease;
     transform-origin: left;
