@@ -89,15 +89,17 @@ public class ReservationService {
 
         if(account.isPresent()) {
             accountObject = account.get();
-            reservation = new Reservation();
-            reservation.setCheckInDate(checkInDate);
-            reservation.setCheckOutDate(checkOutDate);
-            reservation.setBooked(false);
-            reservation.setGuest(accountObject);
+            if(accountObject.getUnbookedReservation() == null) {
+                reservation = new Reservation();
+                reservation.setCheckInDate(checkInDate);
+                reservation.setCheckOutDate(checkOutDate);
+                reservation.setBooked(false);
+                reservation.setGuest(accountObject);
 
-            accountObject.setUnbookedReservation(reservation);
-            reservationRepository.save(reservation);
-            accountRepository.save(accountObject);
+                accountObject.setUnbookedReservation(reservation);
+                reservationRepository.save(reservation);
+                accountRepository.save(accountObject);
+            }
         }else{
             return ResponseEntity.badRequest().body("Account not found");
         }
