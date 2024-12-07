@@ -3,6 +3,7 @@
 // TODO: Add expiration date (5-15min range) to unbooked reservations and a SINGULAR thread that removes expired reservations
 package com.example.seaSideEscape.service;
 
+import com.example.seaSideEscape.SerializeModule;
 import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.model.Booking;
 import com.example.seaSideEscape.repository.AccountRepository;
@@ -32,6 +33,7 @@ public class ReservationService {
     private final AccountService accountService;
     private final BookingService bookingService;
     private final AccountRepository accountRepository;
+    private SerializeModule<Room> roomSerializeModule = new SerializeModule<Room>();
     Logger logger = LoggerFactory.getLogger(ReservationService.class);
 
     @Autowired
@@ -112,6 +114,9 @@ public class ReservationService {
         Optional<Account> account = accountService.findAccountByUsername(username);
         Account accountObject;
         Reservation accountsReservation;
+
+        //logger.debug("LOGGER STARTING SDJFWSDJGERWJGW");
+        //logger.debug(roomSerializeModule.objectToJSON(room));
 
         if(account.isPresent()) {
             accountObject = account.get();

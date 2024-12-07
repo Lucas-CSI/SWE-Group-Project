@@ -10,4 +10,9 @@ public class SerializeModule<T> {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(objects);
     }
+
+    public String objectToJSON(T object) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(object);
+    }
 }
