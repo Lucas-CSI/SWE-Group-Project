@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.math.BigDecimal;
+
 @Entity
 public class Venue {
     @Id
@@ -17,6 +19,9 @@ public class Venue {
     private int capacity;
     private boolean isBooked;
     private int floorNumber;
+    private BigDecimal baseRate;
+    private BigDecimal additionalCharges;
+    private boolean isPaid;
 
     public Long getId(){return id;}
 
@@ -41,5 +46,17 @@ public class Venue {
     public int getFloorNumber() { return floorNumber; }
 
     public void setFloorNumber(int floorNumber) { this.floorNumber = floorNumber; }
+
+    public BigDecimal getBaseRate(){return baseRate;}
+
+    public void setBaseRate(BigDecimal baseRate){this.baseRate = baseRate;}
+
+    public BigDecimal getAdditionalCharges(){return additionalCharges;}
+
+    public void setAdditionalCharges(BigDecimal additionalCharges){this.additionalCharges = additionalCharges;}
+
+    public void setPaid(boolean isPaid) { this.isPaid = isPaid;}
+
+    private boolean getIsPaid(){return isPaid;}
 }
 

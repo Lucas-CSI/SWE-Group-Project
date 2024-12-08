@@ -29,12 +29,33 @@ public class AccountController {
     }
 
     @PostMapping("/login")
-    public String login(HttpServletResponse response, @RequestBody Account account) throws NoSuchAlgorithmException {
+    public ResponseEntity<String> login(HttpServletResponse response, @RequestBody Account account) throws Exception {
         Optional<Account> acc = accountService.canLogin(account);
         if(acc.isPresent()){
-            response.addCookie(new Cookie("username", account.getUsername()));
-            response.addCookie(new Cookie("password", acc.get().getPassword()));
+            Cookie username = new Cookie("username", account.getUsername());
+            Cookie password = new Cookie("password", account.getPassword());
+            username.setPath("/");
+            password.setPath("/");
+            username.setMaxAge(24 * 60 * 60);
+            password.setMaxAge(24 * 60 * 60);
+            response.addCookie(username);
+            response.addCookie(password);
+        }else{
+            return new ResponseEntity<>("Account not found.", HttpStatus.CONFLICT);
         }
+        return new ResponseEntity<>("Successfully logged into account.", HttpStatus.OK);
+    }
+
+    @PostMapping("/logoutAccount")
+    public String logout(HttpServletResponse response) throws Exception {
+        Cookie username = new Cookie("username", null);
+        Cookie password = new Cookie("password", null);
+        username.setPath("/");
+        password.setPath("/");
+        username.setMaxAge(0);
+        password.setMaxAge(0);
+        response.addCookie(username);
+        response.addCookie(password);
         return "done";
     }
 
@@ -94,10 +115,5 @@ public class AccountController {
     @PostMapping("/createAccount")
     public ResponseEntity<String> createAccount(@RequestBody Account account) throws NoSuchAlgorithmException {
         return accountService.createAccount(account);
-    }
-
-    @GetMapping("/createAccount")
-    public String createAccountPage(){
-        return "create acccount";
     }
 }

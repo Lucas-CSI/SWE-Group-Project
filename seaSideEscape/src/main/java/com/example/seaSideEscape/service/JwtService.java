@@ -24,10 +24,10 @@
 //
 //    private AccountRepository accountRepository;
 //
-//    @Value("${security.jwt.secret-key}")
+//    @Value("${security.jwt.secret-key}") --> check if set in application.properties
 //    private String secretKey;
 //
-//    @Value("${security.jwt.expiration-time}")
+//    @Value("${security.jwt.expiration-time}") --> grabs from application.properties
 //    private long jwtExpiration;
 //
 //    public String extractUsername(String token) {
