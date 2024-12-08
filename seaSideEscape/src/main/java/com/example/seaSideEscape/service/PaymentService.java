@@ -59,7 +59,7 @@ public class PaymentService {
                                       String cardNumber, String expirationDate, String cvv) {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
-
+      
         BigDecimal roomRate = reservation.getRoomRate();
         List<Charge> charges = reservation.getCharges();
         BigDecimal totalAmount = calculateTotalAmount(charges, roomRate);

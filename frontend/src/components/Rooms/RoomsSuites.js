@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -19,51 +19,91 @@ import Slider from 'react-slick';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { formattedGetAvailableRooms } from "./RoomModule";
+const apiService = require("../../services/apiService");
 
 const natureImages = ['beachyBed.jpg', 'beachView.jpg', 'beachBed.jpg'];
 const urbanImages = ['modernBeachBed.jpg', 'urbanpt2.jpeg', 'modernBed.jpg'];
 const vintageImages = ['vintageBed.jpg', 'vintageView.jpg', 'vintageType.jpg'];
 
 const RoomSuites = () => {
-    return (
-        <Box sx={{ padding: '2rem' }}>
-            <Typography variant="h4" align="center" sx={{ marginBottom: '2rem' }}>
-                Room Categories
+
+    const [availableRooms, setAvailableRooms ] = useState({total: 0});
+    useEffect(() => {
+        const getAvailableRooms = async () => {
+            console.log("Calling formattedGetAvailableRooms");
+            const rooms = await formattedGetAvailableRooms();
+            setAvailableRooms(rooms);
+        }
+        getAvailableRooms();
+    }, []);
+
+    return availableRooms.total === 0 ? (<p>Loading...</p>) : (
+        <Box sx={{padding: '2rem'}}>
+            <Typography variant="h4" align="center" sx={{marginBottom: '2rem'}}>
+                Available Room Categories
                 <Typography variant="h5" component="div" fontSize={17}>
                     Available in multiple quality levels and smoking and non-smoking options
                 </Typography>
             </Typography>
             <Grid container spacing={4} justifyContent="center">
-                <Grid item xs={12} md={8}>
+                {availableRooms["NATURE_RETREAT"].total > 0 ? <Grid item xs={12} md={8}>
                     <RoomCategory
                         title="Nature Retreat"
                         description="Single, Double, and Family rooms available."
                         images={natureImages}
                         options={['Single Room', 'Double Room', 'Family Room']}
+                        hide={false}
                     />
-                </Grid>
-                <Grid item xs={12} md={8}>
+                </Grid> : <Grid item xs={12} md={8} sx={{opacity:0.5}}>
+                    <RoomCategory
+                        title="Nature Retreat"
+                        description="No rooms available."
+                        images={natureImages}
+                        options={['Single Room', 'Double Room', 'Family Room']}
+                        hide={true}
+                    />
+                </Grid>}
+                {availableRooms["URBAN_ELEGANCE"].total > 0 ? <Grid item xs={12} md={8}>
                     <RoomCategory
                         title="Urban Elegance"
                         description="Suite and Deluxe rooms available."
                         images={urbanImages}
                         options={['Suite Room', 'Deluxe Room']}
+                        hide={false}
                     />
-                </Grid>
-                <Grid item xs={12} md={8}>
+                </Grid> : <Grid item xs={12} md={8} sx={{opacity:0.5}}>
+                    <RoomCategory
+                        title="Urban Elegance"
+                        description="No rooms available."
+                        images={urbanImages}
+                        options={['Suite Room', 'Deluxe Room']}
+                        hide={true}
+                    />
+                </Grid>}
+                {availableRooms["VINTAGE_CHARM"].total > 0 ? <Grid item xs={12} md={8}>
                     <RoomCategory
                         title="Vintage Charm"
                         description="Standard and Deluxe rooms available."
                         images={vintageImages}
                         options={['Standard Room', 'Standard Room', 'Deluxe Room']}
+                        hide={false}
                     />
-                </Grid>
+                </Grid> : <Grid item xs={12} md={8} sx={{opacity:0.5}}>
+                    <RoomCategory
+                        title="Vintage Charm"
+                        description="No rooms available."
+                        images={vintageImages}
+                        options={['Standard Room', 'Standard Room', 'Deluxe Room']}
+                        hide={true}
+                    />
+                </Grid>}
             </Grid>
         </Box>
     );
 };
 
-const RoomCategory = ({ title, description, images, options }) => {
+const RoomCategory = ({ title, description, images, options, hide }) => {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -80,13 +120,14 @@ const RoomCategory = ({ title, description, images, options }) => {
     const handleClose = () => setOpen(false);
 
     const handleNavigate = () => {
+        let reservation = JSON.parse(localStorage.getItem("reservation"));
         if (title === "Nature Retreat") {
             navigate('/natureRetreat');
         }
         if (title === "Urban Elegance") {
             navigate('/urbanElegance');
         }
-        if (title == "Vintage Charm") {
+        if (title === "Vintage Charm") {
             navigate('/vintageCharm');
         }
     };
@@ -174,14 +215,15 @@ const RoomCategory = ({ title, description, images, options }) => {
             </CardContent>
 
             {/* View Rates & Reserve */}
-            <Button
+
+            {hide ? null : <Button
                 onClick={handleNavigate}
                 variant="contained"
                 color="primary"
                 sx={{ position: 'absolute', bottom: 30, right: 30 }}
             >
                 View Rates & Reserve
-            </Button>
+            </Button>}
         </Card>
     );
 };
