@@ -15,6 +15,7 @@ import {
 import axios from 'axios';
 import {Link, useNavigate} from "react-router-dom";
 
+
 // Enums for the select fields
 const themes = ['Nature Retreat', 'Urban Elegance', 'Vintage Charm'];
 const qualityLevels = ['Economy', 'Standard', 'Premium', 'Luxury'];
@@ -25,6 +26,8 @@ var cardStyle = {
     width: '25vw',
     height: '43vw'
 }
+
+const apiService = require("../../services/apiService");
 
 for(let i = 0; i < themes.length; ++i){
     themeMap[themes[i]] = i;
@@ -39,55 +42,32 @@ const events = [
 
 export default function ReservationPage() {
     const navigate = useNavigate();
-    const [reservation, setReservation] = useState({
-        startDate: '',
-        endDate: '',
-        room: {
-            bedType: '',
-            theme: '',
-            qualityLevel: '',
-            smokingAllowed: false,
-            oceanView: false,
-        }
+    let [reservation, setReservation] = useState({
+        checkInDate: "",
+        checkOutDate: ""
     });
+    let reservationData = new FormData();
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        const isRoomProperty = ['bedType', 'theme', 'qualityLevel', 'smokingAllowed', 'oceanView'].includes(name);
-
-        setReservation((prev) => ({
-            ...prev,
-            ...(isRoomProperty
-                ? { room: { ...prev.room, [name]: type === 'checkbox' ? checked : value } }
-                : { [name]: type === 'checkbox' ? checked : value })
-        }));
+        console.log(name);
+        reservationData.set(name, value);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (!reservation.startDate || !reservation.endDate) {
-            alert("Please select both check-in and check-out dates.");
-            return;
-        }
-
-        try {
-            console.log(reservation)
-            reservation.room.theme = themeMap[reservation.room.theme];
-            reservation.room.qualityLevel = qualityMap[reservation.room.qualityLevel];
-
-            const reservationData = {
-                startDate: reservation.startDate,
-                endDate: reservation.endDate,
-                room: {
-                    ...reservation.room,
-                },
-            };
-
-            localStorage.setItem("reservation", JSON.stringify(reservation));
+        console.log(reservation);
+        const response = await apiService.generatePostRequest("reservation/new", reservationData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+        );
+        if(response.status === 200)
             navigate(`/rooms`);
-        } catch (error) {
-            console.error('Error submitting reservation', error);
+        else{
+            // TODO: ADD ERROR TEXT INSTEAD OF USING ALERT
+            console.error('Error submitting reservation', response.response.data);
             alert('There was an error submitting your reservation.');
         }
     };
@@ -101,7 +81,7 @@ export default function ReservationPage() {
                 <TextField
                     label="Check-in Date"
                     type="date"
-                    name="startDate"
+                    name="checkInDate"
                     value={reservation.startDate}
                     onChange={handleChange}
                     fullWidth
@@ -113,7 +93,7 @@ export default function ReservationPage() {
                 <TextField
                     label="Check-out Date"
                     type="date"
-                    name="endDate"
+                    name="checkOutDate"
                     value={reservation.endDate}
                     onChange={handleChange}
                     fullWidth
@@ -122,11 +102,20 @@ export default function ReservationPage() {
                         shrink: true,
                     }}
                 />
-                <FormControlLabel
+                <Button type="submit" variant="contained" color="primary" fullWidth>
+                    Submit Reservation
+                </Button>
+            </form>
+        </Container>
+    );
+}
+
+/*
+ <FormControlLabel
                     control={
                         <Checkbox
-                            name="smokingAllowed"
-                            checked={reservation.room.smokingAllowed}
+                            name="isSmokingAllowed"
+                            checked={reservation.rooms[0].isSmokingAllowed}
                             onChange={handleChange}
                         />
                     }
@@ -136,16 +125,10 @@ export default function ReservationPage() {
                     control={
                         <Checkbox
                             name="oceanView"
-                            checked={reservation.room.oceanView}
+                            checked={reservation.rooms[0].oceanView}
                             onChange={handleChange}
                         />
                     }
                     label="Ocean View"
                 />
-                <Button type="submit" variant="contained" color="primary" fullWidth>
-                    Submit Reservation
-                </Button>
-            </form>
-        </Container>
-    );
-}
+ */

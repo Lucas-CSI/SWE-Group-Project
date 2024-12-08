@@ -13,6 +13,8 @@ import javax.swing.text.html.Option;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
 // Change to RequestMapping????
 @RestController
 public class AccountController {
@@ -33,7 +35,8 @@ public class AccountController {
         Optional<Account> acc = accountService.canLogin(account);
         if(acc.isPresent()){
             Cookie username = new Cookie("username", account.getUsername());
-            Cookie password = new Cookie("password", account.getPassword());
+            Cookie password = new Cookie("password", acc.get().getPassword());
+
             username.setPath("/");
             password.setPath("/");
             username.setMaxAge(24 * 60 * 60);
@@ -41,7 +44,7 @@ public class AccountController {
             response.addCookie(username);
             response.addCookie(password);
         }else{
-            return new ResponseEntity<>("Account not found.", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Invalid username or password.", HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>("Successfully logged into account.", HttpStatus.OK);
     }
@@ -58,6 +61,9 @@ public class AccountController {
         response.addCookie(password);
         return "done";
     }
+    // TODO: Get user's reservations
+    //@RequestMapping(value = "/profile/reservations", method = GET)
+    //@ResponseBody
 
     @GetMapping("/adminLogin")
     public String adminLogin(){return "adminLogin";}

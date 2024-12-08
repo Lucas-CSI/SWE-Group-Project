@@ -4,12 +4,14 @@ import com.example.seaSideEscape.model.Reservation;
 import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.service.ReservationService;
 import com.example.seaSideEscape.service.RoomService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 import java.time.LocalDate;
+
 
 /**
  * REST controller for handling reservation-related requests in the SeaSide Escape application.

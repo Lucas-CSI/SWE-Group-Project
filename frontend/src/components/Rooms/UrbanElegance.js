@@ -3,55 +3,14 @@ import { Box, Typography, Divider, Grid, Card, CardContent, Button, CardMedia } 
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 
-const sendRequest = async(reservation, navigate) => {
-    localStorage.setItem("reservation",JSON.stringify(reservation));
-    const response = await axios.post('http://localhost:8080/reservation/addRoom', reservation, {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        withCredentials: true
-    });
-    if(response.status === 200){
-        navigate(`/reservation/payment/${reservation.id}`);
-    }else{
-        alert("Error: Room not available.");
-    }
-}
+import { handleSubmitRoom, generateRoomData } from './RoomModule'
 
-const handleComfort = async (navigate) => {
-    let reservation = JSON.parse(localStorage.getItem("reservation"));
-    reservation.room.bedType = "Queen";
-    reservation.room.qualityLevel = 1;
-    sendRequest(reservation, navigate)
-}
+const theme = "URBAN_ELEGANCE";
 
-const handleSuite = async (navigate) => {
-    let reservation = JSON.parse(localStorage.getItem("reservation"));
-    reservation.room.bedType = "King";
-    reservation.room.qualityLevel = 2;
-    sendRequest(reservation, navigate)
-}
-
-
-const RoomOption = ({theme, title }) => {
-
-    const navigate = useNavigate();
-
-    const handleReserve = () => {
-        const storedReservation = JSON.parse(localStorage.getItem("reservation"));
-        const reservation = {
-            ...storedReservation,
-            room: {
-                ...storedReservation.room,
-                bedType: title,
-                theme: theme,
-                qualityLevel: title === "Single Style" ? "Executive" : title === "Comfort Style" ? "Comfort": "Comfort",
-            }
-        };
-        localStorage.setItem("reservation", JSON.stringify(reservation));
-        navigate("/reservation/payment/${reservation.id}");
-    };
-
+const RoomOption = ({ title }) => {
+    let rooms = localStorage.getItem("rooms");
+    rooms = JSON.parse(rooms);
+    let isRoomAvailable = rooms[theme][title.substring(0,title.indexOf(" "))].total > 0;
     return (
         <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
             {/* Placeholder Image */}
@@ -60,64 +19,39 @@ const RoomOption = ({theme, title }) => {
                     component="img"
                     src="urbanSuite.jpg"
                     alt={title}
-                    sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px'}}
+                    sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px', opacity: isRoomAvailable ? 1 : 0.3}}
                 />
             </CardMedia>
 
-            <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+            <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', opacity: isRoomAvailable ? 1 : 0.3}}>
                 <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
                     {title}
                 </Typography>
                 <Typography variant="body2" sx={{marginBottom: '1rem'}}>
-                    Text
+                    {isRoomAvailable ? "Available" : "Not available."}
                 </Typography>
-                {/* View Rates & Reserve */}
-                <Button
-                    //component={Link}
-                    onClick={handleReserve}
-                    variant="outlined"
-                    color="primary"
-                    sx={{position: 'absolute', bottom: 10, right: 10}}
-                >
-                    Reserve
-                </Button>
-            </CardContent>
-        </Card>
-    );
 
-    return (
-        <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
-            {/* Placeholder Image */}
-            <CardMedia>
-                <Box
-                    component="img"
-                    src="urbanSuite.jpg"
-                    alt={title}
-                    sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px'}}
-                />
-            </CardMedia>
-
-            <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
-                    {title}
-                </Typography>
-                <Typography variant="body2" sx={{marginBottom: '1rem'}}>
-                    Text
-                </Typography>
                 {/* View Rates & Reserve */}
-                <Button
+                {!isRoomAvailable ? null : title === "Suite Style" ? <Button
                     component={Link}
-                    onClick={handleComfort}
+                    onClick={() => handleSubmitRoom(generateRoomData(theme, 2))}
                     variant="outlined"
                     color="primary"
                     sx={{position: 'absolute', bottom: 10, right: 10}}
                 >
                     Reserve
-                </Button>
+                </Button> : <Button
+                    component={Link}
+                    onClick={() => handleSubmitRoom(generateRoomData(theme, 1))}
+                    variant="outlined"
+                    color="primary"
+                    sx={{position: 'absolute', bottom: 10, right: 10}}
+                >
+                    Reserve
+                </Button>}
             </CardContent>
         </Card>
     );
-
 };
 
 const UrbanElegance = () => (
@@ -150,10 +84,10 @@ const UrbanElegance = () => (
             <Divider sx={{ marginBottom: '1.5rem' }} />
             <Grid container spacing={4} justifyContent="center">
                 <Grid item xs={12} md={4}>
-                    <RoomOption title="Suite Style" theme="Urban Elegance"/>
+                    <RoomOption title="Suite Style" />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <RoomOption title="Comfort Style" theme="Urban Elegance"/>
+                    <RoomOption title="Comfort Style" />
                 </Grid>
             </Grid>
         </Box>
