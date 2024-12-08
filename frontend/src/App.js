@@ -22,7 +22,7 @@ function App() {
         <Router>
             <NavigationBar />
             {/* Adding some spacing for the AppBar */}
-            <Box sx={{ paddingTop: { xs: '56px', sm: '64px' } }}>
+            <Box sx={{ paddingTop: {  } }}>
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/reservation/payment/:reservationId" element={<PaymentScreen />} />

@@ -36,6 +36,7 @@ public class AccountController {
         if(acc.isPresent()){
             Cookie username = new Cookie("username", account.getUsername());
             Cookie password = new Cookie("password", acc.get().getPassword());
+
             username.setPath("/");
             password.setPath("/");
             username.setMaxAge(24 * 60 * 60);
