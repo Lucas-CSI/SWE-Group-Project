@@ -101,6 +101,7 @@ const NavigationBar = () => {
     const handleLogout = async () => {
         const response = await generatePostRequest("logoutAccount", {});
         if (response.status === 200) {
+            setCartItems([]);
             navigate("/");
             alert("Logged out.");
         }else{
@@ -132,14 +133,15 @@ const NavigationBar = () => {
     const [cartItems, setCartItems] = useState([]);
 
     useEffect(() => {
-        setCartItems([]);
         const getCart = async () => {
             let response = await generateGetRequest("/getCart");
             let cart = response.data;
+            let tempItems = [];
 
             for(let i in cart){
-                setCartItems([...cartItems, {name: cart[i].qualityLevel + " Style Room", price: cart[i].maxRate}]);
+                tempItems = [...tempItems,{name: cart[i].qualityLevel + " Style Room", price: cart[i].maxRate}];
             }
+            setCartItems(tempItems);
         }
         if(getLoginStatus()) {
             getCart();
