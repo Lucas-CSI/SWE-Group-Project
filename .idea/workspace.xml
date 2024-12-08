@@ -7,9 +7,6 @@
     <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Merge Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/Rooms/NatureRetreatOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/NatureRetreatOptions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Rooms/RoomModule.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/RoomModule.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Rooms/UrbanElegance.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/UrbanElegance.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Rooms/VintageCharm.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/VintageCharm.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +96,7 @@
       <recent name="com.example.seaSideEscape" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.SeaSideEscapeApplication">
+  <component name="RunManager" selected="npm.start">
     <configuration name="SeaSideEscapeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="seaSideEscape" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.seaSideEscape.SeaSideEscapeApplication" />
@@ -171,7 +168,7 @@
       <workItem from="1733335120705" duration="4917000" />
       <workItem from="1733441265398" duration="4640000" />
       <workItem from="1733526594441" duration="8634000" />
-      <workItem from="1733592137369" duration="11602000" />
+      <workItem from="1733592137369" duration="19609000" />
     </task>
     <task id="LOCAL-00001" summary="Added Others Implementation">
       <option name="closed" value="true" />
