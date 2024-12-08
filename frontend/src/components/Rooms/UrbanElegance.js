@@ -3,106 +3,55 @@ import { Box, Typography, Divider, Grid, Card, CardContent, Button, CardMedia } 
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 
-const sendRequest = async(reservation) => {
-    localStorage.setItem("reservation",JSON.stringify(reservation));
-    const response = await axios.post('http://localhost:8080/reservation/addRoom', reservation, {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        withCredentials: true
-    });
-    if(response.status === 200){
-        window.location.replace("http://localhost:3000/reservation/confirmation");
-    }else{
-        alert("Error: Room not available.");
-    }
-}
+import { handleSubmitRoom, generateRoomData } from './RoomModule'
 
-const handleComfort = async () => {
-    let reservation = JSON.parse(localStorage.getItem("reservation"));
-    reservation.room.bedType = "Queen";
-    reservation.room.qualityLevel = 1;
-    sendRequest(reservation)
-}
-
-const handleSuite = async () => {
-    let reservation = JSON.parse(localStorage.getItem("reservation"));
-    reservation.room.bedType = "King";
-    reservation.room.qualityLevel = 2;
-    sendRequest(reservation)
-}
-
+const theme = "URBAN_ELEGANCE";
 
 const RoomOption = ({ title }) => {
-    if(title === "Suite Style") {
-        return (
-            <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
-                {/* Placeholder Image */}
-                <CardMedia>
-                    <Box
-                        component="img"
-                        src="urbanSuite.jpg"
-                        alt={title}
-                        sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px'}}
-                    />
-                </CardMedia>
+    let rooms = localStorage.getItem("rooms");
+    rooms = JSON.parse(rooms);
+    let isRoomAvailable = rooms[theme][title.substring(0,title.indexOf(" "))].total > 0;
+    return (
+        <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
+            {/* Placeholder Image */}
+            <CardMedia>
+                <Box
+                    component="img"
+                    src="urbanSuite.jpg"
+                    alt={title}
+                    sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px', opacity: isRoomAvailable ? 1 : 0.3}}
+                />
+            </CardMedia>
 
-                <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                    <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
-                        {title}
-                    </Typography>
-                    <Typography variant="body2" sx={{marginBottom: '1rem'}}>
-                        Text
-                    </Typography>
+            <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', opacity: isRoomAvailable ? 1 : 0.3}}>
+                <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
+                    {title}
+                </Typography>
+                <Typography variant="body2" sx={{marginBottom: '1rem'}}>
+                    {isRoomAvailable ? "Available" : "Not available."}
+                </Typography>
 
-                    {/* View Rates & Reserve */}
-                    <Button
-                        component={Link}
-                        onClick={handleSuite}
-                        variant="outlined"
-                        color="primary"
-                        sx={{position: 'absolute', bottom: 10, right: 10}}
-                    >
-                        Reserve
-                    </Button>
-                </CardContent>
-            </Card>
-        );
-    }else{
-        return (
-            <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
-                {/* Placeholder Image */}
-                <CardMedia>
-                    <Box
-                        component="img"
-                        src="urbanSuite.jpg"
-                        alt={title}
-                        sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px'}}
-                    />
-                </CardMedia>
-
-                <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                    <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
-                        {title}
-                    </Typography>
-                    <Typography variant="body2" sx={{marginBottom: '1rem'}}>
-                        Text
-                    </Typography>
-
-                    {/* View Rates & Reserve */}
-                    <Button
-                        component={Link}
-                        onClick={handleComfort}
-                        variant="outlined"
-                        color="primary"
-                        sx={{position: 'absolute', bottom: 10, right: 10}}
-                    >
-                        Reserve
-                    </Button>
-                </CardContent>
-            </Card>
-        );
-    }
+                {/* View Rates & Reserve */}
+                {!isRoomAvailable ? null : title === "Suite Style" ? <Button
+                    component={Link}
+                    onClick={() => handleSubmitRoom(generateRoomData(theme, 2))}
+                    variant="outlined"
+                    color="primary"
+                    sx={{position: 'absolute', bottom: 10, right: 10}}
+                >
+                    Reserve
+                </Button> : <Button
+                    component={Link}
+                    onClick={() => handleSubmitRoom(generateRoomData(theme, 1))}
+                    variant="outlined"
+                    color="primary"
+                    sx={{position: 'absolute', bottom: 10, right: 10}}
+                >
+                    Reserve
+                </Button>}
+            </CardContent>
+        </Card>
+    );
 };
 
 const UrbanElegance = () => (

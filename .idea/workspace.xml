@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Merge Changes">
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/configs/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/configs/SecurityConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/repository/ReservationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/repository/ReservationRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/repository/RoomRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/repository/RoomRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/BillingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/BillingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/PaymentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/ReservationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/ReservationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Rooms/NatureRetreatOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/NatureRetreatOptions.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,7 +16,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -41,22 +36,22 @@
     &quot;assignee&quot;: &quot;KGarza1&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Lucas-CSI/SWE-Group-Project.git",
-    "accountId": "b13ecf6c-844e-459e-9318-145b133e8ba2"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Lucas-CSI/SWE-Group-Project.git&quot;,
+    &quot;accountId&quot;: &quot;168b5ab3-6ace-480d-a8e9-9366e289e4e5&quot;
   },
-  "recentNewPullRequestHead": {
-    "server": {
-      "useHttp": false,
-      "host": "github.com",
-      "port": null,
-      "suffix": null
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
     },
-    "owner": "Lucas-CSI",
-    "repository": "SWE-Group-Project"
+    &quot;owner&quot;: &quot;Lucas-CSI&quot;,
+    &quot;repository&quot;: &quot;SWE-Group-Project&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -74,9 +69,9 @@
     &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;Spring Boot.SeaSideEscapeApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Francisco&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;MultiRoomPerReservation&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/bakga/SWE-Group-Project/frontend&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/lmber/OneDrive/Desktop/SWE/Lab14&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -101,7 +96,7 @@
       <recent name="com.example.seaSideEscape" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.SeaSideEscapeApplication">
+  <component name="RunManager" selected="npm.start">
     <configuration name="SeaSideEscapeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="seaSideEscape" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.seaSideEscape.SeaSideEscapeApplication" />
@@ -110,7 +105,7 @@
       </method>
     </configuration>
     <configuration name="start" type="js.build_tools.npm" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/seaSideEscape/package.json" />
+      <package-json value="$PROJECT_DIR$/frontend/package.json" />
       <command value="start" />
       <node-interpreter value="project" />
       <envs />
@@ -155,6 +150,25 @@
       <workItem from="1730663131604" duration="21000" />
       <workItem from="1730740639320" duration="2582000" />
       <workItem from="1731617493419" duration="8710000" />
+      <workItem from="1731637429854" duration="4110000" />
+      <workItem from="1731712124256" duration="9000" />
+      <workItem from="1731717733901" duration="188000" />
+      <workItem from="1731943424213" duration="6691000" />
+      <workItem from="1731973339906" duration="51000" />
+      <workItem from="1732039776340" duration="759000" />
+      <workItem from="1732086647811" duration="9346000" />
+      <workItem from="1732320697737" duration="190000" />
+      <workItem from="1732596543790" duration="2611000" />
+      <workItem from="1732729396133" duration="165000" />
+      <workItem from="1732729581714" duration="3147000" />
+      <workItem from="1732906838717" duration="400000" />
+      <workItem from="1733090807942" duration="7858000" />
+      <workItem from="1733120024786" duration="127000" />
+      <workItem from="1733180935120" duration="4216000" />
+      <workItem from="1733335120705" duration="4917000" />
+      <workItem from="1733441265398" duration="4640000" />
+      <workItem from="1733526594441" duration="8634000" />
+      <workItem from="1733592137369" duration="19609000" />
     </task>
     <task id="LOCAL-00001" summary="Added Others Implementation">
       <option name="closed" value="true" />
@@ -272,5 +286,15 @@
     <MESSAGE value="Updated the billingSystem frontend" />
     <MESSAGE value="Merge Changes" />
     <option name="LAST_COMMIT_MESSAGE" value="Merge Changes" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.io.EOFException" package="java.io" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

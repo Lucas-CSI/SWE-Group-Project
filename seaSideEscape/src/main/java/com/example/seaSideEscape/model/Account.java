@@ -12,10 +12,23 @@ public class Account{
     private String username;
     private String password;
     private String salt;
+    private String email;
     private Boolean isAdmin = false;
 
-    @OneToMany
+    @ManyToOne
+    private Reservation unbookedReservation;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id")
     private List<Reservation> reservations;
+
+    public Reservation getUnbookedReservation() {
+        return unbookedReservation;
+    }
+
+    public void setUnbookedReservation(Reservation unbookedReservation) {
+        this.unbookedReservation = unbookedReservation;
+    }
 
     public List<Reservation> getReservations() {
         return reservations;
@@ -29,6 +42,13 @@ public class Account{
         this.reservations.add(reservation);
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getSalt() {
         return salt;

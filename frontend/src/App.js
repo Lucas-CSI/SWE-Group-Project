@@ -1,44 +1,42 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import NavigationBar from './components/NavigationBar';
-import HomePage from './components/HomePage';
-import PaymentScreen from './components/PaymentScreen';
-import EventsPage from './components/EventPageComponents/EventsPage';
-import EventReservationPage from "./components/EventPageComponents/EventReservationPage";
-import EventSummaryPage from "./components/EventPageComponents/EventSummaryPage";
-import EventConfirmationPage from "./components/EventPageComponents/EventConfirmationPage";
-import ReservationPage from "./components/ReservationPageComponents/ReservationPage";
-import AdminHomePage from "./components/AdminHomePage";
-import RoomsSuites from "./components/Rooms/RoomsSuites";
-import NatureRetreatOptions from './components/Rooms/NatureRetreatOptions';
-import UrbanElegance from './components/Rooms/UrbanElegance';
-import VintageCharm from './components/Rooms/VintageCharm';
-
-
-import ReservationConfirmationPage from "./components/ReservationPageComponents/ReservationConfirmationPage";
+import NavigationBar from './components/NavigationBar.js';
+import HomePage from './components/HomePage.js';
+import PaymentScreen from './components/PaymentScreen.js';
+import EventsPage from './components/EventPageComponents/EventsPage.js';
+import EventReservationPage from './components/EventPageComponents/EventReservationPage.js';
+import EventSummaryPage from './components/EventPageComponents/EventSummaryPage.js';
+import EventConfirmationPage from './components/EventPageComponents/EventConfirmationPage.js';
+import ReservationPage from './components/ReservationPageComponents/ReservationPage.js';
+import AdminHomePage from './components/AdminHomePage.js';
+import RoomsSuites from './components/Rooms/RoomsSuites.js';
+import NatureRetreatOptions from './components/Rooms/NatureRetreatOptions.js';
+import UrbanElegance from './components/Rooms/UrbanElegance.js';
+import VintageCharm from './components/Rooms/VintageCharm.js';
+import ExperiencePage from './components/ExperiencePage.js';
+import ReservationConfirmationPage from './components/ReservationPageComponents/ReservationConfirmationPage.js';
 
 function App() {
     return (
         <Router>
             <NavigationBar />
             {/* Adding some spacing for the AppBar */}
-            <Box sx={{ paddingTop: '64px' }}>  {/* Make sure this padding matches AppBar height */}
+            <Box sx={{ paddingTop: {  } }}>
                 <Routes>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/payment" element={<PaymentScreen />} />
+                    <Route path="/reservation/payment/:reservationId" element={<PaymentScreen />} />
                     <Route path="/events" element={<EventsPage />} />
                     <Route path="/event-reservation/:eventId" element={<EventReservationPage />} />
                     <Route path="/event-reservation-summary" element={<EventSummaryPage />} />
                     <Route path="/event-confirmation/:eventId" element={<EventConfirmationPage />} />
+                    <Route path="/experiences" element={<ExperiencePage />} />
                     <Route path="/reservation" element={<ReservationPage />} />
                     <Route path="/admin/homepage" element={<AdminHomePage />} />
                     <Route path="/rooms" element={<RoomsSuites />} />
                     <Route path="/natureRetreat" element={<NatureRetreatOptions />} />
-                    <Route path="/UrbanElegance" element={<UrbanElegance />} />
+                    <Route path="/urbanElegance" element={<UrbanElegance />} />
                     <Route path="/vintageCharm" element={<VintageCharm />} />
-
-
                     <Route path="/reservation/confirmation" element={<ReservationConfirmationPage />} />
                 </Routes>
             </Box>
@@ -47,4 +45,3 @@ function App() {
 }
 
 export default App;
-// <Route path="/event-confirmation/:eventId" element={<EventConfirmation />} />

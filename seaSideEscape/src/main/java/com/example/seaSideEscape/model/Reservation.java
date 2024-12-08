@@ -14,28 +14,41 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Room room;
+    @OneToMany
+    private List<Booking> bookings;
 
     @ManyToOne
     private Account account;
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
 
     private BigDecimal roomRate;
     private BigDecimal discount;
     private boolean paid;
+    private boolean booked;
 
     @OneToMany
     private List<Charge> charges;
 
-    public Room getRoom() {
-        return room;
+    public List<Booking> getBookings() {
+        return bookings;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setBookingList(List<Booking> booking) {
+        this.bookings = booking;
+    }
+
+    public boolean isBooked() {
+        return booked;
+    }
+
+    public void setBooked(boolean booked) {
+        this.booked = booked;
+    }
+
+    public void addBooking(Booking booking){
+        this.bookings.add(booking);
     }
 
     public Long getId(){return id;}
@@ -50,13 +63,13 @@ public class Reservation {
 
     public void setGuest(Account guest){this.account = guest;}
 
-    public LocalDate getStartDate(){return startDate;}
+    public LocalDate getCheckInDate(){return checkInDate;}
 
-    public void setStartDate(LocalDate startDate){this.startDate = startDate;}
+    public void setCheckInDate(LocalDate checkInDate){this.checkInDate = checkInDate;}
 
-    public LocalDate getEndDate(){return endDate;}
+    public LocalDate getCheckOutDate(){return checkOutDate;}
 
-    public void setEndDate(LocalDate endDate){this.endDate = endDate;}
+    public void setCheckOutDate(LocalDate checkOutDate){this.checkOutDate = checkOutDate;}
 
     public BigDecimal getRoomRate() {return roomRate;}
 
@@ -77,10 +90,10 @@ public class Reservation {
     public enum Sort implements Comparator<Reservation> {
         StartDate {
             public int compare(Reservation o1, Reservation o2) {
-                Long date1 = o1.getStartDate().toEpochDay();
-                Long date2 = o2.getEndDate().toEpochDay();
+                Long date1 = o1.getCheckInDate().toEpochDay();
+                Long date2 = o2.getCheckOutDate().toEpochDay();
                 if(!date1.equals(date2))
-                    return o1.getStartDate().compareTo(o2.getStartDate());
+                    return o1.getCheckInDate().compareTo(o2.getCheckInDate());
                 else
                     return o1.getId().compareTo(o2.getId());
             }
