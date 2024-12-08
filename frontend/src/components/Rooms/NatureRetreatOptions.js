@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-    Box, Typography, Divider, Grid, Card, CardContent, Button, CardMedia, Modal, FormControl, FormControlLabel, RadioGroup, Radio,
-} from '@mui/material';
-import axios from "axios";
-
+import { Link } from 'react-router-dom';
 
 import { Box, Typography, Divider, Grid, Card, CardContent, Button, CardMedia } from '@mui/material';
 import {generateRoomData, handleSubmitRoom} from './RoomModule'

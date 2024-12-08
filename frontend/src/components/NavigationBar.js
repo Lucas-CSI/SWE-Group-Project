@@ -164,8 +164,6 @@ const NavigationBar = () => {
                         </Badge>
                     </IconButton>
 
-                    <Button color="inherit" onClick={handleLoginOpen} style={{ fontWeight: 'bold' }}>
-
                     {!Cookies.get('username') || Cookies.get('username') === "" ? <Button color="inherit" onClick={handleLoginOpen} style={{ fontWeight: 'bold' }}>
                         Login
                     </Button> : <Button color="inherit" onClick={handleLogout} style={{ fontWeight: 'bold' }}>
