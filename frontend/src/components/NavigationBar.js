@@ -216,9 +216,14 @@ const NavigationBar = () => {
                             </ListItem>
                         ))}
                     </List>
-                    <Typography variant="body1" style={{ marginTop: '10px', fontWeight: 'bold' }}>
-                        Total: ${cartItems.reduce((total, item) => total + item.price, 0)}
-                    </Typography>
+                    <div style={{display: "flex", flexDirection: "row"}}>
+                        <Typography variant="body1" style={{marginTop: '10px', fontWeight: 'bold'}}>
+                            Total: ${cartItems.reduce((total, item) => total + item.price, 0)}
+                        </Typography>
+                        <Button variant="contained" className="check-in-out-button" style={{alignSelf: "flex-end" , position:'absolute' , right:5}}>
+                            CHECKOUT
+                        </Button>
+                    </div>
                 </Popover>
             </AppBar>
 
