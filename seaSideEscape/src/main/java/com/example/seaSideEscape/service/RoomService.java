@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -72,7 +74,7 @@ public class RoomService {
             case Executive -> baseRate *= 1.5;
             case Business -> baseRate *= 1.3;
             case Comfort -> baseRate *= 1.1;
-            case Economy -> baseRate *= 0.9;
+            case Economy -> baseRate *= 1.0;
         }
 
         if (room.isOceanView()) {
@@ -82,9 +84,11 @@ public class RoomService {
             baseRate += 10.0;
         }
 
-        return baseRate;
-    }
+        baseRate = Math.max(baseRate, 100.0);
 
+        BigDecimal roundedRate = BigDecimal.valueOf(baseRate).setScale(2, RoundingMode.HALF_UP);
+        return roundedRate.doubleValue();
+    }
     public double calculateTotalCartCost(String username) {
         List<Room> cartRooms = getRoomsInCart(username);
         if (cartRooms == null || cartRooms.isEmpty()) {

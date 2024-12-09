@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Changed the payment implementation." />
+    <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Updated BookingRepository issue." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -308,7 +308,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733717089791</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Updated BookingRepository issue.">
+      <option name="closed" value="true" />
+      <created>1733717323844</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1733717323844</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -340,7 +348,8 @@
     <MESSAGE value="Small changes in models and added dependency." />
     <MESSAGE value="Added baseRate Logic and a calculate reservation total." />
     <MESSAGE value="Changed the payment implementation." />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed the payment implementation." />
+    <MESSAGE value="Updated BookingRepository issue." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated BookingRepository issue." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
