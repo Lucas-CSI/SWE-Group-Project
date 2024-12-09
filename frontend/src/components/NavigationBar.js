@@ -17,7 +17,7 @@ import {
     Badge,
     List,
     ListItem,
-    ListItemText
+    ListItemText, Divider
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Link, useNavigate } from 'react-router-dom';
@@ -213,6 +213,7 @@ const NavigationBar = () => {
                             </ListItem>
                         ))}
                     </List>
+                    <Divider sx={{ margin: '1rem 0' }} />
                     <div style={{display: "flex", flexDirection: "row"}}>
                         <Typography variant="body1" style={{marginTop: '10px', fontWeight: 'bold'}}>
                             Total: ${cartItems.reduce((total, item) => total + item.price, 0)}
