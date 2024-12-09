@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Updated BookingRepository issue." />
+    <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Updated roomService to the correct rounding.">
+      <change afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/CartController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/NavigationBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/NavigationBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/PaymentScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/PaymentScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/RoomService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/RoomService.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,8 +20,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="JavaScript File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -316,7 +322,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733717323844</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Updated roomService to the correct rounding.">
+      <option name="closed" value="true" />
+      <created>1733718162885</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1733718162886</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -349,7 +363,8 @@
     <MESSAGE value="Added baseRate Logic and a calculate reservation total." />
     <MESSAGE value="Changed the payment implementation." />
     <MESSAGE value="Updated BookingRepository issue." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated BookingRepository issue." />
+    <MESSAGE value="Updated roomService to the correct rounding." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated roomService to the correct rounding." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

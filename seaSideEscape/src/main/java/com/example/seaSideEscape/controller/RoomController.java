@@ -6,9 +6,12 @@ import com.example.seaSideEscape.service.RoomService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class RoomController {
@@ -23,5 +26,11 @@ public class RoomController {
     @GetMapping("/getAvailableRooms")
     public String getAvailableRooms(@CookieValue("username") String username) throws JsonProcessingException {
         return serializeModule.listToJSON(roomService.getAvailableRooms(username));
+    }
+
+    @GetMapping("/cart/details")
+    public ResponseEntity<List<Map<String, Object>>> getRoomDetailsInCart(@RequestParam String username) {
+        List<Map<String, Object>> roomDetails = roomService.getRoomDetailsInCart(username);
+        return ResponseEntity.ok(roomDetails);
     }
 }

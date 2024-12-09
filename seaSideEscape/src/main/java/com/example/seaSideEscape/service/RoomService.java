@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RoomService {
@@ -127,5 +126,32 @@ public class RoomService {
     public void addRoomToDB(Room room){
         roomRepository.save(room);
     }
+
+    public List<Map<String, Object>> getRoomDetailsInCart(String username) {
+        Optional<Account> accountOptional = accountService.findAccountByUsername(username);
+        if (accountOptional.isEmpty()) {
+            throw new IllegalArgumentException("Account not found for username: " + username);
+        }
+
+        Account account = accountOptional.get();
+        List<Room> cartRooms = roomRepository.getCart(account);
+        if (cartRooms == null || cartRooms.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return cartRooms.stream()
+                .map(room -> {
+                    Map<String, Object> roomDetails = new HashMap<>();
+                    roomDetails.put("theme", room.getTheme().toString());
+                    roomDetails.put("qualityLevel", room.getQualityLevel().toString());
+                    roomDetails.put("oceanView", room.isOceanView());
+                    roomDetails.put("smokingAllowed", room.isSmokingAllowed());
+                    roomDetails.put("bedType", room.getBedType());
+                    roomDetails.put("roomRate", room.getMaxRate());
+                    return roomDetails;
+                })
+                .toList();
+    }
+
 
 }

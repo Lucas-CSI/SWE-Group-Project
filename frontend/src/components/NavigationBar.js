@@ -149,6 +149,12 @@ const NavigationBar = () => {
     }, []);
 
 
+    const handleCheckout = () => {
+        const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
+        navigate("/reservation/payment/:reservationId", {state: {totalAmount, cartItems}});
+    };
+
+
     return !cartItems ? (<p>Loading...</p>) : (
         <>
             <AppBar position="fixed" className="app-bar">
@@ -220,7 +226,7 @@ const NavigationBar = () => {
                         <Typography variant="body1" style={{marginTop: '10px', fontWeight: 'bold'}}>
                             Total: ${cartItems.reduce((total, item) => total + item.price, 0)}
                         </Typography>
-                        <Button variant="contained" className="check-in-out-button" style={{alignSelf: "flex-end" , position:'absolute' , right:5}}>
+                        <Button variant="contained" className="check-in-out-button" style={{alignSelf: "flex-end" , position:'absolute' , right:5}} onClick={handleCheckout}>
                             CHECKOUT
                         </Button>
                     </div>
