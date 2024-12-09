@@ -119,7 +119,7 @@ const UrbanElegance = () => (
             sx={{
                 width: '100%',
                 height: '400px',
-                backgroundImage: `url('TBD.jpg')`,
+                backgroundImage: `url('urbanEleg.jpg')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 display: 'flex',

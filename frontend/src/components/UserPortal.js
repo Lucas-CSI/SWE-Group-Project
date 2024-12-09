@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Box,
     Typography,
@@ -9,6 +9,12 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
+    Button,
+    Modal,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
 } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PaymentIcon from '@mui/icons-material/Payment';
@@ -16,6 +22,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import LockResetIcon from '@mui/icons-material/LockReset';
 
 const UserPortal = () => {
+    const [open, setOpen] = useState(false);
+    const [action, setAction] = useState('');
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const handleActionChange = (event) => setAction(event.target.value);
+
     return (
         <Box
             sx={{
@@ -124,7 +137,7 @@ const UserPortal = () => {
                                 </ListItemIcon>
                                 <ListItemText primary="Payment Options" />
                             </ListItem>
-                            <ListItem button>
+                            <ListItem button onClick={handleOpen}>
                                 <ListItemIcon>
                                     <EditIcon sx={{ color: 'rgb(25,122,140)' }} />
                                 </ListItemIcon>
@@ -140,6 +153,64 @@ const UserPortal = () => {
                     </Box>
                 </Grid>
             </Grid>
+
+            {/* Modal for Modify or Cancel */}
+            <Modal open={open} onClose={handleClose}>
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: 400,
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        p: 4,
+                        borderRadius: 2,
+                    }}
+                >
+                    <Typography variant="h6" component="h2"  sx={{ mb: 2 }}>
+                        Change Reservation
+                    </Typography>
+                    <FormControl fullWidth>
+                        <InputLabel id="action-select-label">Action</InputLabel>
+                        <Select
+                            labelId="action-select-label"
+                            value={action}
+                            onChange={handleActionChange}
+                        >
+                            <MenuItem value="modify">Modify</MenuItem>
+                            <MenuItem value="cancel">Cancel</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between' }}>
+                        <Button
+                            variant="contained"
+                            onClick={handleClose}
+                            sx={{
+                                backgroundColor: 'rgb(25,122,140)',
+                                '&:hover': {
+                                    backgroundColor: '#28c1d8',
+                                },
+                            }}
+                        >
+                            Confirm
+                        </Button>
+                        <Button variant="outlined" onClick={handleClose}
+                                sx={{
+                                    color: 'rgb(25,122,140)',
+                                    borderColor: 'rgb(25,122,140)',
+                                    '&:hover': {
+                                        color: 'darkslategray',
+                                        borderColor: 'darkslategray',
+                                    },
+                                }}
+                        >
+                            Close
+                        </Button>
+                    </Box>
+                </Box>
+            </Modal>
         </Box>
     );
 };

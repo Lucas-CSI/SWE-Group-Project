@@ -26,7 +26,7 @@ const vintageImages = ['vintageBed.jpg', 'vintageView.jpg', 'vintageType.jpg'];
 
 const RoomSuites = () => {
     return (
-        <Box sx={{ padding: '6rem' }}>
+        <Box sx={{ backgroundColor : "white", padding: '6rem' }}>
             <Typography variant="h4" align="center" sx={{ marginBottom: '2rem' }}>
                 Room Categories
                 <Typography variant="h5" component="div" fontSize={17}>
@@ -117,7 +117,7 @@ const RoomCategory = ({ title, description, images, options }) => {
                 <Typography variant="body1">{description}</Typography>
 
                 {/* View Options Button */}
-                <Button variant="outlined" color="primary" sx={{ marginTop: '1rem' }} onClick={handleOpen}>
+                <Button variant="outlined" color='rgb(25,122,140)' sx={{ marginTop: '1rem' }} onClick={handleOpen}>
                     View Options
                 </Button>
 
@@ -157,7 +157,7 @@ const RoomCategory = ({ title, description, images, options }) => {
                         <Divider sx={{ margin: '1rem 0' }} />
                         <Button
                             variant="contained"
-                            color="primary"
+                            color='rgb(25,122,140)'
                             onClick={() => {
                                 alert('Redirecting to reservation page...');
                                 handleNavigate();
@@ -177,7 +177,7 @@ const RoomCategory = ({ title, description, images, options }) => {
             <Button
                 onClick={handleNavigate}
                 variant="contained"
-                color="primary"
+                color='rgb(25,122,140)'
                 sx={{ position: 'absolute', bottom: 30, right: 30 }}
             >
                 View Rates & Reserve
