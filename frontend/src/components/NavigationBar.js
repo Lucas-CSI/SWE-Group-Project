@@ -78,7 +78,7 @@ const NavigationBar = () => {
                     handleLoginOpen();
                 }, 1000);
             }else{
-                setError("Error: " + response.data);
+                setError("Error: " + response.response.data);
             }
         }
     }
