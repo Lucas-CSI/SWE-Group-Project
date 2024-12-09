@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Cookies from 'js-cookie';
 import {
     AppBar,
@@ -24,7 +24,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { login } from "../services/authService.js";
 import './NavigationBar.css';
-import { generatePostRequest } from "../services/apiService"
+import { generatePostRequest, generateGetRequest } from "../services/apiService"
+import {formattedGetAvailableRooms} from "./Rooms/RoomModule";
+
+const getLoginStatus = () => {
+    return !(!Cookies.get('username') || Cookies.get('username') === "")
+}
 
 const NavigationBar = () => {
     const [isPopoverHovered, setIsPopoverHovered] = useState(false);
@@ -96,6 +101,7 @@ const NavigationBar = () => {
     const handleLogout = async () => {
         const response = await generatePostRequest("logoutAccount", {});
         if (response.status === 200) {
+            setCartItems([]);
             navigate("/");
             alert("Logged out.");
         }else{
@@ -124,12 +130,26 @@ const NavigationBar = () => {
         navigate('/rooms');
     };
 
-    const [cartItems, setCartItems] = useState([
-        { name: 'Room Booking', price: 200 },
-        { name: 'Spa Service', price: 50 },
-    ]);
+    const [cartItems, setCartItems] = useState([]);
 
-    return (
+    useEffect(() => {
+        const getCart = async () => {
+            let response = await generateGetRequest("/getCart");
+            let cart = response.data;
+            let tempItems = [];
+
+            for(let i in cart){
+                tempItems = [...tempItems,{name: cart[i].qualityLevel + " Style Room", price: cart[i].maxRate}];
+            }
+            setCartItems(tempItems);
+        }
+        if(getLoginStatus()) {
+            getCart();
+        }
+    }, []);
+
+
+    return !cartItems ? (<p>Loading...</p>) : (
         <>
             <AppBar position="fixed" className="app-bar">
                 <Toolbar>
@@ -164,7 +184,7 @@ const NavigationBar = () => {
                         </Badge>
                     </IconButton>
 
-                    {!Cookies.get('username') || Cookies.get('username') === "" ? <Button color="inherit" onClick={handleLoginOpen} style={{ fontWeight: 'bold' }}>
+                    {!getLoginStatus() ? <Button color="inherit" onClick={handleLoginOpen} style={{ fontWeight: 'bold' }}>
                         Login
                     </Button> : <Button color="inherit" onClick={handleLogout} style={{ fontWeight: 'bold' }}>
                         Logout
@@ -196,9 +216,14 @@ const NavigationBar = () => {
                             </ListItem>
                         ))}
                     </List>
-                    <Typography variant="body1" style={{ marginTop: '10px', fontWeight: 'bold' }}>
-                        Total: ${cartItems.reduce((total, item) => total + item.price, 0)}
-                    </Typography>
+                    <div style={{display: "flex", flexDirection: "row"}}>
+                        <Typography variant="body1" style={{marginTop: '10px', fontWeight: 'bold'}}>
+                            Total: ${cartItems.reduce((total, item) => total + item.price, 0)}
+                        </Typography>
+                        <Button variant="contained" className="check-in-out-button" style={{alignSelf: "flex-end" , position:'absolute' , right:5}}>
+                            CHECKOUT
+                        </Button>
+                    </div>
                 </Popover>
             </AppBar>
 
