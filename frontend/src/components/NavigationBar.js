@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import Cookies from 'js-cookie';
 import {
     AppBar,
@@ -17,15 +17,17 @@ import {
     Badge,
     List,
     ListItem,
-    ListItemText
+    ListItemText,
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import CloseIcon from '@mui/icons-material/Close';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { login } from "../services/authService.js";
 import './NavigationBar.css';
 import { generatePostRequest, generateGetRequest } from "../services/apiService"
 import {formattedGetAvailableRooms} from "./Rooms/RoomModule";
+import {CartContext} from "./CartItems";
 
 const getLoginStatus = () => {
     return !(!Cookies.get('username') || Cookies.get('username') === "")
@@ -51,6 +53,9 @@ const NavigationBar = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const navigate = useNavigate();
+
+    const { cartItems, handleRemoveFromCart, clearCart } = useContext(CartContext);
+
 
     const handleLoginOpen = () => setLoginOpen(true);
     const handleLoginClose = () => {
@@ -86,7 +91,6 @@ const NavigationBar = () => {
         }
     }
 
-
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
         const response = await generatePostRequest("login", {username, password});
@@ -101,7 +105,7 @@ const NavigationBar = () => {
     const handleLogout = async () => {
         const response = await generatePostRequest("logoutAccount", {});
         if (response.status === 200) {
-            setCartItems([]);
+            clearCart();
             navigate("/");
             alert("Logged out.");
         }else{
@@ -130,23 +134,23 @@ const NavigationBar = () => {
         navigate('/rooms');
     };
 
-    const [cartItems, setCartItems] = useState([]);
+    //const [cartItems, setCartItems] = useState([]);
 
-    useEffect(() => {
-        const getCart = async () => {
-            let response = await generateGetRequest("/getCart");
-            let cart = response.data;
-            let tempItems = [];
-
-            for(let i in cart){
-                tempItems = [...tempItems,{name: cart[i].qualityLevel + " Style Room", price: cart[i].maxRate}];
-            }
-            setCartItems(tempItems);
-        }
-        if(getLoginStatus()) {
-            getCart();
-        }
-    }, []);
+    // useEffect(() => {
+    //     const getCart = async () => {
+    //         let response = await generateGetRequest("/getCart");
+    //         let cart = response.data;
+    //         let tempItems = [];
+    //
+    //         for(let i in cart){
+    //             tempItems = [...tempItems,{name: cart[i].qualityLevel + " Style Room", price: cart[i].maxRate}];
+    //         }
+    //         setCartItems(tempItems);
+    //     }
+    //     if(getLoginStatus()) {
+    //         getCart();
+    //     }
+    // }, []);
 
 
     const handleCheckout = () => {
@@ -157,95 +161,110 @@ const NavigationBar = () => {
 
     return !cartItems ? (<p>Loading...</p>) : (
         <>
-            <AppBar position="fixed" className="app-bar">
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="logo" component={Link} to="/">
-                        <img src="/SeaSideEscapeLogo.webp" alt="SeaSideEscape Hotel" style={{ height: '40px', marginRight: '10px' }} />
-                    </IconButton>
-                    <Typography variant="h6" className="header-title" onClick={() => navigate('/')}>
-                        SeaSideEscape Hotel
-                    </Typography>
-                    <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-                        <Link to="/" className="nav-link">
-                            Home
-                            <span className="underline"></span>
-                        </Link>
-                        <Link to="/reservation" className="nav-link">
-                            Rooms & Suites
-                            <span className="underline"></span>
-                        </Link>
-                        <Link to="/events" className="nav-link">
-                            Events
-                            <span className="underline"></span>
-                        </Link>
-                    </Box>
+        <AppBar position="fixed" className="app-bar">
+            <Toolbar>
+                <IconButton edge="start" color="inherit" aria-label="logo" component={Link} to="/">
+                    <img src="/SeaSideEscapeLogo.webp" alt="SeaSideEscape Hotel"
+                         style={{height: '40px', marginRight: '10px'}}/>
+                </IconButton>
+                <Typography variant="h6" className="header-title" onClick={() => navigate('/')}>
+                    SeaSideEscape Hotel
+                </Typography>
+                <Box sx={{flexGrow: 1, display: 'flex', justifyContent: 'center'}}>
+                    <Link to="/" className="nav-link">
+                        Home
+                        <span className="underline"></span>
+                    </Link>
+                    <Link to="/reservation" className="nav-link">
+                        Rooms & Suites
+                        <span className="underline"></span>
+                    </Link>
+                    <Link to="/events" className="nav-link">
+                        Events
+                        <span className="underline"></span>
+                    </Link>
+                </Box>
 
-                    <IconButton
-                        color="inherit"
-                        aria-label="cart"
-                        onClick={(event) => setCartAnchorEl(cartAnchorEl ? null : event.currentTarget)}
-                    >
-                        <Badge badgeContent={cartItems.length} color="secondary">
-                            <ShoppingCartIcon />
-                        </Badge>
-                    </IconButton>
-
-                    {!getLoginStatus() ? <Button color="inherit" onClick={handleLoginOpen} style={{ fontWeight: 'bold' }}>
-                        Login
-                    </Button> : <Button color="inherit" onClick={handleLogout} style={{ fontWeight: 'bold' }}>
-                        Logout
-                    </Button>}
-                </Toolbar>
-                <Popover
-                    open={isCartOpen}
-                    anchorEl={cartAnchorEl}
-                    onClose={handleCartClose}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    PaperProps={{
-                        style: { padding: '10px', width: '250px' },
-                    }}
+                <IconButton
+                    color="inherit"
+                    aria-label="cart"
+                    onClick={(event) => setCartAnchorEl(cartAnchorEl ? null : event.currentTarget)}
                 >
-                    <Typography variant="h6" gutterBottom>
-                        Cart Summary
-                    </Typography>
-                    <List>
-                        {cartItems.map((item, index) => (
-                            <ListItem key={index}>
-                                <ListItemText primary={item.name} secondary={`$${item.price}`} />
-                            </ListItem>
-                        ))}
-                    </List>
-                    <div style={{display: "flex", flexDirection: "row"}}>
-                        <Typography variant="body1" style={{marginTop: '10px', fontWeight: 'bold'}}>
-                            Total: ${cartItems.reduce((total, item) => total + item.price, 0)}
-                        </Typography>
-                        <Button variant="contained" className="check-in-out-button" style={{alignSelf: "flex-end" , position:'absolute' , right:5}} onClick={handleCheckout}>
-                            CHECKOUT
-                        </Button>
-                    </div>
-                </Popover>
-            </AppBar>
+                    <Badge badgeContent={cartItems.length} color="secondary">
+                        <ShoppingCartIcon/>
+                    </Badge>
+                </IconButton>
 
-            {/* Login Dialog */}
-            <Dialog open={loginOpen} onClose={handleLoginClose}>
-                <DialogTitle>Login</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>Please enter your login credentials.</DialogContentText>
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label="Username"
-                        type="text"
-                        fullWidth
-                        variant="standard"
+                {!getLoginStatus() ? <Button color="inherit" onClick={handleLoginOpen} style={{fontWeight: 'bold'}}>
+                    Login
+                </Button> : <Button color="inherit" onClick={handleLogout} style={{fontWeight: 'bold'}}>
+                    Logout
+                </Button>}
+            </Toolbar>
+            <Popover
+                open={isCartOpen}
+                anchorEl={cartAnchorEl}
+                onClose={handleCartClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                PaperProps={{
+                    style: {padding: '10px', width: '250px'},
+                }}
+            >
+                <Typography variant="h6" gutterBottom>
+                    Cart Summary
+                </Typography>
+                <List>
+                    {cartItems.map((item, index) => (
+                        <ListItem key={index}>
+                            <ListItemText primary={item.name} secondary={`$${item.price}`}/>
+                            <IconButton
+                                size="small"
+                                color="error"
+
+                                onClick={() => {
+                                    console.log(item.id);
+                                    handleRemoveFromCart(item.id);}}
+
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                        </ListItem>
+
+                    ))}
+                </List>
+                <div style={{display: "flex", flexDirection: "row"}}>
+                    <Typography variant="body1" style={{marginTop: '10px', fontWeight: 'bold'}}>
+                        Total: ${cartItems.reduce((total, item) => total + item.price, 0)}
+                    </Typography>
+                    <Button variant="contained" className="check-in-out-button"
+                            style={{alignSelf: "flex-end", position: 'absolute', right: 5}} onClick={handleCheckout}>
+                        CHECKOUT
+                    </Button>
+                </div>
+            </Popover>
+        </AppBar>
+
+    {/* Login Dialog */
+    }
+    <Dialog open={loginOpen} onClose={handleLoginClose}>
+        <DialogTitle>Login</DialogTitle>
+        <DialogContent>
+            <DialogContentText>Please enter your login credentials.</DialogContentText>
+            {error && <p style={{color: 'red'}}>{error}</p>}
+            <TextField
+                autoFocus
+                margin="dense"
+                label="Username"
+                type="text"
+                fullWidth
+                variant="standard"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />

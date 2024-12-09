@@ -1,7 +1,9 @@
 package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.model.Account;
+import com.example.seaSideEscape.model.Booking;
 import com.example.seaSideEscape.model.Room;
+import com.example.seaSideEscape.repository.BookingRepository;
 import com.example.seaSideEscape.repository.RoomRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +16,17 @@ import java.util.*;
 
 @Service
 public class RoomService {
-    private final RoomRepository roomRepository;
+    public final RoomRepository roomRepository;
     private final BookingService bookingService;
     private final AccountService accountService;
+    private final BookingRepository bookingRepository;
 
     @Autowired
-    public RoomService(RoomRepository roomRepository, BookingService bookingService, AccountService accountService) {
+    public RoomService(RoomRepository roomRepository, BookingService bookingService, AccountService accountService, BookingRepository bookingRepository) {
         this.roomRepository = roomRepository;
         this.bookingService = bookingService;
         this.accountService = accountService;
+        this.bookingRepository = bookingRepository;
     }
 
     public boolean roomExists(Long roomId){
@@ -110,6 +114,21 @@ public class RoomService {
                 }
             }
         }
+    }
+
+    //Removing from Cart logic
+
+    public Room getRoomById(Long roomId) {
+        return roomRepository.findById(roomId).orElse(null);
+    }
+
+    public boolean removeRoomFromCart(Account account, Room room) {
+        Optional<Booking> booking = bookingRepository.findByReservation_AccountAndRoom(account, room);
+        if (booking.isPresent()) {
+            bookingRepository.delete(booking.get());
+            return true;
+        }
+        return false;
     }
 
     public List<Room> getRoomsInCart(String username){

@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Added cartDetail implementation to roomService and PaymentScreen frontend is fetches room rates.">
+    <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Fixed PaymentScreen.">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/CartItems.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/PaymentScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/PaymentScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/RoomController.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/RoomController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/NavigationBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/NavigationBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/CartController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/RoomService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/RoomService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +21,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="JavaScript File" />
         <option value="Class" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -336,7 +339,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733729779162</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Fixed PaymentScreen.">
+      <option name="closed" value="true" />
+      <created>1733736689711</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1733736689714</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -371,7 +382,8 @@
     <MESSAGE value="Updated BookingRepository issue." />
     <MESSAGE value="Updated roomService to the correct rounding." />
     <MESSAGE value="Added cartDetail implementation to roomService and PaymentScreen frontend is fetches room rates." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added cartDetail implementation to roomService and PaymentScreen frontend is fetches room rates." />
+    <MESSAGE value="Fixed PaymentScreen." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed PaymentScreen." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
