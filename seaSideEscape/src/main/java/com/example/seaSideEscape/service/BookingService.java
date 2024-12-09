@@ -1,7 +1,10 @@
 package com.example.seaSideEscape.service;
 
+import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.model.Booking;
+import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.repository.BookingRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +30,14 @@ public class BookingService {
 
     public Booking save(Booking booking) {
         return bookingRepository.save(booking);
+    }
+
+    @Transactional
+    public void removeRoomFromCart(Account account, Room room) {
+        Booking booking = bookingRepository.findByAccountAndRoom(account, room)
+                .orElseThrow(() -> new IllegalArgumentException("Booking not found for this account and room"));
+
+        // Remove the booking
+        bookingRepository.delete(booking);
     }
 }

@@ -3,6 +3,7 @@ package com.example.seaSideEscape.service;
 import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.repository.RoomRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +59,53 @@ public class RoomService {
             room.setRoomNumber(String.valueOf(i + 101));
             room.setTheme(Room.Themes.values()[(int) (Math.random() * 3)]);
             room.setOceanView((int)(Math.random() * 2) == 0);
-            addRoomToDB(room);
+
+            room.setMaxRate(calculateRoomRate(room));
+            roomRepository.save(room);
+        }
+    }
+
+    private double calculateRoomRate(Room room) {
+        double baseRate = 100.0;
+
+        switch (room.getQualityLevel()) {
+            case Executive -> baseRate *= 1.5;
+            case Business -> baseRate *= 1.3;
+            case Comfort -> baseRate *= 1.1;
+            case Economy -> baseRate *= 0.9;
+        }
+
+        if (room.isOceanView()) {
+            baseRate += 20.0;
+        }
+        if (room.isSmokingAllowed()) {
+            baseRate += 10.0;
+        }
+
+        return baseRate;
+    }
+
+    public double calculateTotalCartCost(String username) {
+        List<Room> cartRooms = getRoomsInCart(username);
+        if (cartRooms == null || cartRooms.isEmpty()) {
+            return 0.0;
+        }
+        return cartRooms.stream()
+                .mapToDouble(Room::getMaxRate)
+                .sum();
+    }
+    @Transactional
+    public void clearCart(String username) {
+        Optional<Account> account = accountService.findAccountByUsername(username);
+        if (account.isPresent()) {
+            Account accountObject = account.get();
+            List<Room> cartRooms = getRoomsInCart(username);
+
+            if (cartRooms != null && !cartRooms.isEmpty()) {
+                for (Room room : cartRooms) {
+                    bookingService.removeRoomFromCart(accountObject, room);
+                }
+            }
         }
     }
 

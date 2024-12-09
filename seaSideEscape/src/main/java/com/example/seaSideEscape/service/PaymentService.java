@@ -6,6 +6,7 @@ import com.example.seaSideEscape.repository.EventBookingRepository;
 import com.example.seaSideEscape.repository.PaymentRepository;
 import com.example.seaSideEscape.repository.ReservationRepository;
 import com.example.seaSideEscape.repository.VenueRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class PaymentService {
     private final ReservationRepository reservationRepository;
     private final EventBookingRepository eventBookingRepository;
     private final VenueRepository venueRepository;
+    private final RoomService roomService;
 
     /**
      * Constructs a new {@code PaymentService}.
@@ -35,11 +37,12 @@ public class PaymentService {
      */
     @Autowired
     public PaymentService(PaymentRepository paymentRepository, ReservationRepository reservationRepository,
-                          EventBookingRepository eventBookingRepository, VenueRepository venueRepository) {
+                          EventBookingRepository eventBookingRepository, VenueRepository venueRepository, RoomService roomService) {
         this.paymentRepository = paymentRepository;
         this.reservationRepository = reservationRepository;
         this.eventBookingRepository = eventBookingRepository;
         this.venueRepository = venueRepository;
+        this.roomService = roomService;
     }
 
     /**
@@ -54,72 +57,32 @@ public class PaymentService {
      * @return the {@code Payment} object representing the processed payment
      * @throws IllegalArgumentException if the reservation is not found
      */
+    @Transactional
     public Payment processRoomPayment(Long reservationId, String paymentMethod, String billingAddress,
                                       String cardNumber, String expirationDate, String cvv) {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
 
-        BigDecimal totalAmount = calculateReservationTotal(reservation);
+        List<Room> roomsInCart = roomService.getRoomsInCart(reservation.getGuest().getUsername());
+        if (roomsInCart == null || roomsInCart.isEmpty()) {
+            throw new IllegalArgumentException("No rooms found in the cart for this reservation.");
+        }
 
-        Payment payment = createPayment(paymentMethod, billingAddress, totalAmount, cardNumber, expirationDate, cvv);
+        double totalRoomCost = roomService.calculateTotalCartCost(reservation.getGuest().getUsername());
+        double tax = totalRoomCost * 0.1; //10% tax rate
+        double totalCost = totalRoomCost + tax;
+
+        Payment payment = createPayment(paymentMethod, billingAddress, totalCost, cardNumber, expirationDate, cvv);
         payment.setReservation(reservation);
-
         paymentRepository.save(payment);
 
         reservation.setPaid(true);
         reservationRepository.save(reservation);
 
+        roomService.clearCart(reservation.getGuest().getUsername());
+
         return payment;
     }
-
-    private BigDecimal calculateReservationTotal(Reservation reservation) {
-        BigDecimal total = BigDecimal.ZERO;
-
-        for (Booking booking : reservation.getBookings()) {
-            Room room = booking.getRoom();
-            BigDecimal roomRate = calculateRoomRate(room);
-            total = total.add(roomRate);
-        }
-
-        for (Charge charge : reservation.getCharges()) {
-            total = total.add(charge.getAmount());
-        }
-
-        BigDecimal tax = total.multiply(BigDecimal.valueOf(0.10));
-        total = total.add(tax);
-
-        return total;
-    }
-
-    private BigDecimal calculateRoomRate(Room room) {
-        BigDecimal baseRate;
-
-        switch (room.getTheme()) {
-            case NATURE_RETREAT -> baseRate = BigDecimal.valueOf(100);
-            case URBAN_ELEGANCE -> baseRate = BigDecimal.valueOf(100);
-            case VINTAGE_CHARM -> baseRate = BigDecimal.valueOf(100);
-            default -> throw new IllegalArgumentException("Unknown room theme");
-        }
-
-        switch (room.getQualityLevel()) {
-            case Executive -> baseRate = baseRate.multiply(BigDecimal.valueOf(1.3));
-            case Business -> baseRate = baseRate.multiply(BigDecimal.valueOf(1.2));
-            case Comfort -> baseRate = baseRate.multiply(BigDecimal.valueOf(1.1));
-            case Economy -> baseRate = baseRate.multiply(BigDecimal.valueOf(1.0));
-        }
-
-        if (room.isSmokingAllowed()) {
-            baseRate = baseRate.add(BigDecimal.valueOf(10));
-        }
-
-        if (room.isOceanView()) {
-            baseRate = baseRate.add(BigDecimal.valueOf(20));
-        }
-        return baseRate;
-    }
-
-
-
 
     /**
      * Processes a payment for an event booking.
@@ -166,12 +129,12 @@ public class PaymentService {
      * @param cvv the CVV security code of the credit card
      * @return a new {@code Payment} object populated with the provided details
      */
-    private Payment createPayment(String paymentMethod, String billingAddress, BigDecimal amount,
+    private Payment createPayment(String paymentMethod, String billingAddress, double amount,
                                   String cardNumber, String expirationDate, String cvv) {
         Payment payment = new Payment();
         payment.setPaymentMethod(paymentMethod);
         payment.setBillingAddress(billingAddress);
-        payment.setAmount(amount);
+        payment.setAmount(BigDecimal.valueOf(amount));
         payment.setPaymentDate(LocalDateTime.now());
         payment.setSuccess(true);
         payment.setCardNumber(cardNumber);

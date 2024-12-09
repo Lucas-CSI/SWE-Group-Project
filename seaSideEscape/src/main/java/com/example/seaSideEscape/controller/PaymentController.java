@@ -25,7 +25,6 @@ public class PaymentController {
                 paymentRequest.getReservationId(),
                 paymentRequest.getPaymentMethod(),
                 paymentRequest.getBillingAddress(),
-                paymentRequest.getAmount(),
                 paymentRequest.getCardNumber(),
                 paymentRequest.getExpirationDate(),
                 paymentRequest.getCvv()
