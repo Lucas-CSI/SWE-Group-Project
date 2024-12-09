@@ -3,10 +3,12 @@ import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.repository.AccountRepository;
 
 import com.example.seaSideEscape.validator.AccountValidator;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 
 
 import java.nio.charset.StandardCharsets;
@@ -75,6 +77,7 @@ public class AccountService {
         return getSHA256(account.getPassword() + account.getSalt());
     }
 
+    @Transactional
     public ResponseEntity<String> createAccount(Account account) throws NoSuchAlgorithmException {
         AccountValidator validator = new AccountValidator(account);
         if(accountRepository.findByUsername(account.getUsername()).isEmpty() && accountRepository.findByEmail(account.getEmail()).isEmpty()) {
@@ -109,4 +112,5 @@ public class AccountService {
         }
         return Optional.empty();
     }
+
 }

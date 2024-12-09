@@ -16,7 +16,6 @@ import UrbanElegance from './components/Rooms/UrbanElegance.js';
 import VintageCharm from './components/Rooms/VintageCharm.js';
 import ExperiencePage from './components/ExperiencePage.js';
 import ReservationConfirmationPage from './components/ReservationPageComponents/ReservationConfirmationPage.js';
-
 function App() {
     return (
         <Router>

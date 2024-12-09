@@ -25,7 +25,6 @@ import java.util.Optional;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
-// Change to RequestMapping????
 @RestController
 public class AccountController {
     private final AccountService accountService;

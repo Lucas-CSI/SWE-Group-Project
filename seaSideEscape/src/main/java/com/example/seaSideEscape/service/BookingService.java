@@ -21,6 +21,10 @@ public class BookingService {
         return bookingRepository.getBookingByCheckInDateCheckOutDate(checkInDate, checkOutDate);
     }
 
+    public void delete(Booking booking) {
+        bookingRepository.delete(booking);
+    }
+
     public Booking save(Booking booking) {
         return bookingRepository.save(booking);
     }
