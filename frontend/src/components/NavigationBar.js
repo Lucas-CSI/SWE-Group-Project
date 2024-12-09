@@ -25,11 +25,8 @@ import axios from 'axios';
 import { login } from "../services/authService.js";
 import './NavigationBar.css';
 import { generatePostRequest, generateGetRequest } from "../services/apiService"
-import {formattedGetAvailableRooms} from "./Rooms/RoomModule";
+import { getLoginStatus} from "../services/authService.js";
 
-const getLoginStatus = () => {
-    return !(!Cookies.get('username') || Cookies.get('username') === "")
-}
 
 const NavigationBar = () => {
     const [isPopoverHovered, setIsPopoverHovered] = useState(false);
