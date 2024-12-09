@@ -14,7 +14,7 @@ import {
     CardContent,
 } from "@mui/material";
 
-const TAX_RATE = 0.1; // 10% Tax
+const TAX_RATE = 0.1;
 
 const PaymentScreen = () => {
     const [formData, setFormData] = useState({
@@ -34,27 +34,42 @@ const PaymentScreen = () => {
     const [cartSubtotal, setCartSubtotal] = useState(0);
     const [tax, setTax] = useState(0);
     const [total, setTotal] = useState(0);
+    const [cartDetails, setCartDetails] = useState([]);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchCartSubtotal = async () => {
-            try {
-                const response = await axios.get("http://localhost:8080/cart/subtotal", {
-                    withCredentials: true,
-                });
-                const subtotal = response.data.subtotal || 0;
-                setCartSubtotal(subtotal);
-                const calculatedTax = subtotal * TAX_RATE;
-                setTax(calculatedTax);
-                setTotal(subtotal + calculatedTax);
-            } catch (error) {
-                console.error("Error fetching cart subtotal:", error);
-                alert("Failed to fetch cart details. Please try again.");
-                navigate("/");
-            }
-        };
+    const fetchCartSubtotal = async () => {
+        try {
+            const response = await axios.get("http://localhost:8080/cart/subtotal", {
+                withCredentials: true,
+            });
+            const subtotal = response.data.subtotal || 0;
+            setCartSubtotal(subtotal);
+            const calculatedTax = subtotal * TAX_RATE;
+            setTax(calculatedTax);
+            setTotal(subtotal + calculatedTax);
+        } catch (error) {
+            console.error("Error fetching cart subtotal:", error);
+            alert("Failed to fetch cart subtotal. Please try again.");
+            navigate("/");
+        }
+    };
 
+    const fetchCartDetails = async () => {
+        try {
+            const response = await axios.get("http://localhost:8080/cart/details", {
+                params: { username: "loggedInUsername" },
+                withCredentials: true,
+            });
+            setCartDetails(response.data);
+        } catch (error) {
+            console.error("Error fetching cart details:", error);
+            alert("Failed to fetch cart details. Please try again.");
+        }
+    };
+
+    useEffect(() => {
         fetchCartSubtotal();
+        fetchCartDetails();
     }, [navigate]);
 
     const handleChange = (e) => {
@@ -72,7 +87,7 @@ const PaymentScreen = () => {
             amount: total,
         };
 
-        try {
+    try {
             const response = await axios.post("http://localhost:8080/payments/payRoom", paymentData, {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true,
@@ -245,14 +260,40 @@ const PaymentScreen = () => {
                                 <Typography variant="h6" gutterBottom>
                                     Booking Summary
                                 </Typography>
-                                <Typography variant="body1" gutterBottom>
-                                    <strong>Subtotal:</strong> ${cartSubtotal.toFixed(2)}
+                                {cartDetails.map((room, index) => {
+                                    const roomRate = room?.roomRate || 0.0;
+                                    const oceanViewCharge = room?.oceanView ? 20.0 : 0.0;
+                                    const smokingCharge = room?.smokingAllowed ? 10.0 : 0.0;
+                                    const roomTotal = roomRate + oceanViewCharge + smokingCharge;
+
+                                    return (
+                                        <Box key={index} mb={2}>
+                                            <Typography variant="body1"><strong>Room {index + 1}:</strong></Typography>
+                                            <Typography variant="body2">Theme: {room?.theme || "[Not Provided]"}</Typography>
+                                            <Typography variant="body2">Quality Level: {room?.qualityLevel || "[Not Provided]"}</Typography>
+                                            <Typography variant="body2">Ocean View: {room?.oceanView ? "Yes" : "No"}</Typography>
+                                            <Typography variant="body2">Smoking Allowed: {room?.smokingAllowed ? "Yes" : "No"}</Typography>
+                                            <Typography variant="body2">Bed Type: {room?.bedType || "[Not Provided]"}</Typography>
+                                            <Typography variant="body2">Base Room Rate: ${roomRate.toFixed(2)}</Typography>
+                                            {oceanViewCharge > 0 && (
+                                                <Typography variant="body2">Ocean View Charge: ${oceanViewCharge.toFixed(2)}</Typography>
+                                            )}
+                                            {smokingCharge > 0 && (
+                                                <Typography variant="body2">Smoking Charge: ${smokingCharge.toFixed(2)}</Typography>
+                                            )}
+                                            <Typography variant="body2" fontWeight="bold">Room Total: ${roomTotal.toFixed(2)}</Typography>
+                                            <Divider sx={{ my: 2 }} />
+                                        </Box>
+                                    );
+                                })}
+                                <Typography variant="h6" gutterBottom>
+                                    Subtotal: ${cartSubtotal.toFixed(2)}
                                 </Typography>
-                                <Typography variant="body1" gutterBottom>
-                                    <strong>Tax (10%):</strong> ${tax.toFixed(2)}
+                                <Typography variant="h6" gutterBottom>
+                                    Tax (10%): ${tax.toFixed(2)}
                                 </Typography>
-                                <Typography variant="body1" gutterBottom>
-                                    <strong>Total:</strong> ${total.toFixed(2)}
+                                <Typography variant="h6" fontWeight="bold" gutterBottom>
+                                    Total: ${total.toFixed(2)}
                                 </Typography>
                             </CardContent>
                         </Card>

@@ -29,7 +29,7 @@ public class RoomController {
     }
 
     @GetMapping("/cart/details")
-    public ResponseEntity<List<Map<String, Object>>> getRoomDetailsInCart(@RequestParam String username) {
+    public ResponseEntity<List<Map<String, Object>>> getRoomDetailsInCart(@CookieValue("username") String username) {
         List<Map<String, Object>> roomDetails = roomService.getRoomDetailsInCart(username);
         return ResponseEntity.ok(roomDetails);
     }
