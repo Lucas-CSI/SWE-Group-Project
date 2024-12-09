@@ -10,16 +10,15 @@ const AdminHomepage = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 height: '100vh',
-                //backgroundImage: `url("/seaView.jpg")`,
-                // backgroundSize: 'cover',
-                // backgroundPosition: 'center',
-                // backgroundRepeat: 'no-repeat',
-                //backgroundAttachment: 'fixed',
-                backgroundColor: '#f5f5f5',
+                backgroundImage: `url("/AdminPortWave.jpeg")`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundAttachment: 'fixed',
                 padding: 2,
             }}
         >
-            <Typography variant="h4" sx={{ marginBottom: 4 }}>
+            <Typography variant="h4" sx={{ marginBottom: 4, color: 'white'}}>
                 Admin Dashboard
             </Typography>
 
@@ -27,7 +26,7 @@ const AdminHomepage = () => {
                 <Button
                     variant="contained"
                     sx={{
-                        backgroundColor: '#5fbccc',
+                        backgroundColor: 'rgb(25,122,140)',
                         color: 'white',
                         width: 200,
                         height: 60,
@@ -41,7 +40,7 @@ const AdminHomepage = () => {
                 <Button
                     variant="contained"
                     sx={{
-                        backgroundColor: '#5fbccc',
+                        backgroundColor: 'rgb(25,122,140)',
                         color: 'white',
                         width: 200,
                         height: 60,
@@ -57,12 +56,28 @@ const AdminHomepage = () => {
             <Button
                 variant="contained"
                 sx={{
-                    backgroundColor: '#5fbccc',
+                    backgroundColor: 'rgb(25,122,140)',
                     color: 'white',
                     width: '100%',
                     height: 60,
                     '&:hover': {
-                        backgroundColor: '#28c1d8', // Darker teal on hover
+                        backgroundColor: '#28c1d8',
+                    },
+                    marginBottom: 4,
+                }}
+            >
+                Create Clerk Account
+            </Button>
+
+            <Button
+                variant="contained"
+                sx={{
+                    backgroundColor: 'rgb(25,122,140)',
+                    color: 'white',
+                    width: '100%',
+                    height: 60,
+                    '&:hover': {
+                        backgroundColor: '#28c1d8',
                     },
                 }}
             >

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, Button, Box, Grid, Card, CardContent, CardMedia } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import './HomePage.css'; // Fixed CSS import path
+import './HomePage.css';
 
 const HomePage = () => {
     const navigate = useNavigate();

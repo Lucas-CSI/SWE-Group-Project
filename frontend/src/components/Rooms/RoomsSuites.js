@@ -26,7 +26,7 @@ const vintageImages = ['vintageBed.jpg', 'vintageView.jpg', 'vintageType.jpg'];
 
 const RoomSuites = () => {
     return (
-        <Box sx={{ padding: '2rem' }}>
+        <Box sx={{ padding: '6rem' }}>
             <Typography variant="h4" align="center" sx={{ marginBottom: '2rem' }}>
                 Room Categories
                 <Typography variant="h5" component="div" fontSize={17}>
