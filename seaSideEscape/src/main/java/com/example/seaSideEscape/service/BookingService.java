@@ -34,10 +34,9 @@ public class BookingService {
 
     @Transactional
     public void removeRoomFromCart(Account account, Room room) {
-        Booking booking = bookingRepository.findByAccountAndRoom(account, room)
+        Booking booking = bookingRepository.findByReservation_AccountAndRoom(account, room)
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found for this account and room"));
 
-        // Remove the booking
         bookingRepository.delete(booking);
     }
 }

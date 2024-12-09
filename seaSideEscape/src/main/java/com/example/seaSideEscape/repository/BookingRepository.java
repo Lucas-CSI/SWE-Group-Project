@@ -17,7 +17,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "ON b.reservation = res WHERE res.checkInDate <= ?2 AND ?1 <= res.checkOutDate")
     List<Booking> getBookingByCheckInDateCheckOutDate(LocalDate checkInDate, LocalDate checkOutDate);
 
-    Optional<Booking> findByAccountAndRoom(Account account, Room room);
+    Optional<Booking> findByReservation_AccountAndRoom(Account account, Room room);
 
 }
 
