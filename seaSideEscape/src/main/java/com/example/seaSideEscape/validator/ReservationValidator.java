@@ -27,7 +27,7 @@ public class ReservationValidator implements Validator{
     }
 
     private void validateDateRange(LocalDate startDate, LocalDate endDate){
-        if(endDate.isAfter(startDate))
+        if(startDate.isAfter(endDate))
             invalidItems.put("Date Range", "Invalid date range");
     }
 }

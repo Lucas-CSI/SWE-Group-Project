@@ -1,7 +1,6 @@
 package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.model.Account;
-import com.example.seaSideEscape.model.Booking;
 import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +61,18 @@ public class RoomService {
             addRoomToDB(room);
         }
     }
+
+    public List<Room> getRoomsInCart(String username){
+        Optional<Account> account = accountService.findAccountByUsername(username);
+        Account accountObject;
+
+        if(account.isPresent()){
+            accountObject = account.get();
+            return roomRepository.getCart(accountObject);
+        }
+        return null;
+    }
+
     public void addRoomToDB(Room room){
         roomRepository.save(room);
     }

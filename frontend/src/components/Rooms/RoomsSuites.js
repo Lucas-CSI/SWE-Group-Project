@@ -200,12 +200,11 @@ const RoomCategory = ({ title, description, images, options, hide }) => {
                             variant="contained"
                             color="primary"
                             onClick={() => {
-                                alert('Redirecting to reservation page...');
                                 handleNavigate();
                             }}
-                            sx={{ marginTop: '1rem' }}
+                            sx={{  }}
                         >
-                            Click to Reserve
+                            VIEW RATES
                         </Button>
                     </DialogContent>
                     <Button onClick={handleClose} color="primary" sx={{ margin: '1rem' }}>

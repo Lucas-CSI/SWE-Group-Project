@@ -77,7 +77,7 @@ public class AccountService {
 
     public ResponseEntity<String> createAccount(Account account) throws NoSuchAlgorithmException {
         AccountValidator validator = new AccountValidator(account);
-        if(accountRepository.findByUsername(account.getUsername()).isEmpty() && accountRepository.findByEmail(account.getEmail()).isEmpty()) {
+        if(accountRepository.findByUsernameOrEmail(account.getUsername(), account.getEmail()).isEmpty()) {
             if(validator.isValid()) {
                 String saltStr = createSalt();
                 account.setSalt(saltStr);
