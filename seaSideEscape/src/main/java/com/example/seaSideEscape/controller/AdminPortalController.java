@@ -54,7 +54,7 @@ public class AdminPortalController {
 
     @GetMapping("/getRoom")
     public ResponseEntity<String> getRoom(@RequestParam("roomNumber") String roomNumber, @CookieValue("username") String username) throws NoSuchAlgorithmException, JsonProcessingException {
-        Optional<Room> roomOptional = roomService.getRoomInfo(roomNumber, username);
+        Optional<Room> roomOptional = adminPortalService.getRoomInfo(roomNumber, username);
         if(roomOptional.isPresent()){
             String serializedRoom = roomSerializeModule.objectToJSON(roomOptional.get());
             serializedRoom = serializedRoom.substring(0,serializedRoom.length()-1);
@@ -63,5 +63,16 @@ public class AdminPortalController {
             return ResponseEntity.ok(serializedRoom);
         }
         return new ResponseEntity<>("An error occurred.", HttpStatus.CONFLICT);
+    }
+
+    @PostMapping("/setRoom")
+    public ResponseEntity<String> setRoom(@RequestBody Room room, @CookieValue("username") String username) throws NoSuchAlgorithmException, JsonProcessingException {
+        System.out.println("ROOM CHECK: " + roomSerializeModule.objectToJSON(room));
+        Room roomChanged = adminPortalService.setRoomStatus(room, username);
+        if(roomChanged != null){
+            return ResponseEntity.ok("Successfully changed room");
+        }else{
+            return new ResponseEntity<>("An error occurred.", HttpStatus.CONFLICT);
+        }
     }
 }

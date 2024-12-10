@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
-import {Button, Box, Typography, TextField, Select, MenuItem, InputLabel, FormControl} from '@mui/material';
+import {
+    Button,
+    Box,
+    Typography,
+    TextField,
+    Select,
+    MenuItem,
+    InputLabel,
+    FormControl,
+    Checkbox,
+    FormControlLabel
+} from '@mui/material';
 
 import {generateGetRequest, generatePostRequest} from "../services/apiService";
+import {checkPreferenceAvailability, handleSubmitRoom} from "./Rooms/RoomModule";
 
 const AdminHomepage = () => {
     const [email, setEmail] = useState('');
@@ -12,8 +24,10 @@ const AdminHomepage = () => {
     const [permissionLevel, setPermissionLevel] = useState(0);
     const [modifyResult, setModifyResult] = useState('');
     const [roomNumber, setRoomNumber] = useState('');
-    const [roomInfo, setRoomInfo] = useState({});
+    const [roomInfo, setRoomInfo] = useState(
+        {"id":-1,"roomNumber":"","theme":"","qualityLevel":"","bedType":"","":0,"oceanView":false,"smokingAllowed":false,"isBookedCurrently":false});
     const [stringRoomInfo, setStringRoomInfo] = useState('');
+    const [ submissionRoomStatus, setSubmissionRoomStatus ] = useState('');
 
     const handleSearch = () => {
         console.log(`Searching for: ${email}`);
@@ -43,6 +57,24 @@ const AdminHomepage = () => {
         }else {
             setRoomInfo({});
             setStringRoomInfo(response.response.data);
+        }
+    }
+
+    const handleModifyRoom = (e) => {
+        const thing = {...roomInfo};
+        if(e.target.name === "smokingAllowed" || e.target.name === "oceanView"){
+            thing[e.target.name] = !thing[e.target.name];
+        }else
+            thing[e.target.name] = e.target.value;
+        setRoomInfo(thing);
+    }
+
+    const handleSetRoom = async() => {
+        const response = await generatePostRequest("/admin/setRoom", roomInfo);
+        if(response.status === 200) {
+            setSubmissionRoomStatus((response.data));
+        }else {
+            setSubmissionRoomStatus(response.response.data);
         }
     }
 
@@ -276,6 +308,88 @@ const AdminHomepage = () => {
                     }}
                 >
                     Get Room Status
+                </Button>
+                <Box
+                    sx={{
+                        top: '100px',
+                        right: '20px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                    }}
+                >
+                    <TextField
+                        label="ID"
+                        variant="standard"
+                        size="small"
+                        value={roomInfo.id}
+                        onChange={handleModifyRoom}
+                    />
+                    <TextField
+                        label="Room Number"
+                        variant="standard"
+                        size="small"
+                        value={roomInfo.roomNumber}
+                        onChange={handleModifyRoom}
+                    />
+                    <TextField
+                        label="Theme"
+                        variant="standard"
+                        size="small"
+                        value={roomInfo.theme}
+                        onChange={handleModifyRoom}
+                    />
+                    <TextField
+                        label="Quality Level"
+                        variant="standard"
+                        size="small"
+                        value={roomInfo.qualityLevel}
+                        onChange={handleModifyRoom}
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                name="smokingAllowed"
+                                checked={roomInfo.smokingAllowed}
+                                onChange={handleModifyRoom}
+                                defaultChecked={false}
+                            />
+                        }
+                        label="Smoking Allowed"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                name="oceanView"
+                                checked={roomInfo.oceanView}
+                                onChange={handleModifyRoom}
+                                defaultChecked={false}
+                            />
+                        }
+                        label="Ocean View"
+                    />
+                    <p>{submissionRoomStatus}</p>
+                </Box>
+
+
+                <Button
+                    variant="contained"
+                    onClick={handleSetRoom}
+                    sx={{
+                        backgroundColor: 'rgb(25,122,140)',
+                        color: 'white',
+                        width: '100%',
+                        height: 60,
+                        '&:hover': {
+                            backgroundColor: '#28c1d8',
+                        },
+                    }}
+                >
+                    Add Room / Set Room Status
                 </Button>
             </Box>
         </Box>

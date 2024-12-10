@@ -157,16 +157,12 @@ public class RoomService {
         return roomRepository.findRoomByNumber(roomNumber);
     }
 
-    public Optional<Room> getRoomInfo(String roomNumber, String username){
-        Account account = accountService.getAccountObject(username);
-        if(account != null && accountService.checkPermission(account, Account.PermissionLevel.Clerk)){
-            return getRoomInfo(roomNumber);
-        }
-        return Optional.empty();
-    }
-
     public boolean isRoomBooked(Room room, LocalDate date){
         return roomRepository.isRoomBooked(room, date);
+    }
+
+    public Room save(Room room){
+        return roomRepository.save(room);
     }
 
 }
