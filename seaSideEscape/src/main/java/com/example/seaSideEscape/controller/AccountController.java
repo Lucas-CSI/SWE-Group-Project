@@ -49,13 +49,17 @@ public class AccountController {
         if(acc.isPresent()){
             Cookie username = new Cookie("username", account.getUsername());
             Cookie password = new Cookie("password", acc.get().getPassword());
+            Cookie permissionLevel = new Cookie("permissionLevel", acc.get().toString());
 
             username.setPath("/");
             password.setPath("/");
+            permissionLevel.setPath("/");
             username.setMaxAge(24 * 60 * 60);
             password.setMaxAge(24 * 60 * 60);
+            permissionLevel.setMaxAge(24 * 60 * 60);
             response.addCookie(username);
             response.addCookie(password);
+            response.addCookie(permissionLevel);
         }else{
             return new ResponseEntity<>("Invalid username or password.", HttpStatus.CONFLICT);
         }
@@ -66,12 +70,16 @@ public class AccountController {
     public String logout(HttpServletResponse response) throws Exception {
         Cookie username = new Cookie("username", null);
         Cookie password = new Cookie("password", null);
+        Cookie permissionLevel = new Cookie("permissionLevel", null);
         username.setPath("/");
         password.setPath("/");
+        permissionLevel.setPath("/");
         username.setMaxAge(0);
         password.setMaxAge(0);
+        permissionLevel.setMaxAge(0);
         response.addCookie(username);
         response.addCookie(password);
+        response.addCookie(permissionLevel);
         return "done";
     }
     // TODO: Get user's reservations
@@ -100,44 +108,15 @@ public class AccountController {
     }
     */
 
-    @PostMapping("/adminLogin")
-    public ResponseEntity<String> adminLogin(HttpServletResponse response, @RequestBody Account account) throws NoSuchAlgorithmException {
-        System.out.println("Attempting to log in with username: " + account.getUsername());
-
-        // Attempt to find the account in the database
-        Optional<Account> acc = accountService.canLogin(account);
-
-        if (acc.isPresent()) {
-            System.out.println("Account found for username: " + account.getUsername());
-
-            // Check if the found account has admin privileges
-            if (acc.get().isAdmin()) {
-                System.out.println("Account is admin. Setting cookies...");
-
-                response.addCookie(new Cookie("admin", account.getUsername()));
-                response.addCookie(new Cookie("password", acc.get().getPassword()));
-
-                System.out.println("Admin login successful for username: " + account.getUsername());
-                return ResponseEntity.ok("Admin login successful");
-            } else {
-                System.out.println("Account is not an admin. Unauthorized access attempt.");
-            }
-        } else {
-            System.out.println("No account found for username: " + account.getUsername());
-        }
-
-        System.out.println("Returning 401 Unauthorized for username: " + account.getUsername());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
-    }
-
 
     @PostMapping("/createAccount")
     public ResponseEntity<String> createAccount(@RequestBody Account account) throws NoSuchAlgorithmException {
+        account.setPermissionLevel(Account.PermissionLevel.Guest);
         return accountService.createAccount(account);
     }
 
     @GetMapping("/getCart")
-    public ResponseEntity<String> getCart(@CookieValue("username") String username) throws NoSuchAlgorithmException, JsonProcessingException {
+    public ResponseEntity<String> getCart(@CookieValue("username") String username) throws JsonProcessingException {
         return ResponseEntity.ok(serializeRoom.listToJSON(roomService.getRoomsInCart(username)));
     }
 }

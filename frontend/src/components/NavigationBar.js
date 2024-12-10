@@ -284,10 +284,23 @@ const NavigationBar = () => {
                         <Typography variant="body1" style={{marginTop: '10px', fontWeight: 'bold'}}>
                             Total: ${cartItems.reduce((total, item) => total + item.price, 0)}
                         </Typography>
-                        <Button variant="contained" className="check-in-out-button" style={{alignSelf: "flex-end" , position:'absolute' , right:5}}>
-                            CHECKOUT
-                        </Button>
-                    </div>
+                    </Box>
+                    <Button
+                        variant="contained"
+                        sx={{
+                            backgroundColor: 'rgb(25,122,140)',
+                            color: 'white',
+                            position: 'absolute',
+                            bottom: '10px',
+                            right: '10px',
+                            '&:hover': {
+                                backgroundColor: '#28c1d8',
+                            },
+                        }}
+                        onClick={() => navigate('/checkout')}
+                    >
+                        Checkout
+                    </Button>
                 </Popover>
             </AppBar>
 

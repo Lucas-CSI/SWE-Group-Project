@@ -21,6 +21,7 @@ const qualityLevels = ['Economy', 'Standard', 'Premium', 'Luxury'];
 const themeMap = {};
 const qualityMap = {};
 
+
 const HomePage = () => {
     const navigate = useNavigate();
     const [openDates, setOpenDates] = useState(false);

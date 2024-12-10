@@ -7,10 +7,10 @@ import com.example.seaSideEscape.SerializeModule;
 import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.model.Booking;
 import com.example.seaSideEscape.repository.AccountRepository;
-import com.example.seaSideEscape.validator.ReservationValidator;
 import com.example.seaSideEscape.model.Reservation;
 import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.repository.ReservationRepository;
+import com.example.seaSideEscape.validator.ReservationValidator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.projection.CollectionAwareProjectionFactory;
@@ -18,10 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.beans.Transient;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
