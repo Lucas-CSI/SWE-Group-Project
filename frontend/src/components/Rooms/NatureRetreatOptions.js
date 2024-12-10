@@ -14,18 +14,42 @@ import {
     DialogTitle,
     DialogContent, DialogContentText, FormControlLabel, Checkbox
 } from '@mui/material';
-import {generateRoomData, handleSubmitRoom} from './RoomModule'
+import {
+    generateRoomData,
+    handleSubmitRoom,
+    checkPreferenceAvailability,
+    findFirstAvailableRoom,
+    qualityLevelsIndex
+} from './RoomModule'
 
 const theme = "NATURE_RETREAT";
 
 
 const RoomOption = ({ title }) => {
     let rooms = localStorage.getItem("rooms");
+    rooms = JSON.parse(rooms);
+    const qualityLevel = title.substring(0,title.indexOf(" "));
+    let roomType = rooms[theme][qualityLevel];
+    let isRoomAvailable = roomType.total > 0;
+    const firstAvailableRoom = findFirstAvailableRoom(roomType);
     const [open, setOpen] = useState(false);
+    const [smokingAllowed, setSmokingAllowed] = useState(firstAvailableRoom ? firstAvailableRoom[1] : false);
+    const [oceanView, setOceanView] = useState(firstAvailableRoom ? firstAvailableRoom[0] : false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    rooms = JSON.parse(rooms);
-    let isRoomAvailable = rooms[theme][title.substring(0,title.indexOf(" "))].total > 0;
+
+    const handleOceanView =  () => {
+        if(checkPreferenceAvailability(roomType, !oceanView, smokingAllowed)){
+            setOceanView(!oceanView);
+        }
+    }
+
+    const handleSmokingAllowed = () => {
+        if(checkPreferenceAvailability(roomType, oceanView, !smokingAllowed)){
+            setSmokingAllowed(!smokingAllowed);
+        }
+    }
+
     return (
         <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%', opacity: isRoomAvailable ? 1 : 0.5}}>
             {/* Placeholder Image */}
@@ -45,8 +69,6 @@ const RoomOption = ({ title }) => {
                 <Typography variant="body2" sx={{marginBottom: '1rem'}}>
                     {isRoomAvailable ? "Available" : "Not available."}
                 </Typography>
-
-                {/* View Rates & Reserve */}
 
                 {/* View Options Button */}
                 {!isRoomAvailable ? null : <Button variant="contained" color="primary" sx={{ position: 'absolute', bottom: 10, right: 10 }} onClick={handleOpen}>
@@ -68,39 +90,35 @@ const RoomOption = ({ title }) => {
                                 control={
                                     <Checkbox
                                         name="isSmokingAllowed"
-                                        checked={false}
+                                        checked={smokingAllowed}
+                                        onChange={handleSmokingAllowed}
                                     />
                                 }
                                 label="Smoking Allowed"
+                                disabled={!checkPreferenceAvailability(roomType, oceanView, !smokingAllowed)}
                             />
                             <FormControlLabel
                                 control={
                                     <Checkbox
                                         name="oceanView"
-                                        checked={false}
+                                        checked={oceanView}
+                                        onChange={handleOceanView}
                                     />
                                 }
                                 label="Ocean View"
+                                disabled={!checkPreferenceAvailability(roomType, !oceanView, smokingAllowed)}
                             />
                         </Box>
                         <Divider sx={{ margin: '1rem 0' }} />
-                        {!isRoomAvailable ? null : title === "Suite Style" ? <Button
+                        {!isRoomAvailable ? null : <Button
                             component={Link}
-                            onClick={() => handleSubmitRoom(generateRoomData(theme, 2))}
+                            onClick={() => handleSubmitRoom(generateRoomData(theme, qualityLevelsIndex[qualityLevel], oceanView, smokingAllowed))}
                             variant="contained"
                             color="primary"
-                            sx={{position: 'absolute', top: 10, right: 10}}
+                            sx={{position: 'absolute', bottom: 10, right: 10}}
                         >
                             Reserve
-                        </Button> : <Button
-                            component={Link}
-                            onClick={() => handleSubmitRoom(generateRoomData(theme, 1))}
-                            variant="contained"
-                            color="primary"
-                            sx={{position: 'absolute', bottom: 10, right: 10, }}
-                        >
-                            Reserve
-                        </Button>}
+                        </Button> }
                         <Button onClick={handleClose} variant="outlined" color="primary" sx={{ bottom: -10 , right: 10 }}>
                             Close
                         </Button>
