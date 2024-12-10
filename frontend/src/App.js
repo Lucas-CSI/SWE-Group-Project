@@ -10,6 +10,7 @@ import EventSummaryPage from './components/EventPageComponents/EventSummaryPage.
 import EventConfirmationPage from './components/EventPageComponents/EventConfirmationPage.js';
 import ReservationPage from './components/ReservationPageComponents/ReservationPage.js';
 import AdminHomePage from './components/AdminHomePage.js';
+import ClerkHomePage from './components/ClerkHomePage.js';
 import RoomsSuites from './components/Rooms/RoomsSuites.js';
 import NatureRetreatOptions from './components/Rooms/NatureRetreatOptions.js';
 import UrbanElegance from './components/Rooms/UrbanElegance.js';
@@ -34,6 +35,7 @@ function App() {
                     <Route path="/experiences" element={<ExperiencePage />} />
                     <Route path="/reservation" element={<ReservationPage />} />
                     <Route path="/admin/homepage" element={<AdminHomePage />} />
+                    <Route path="/clerk/homepage" element={<ClerkHomePage />} />
                     <Route path="/rooms" element={<RoomsSuites />} />
                     <Route path="/natureRetreat" element={<NatureRetreatOptions />} />
                     <Route path="/urbanElegance" element={<UrbanElegance />} />
