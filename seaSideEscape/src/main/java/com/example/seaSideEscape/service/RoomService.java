@@ -153,5 +153,12 @@ public class RoomService {
                 .toList();
     }
 
+    public Optional<Room> getRoomInfo(String roomNumber){
+        return roomRepository.findRoomByNumber(roomNumber);
+    }
+
+    public boolean isRoomBooked(Room room, LocalDate date){
+        return roomRepository.isRoomBooked(room, date);
+    }
 
 }

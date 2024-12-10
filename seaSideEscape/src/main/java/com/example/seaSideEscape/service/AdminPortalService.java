@@ -1,6 +1,7 @@
 package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.model.Account;
+import com.example.seaSideEscape.model.Room;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
