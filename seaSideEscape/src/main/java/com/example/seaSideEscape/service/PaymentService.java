@@ -90,7 +90,6 @@ public class PaymentService {
         Payment payment = createPayment(paymentMethod, billingAddress, totalCost, cardNumber, expirationDate, cvv);
         payment.setReservation(reservation);
         paymentRepository.save(payment);
-
         if (roomsInCart == null || roomsInCart.isEmpty()) {
             throw new IllegalArgumentException("No rooms found in the cart for this reservation.");
         }

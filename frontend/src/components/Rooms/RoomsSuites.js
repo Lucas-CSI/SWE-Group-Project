@@ -217,7 +217,6 @@ const RoomCategory = ({ title, description, images, options, hide }) => {
             {hide ? null : <Button
                 onClick={handleNavigate}
                 variant="contained"
-                color='rgb(25,122,140)'
                 sx={{ position: 'absolute', bottom: 30, right: 30 }}
             >
                 View Rates & Reserve

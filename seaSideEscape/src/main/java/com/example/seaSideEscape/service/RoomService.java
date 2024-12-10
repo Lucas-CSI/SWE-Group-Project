@@ -116,7 +116,6 @@ public class RoomService {
         }
     }
 
-    //Removing from Cart logic
     public Room getRoomById(Long roomId) {
         return roomRepository.findById(roomId).orElse(null);
     }
@@ -144,5 +143,17 @@ public class RoomService {
     public void addRoomToDB(Room room){
         roomRepository.save(room);
     }
+  
 
+    public Optional<Room> getRoomInfo(String roomNumber){
+        return roomRepository.findRoomByNumber(roomNumber);
+    }
+
+    public boolean isRoomBooked(Room room, LocalDate date){
+        return roomRepository.isRoomBooked(room, date);
+    }
+
+    public Room save(Room room){
+        return roomRepository.save(room);
+    }
 }
