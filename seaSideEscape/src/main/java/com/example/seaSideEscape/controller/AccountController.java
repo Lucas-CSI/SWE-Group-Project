@@ -50,7 +50,7 @@ public class AccountController {
         if(acc.isPresent()){
             Cookie username = new Cookie("username", account.getUsername());
             Cookie password = new Cookie("password", acc.get().getPassword());
-            Cookie permissionLevel = new Cookie("permissionLevel", account.getPermissionLevel().toString());
+            Cookie permissionLevel = new Cookie("permissionLevel", acc.get().toString());
 
             username.setPath("/");
             password.setPath("/");

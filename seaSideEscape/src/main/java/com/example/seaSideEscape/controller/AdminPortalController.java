@@ -54,7 +54,7 @@ public class AdminPortalController {
 
     @GetMapping("/getRoom")
     public ResponseEntity<String> getRoom(@RequestParam("roomNumber") String roomNumber, @CookieValue("username") String username) throws NoSuchAlgorithmException, JsonProcessingException {
-        Optional<Room> roomOptional = roomService.getRoomInfo(roomNumber);
+        Optional<Room> roomOptional = roomService.getRoomInfo(roomNumber, username);
         if(roomOptional.isPresent()){
             String serializedRoom = roomSerializeModule.objectToJSON(roomOptional.get());
             serializedRoom = serializedRoom.substring(0,serializedRoom.length()-1);
@@ -62,6 +62,6 @@ public class AdminPortalController {
             System.out.println(serializedRoom);
             return ResponseEntity.ok(serializedRoom);
         }
-        return new ResponseEntity<>("Error: Room not found.", HttpStatus.CONFLICT);
+        return new ResponseEntity<>("An error occurred.", HttpStatus.CONFLICT);
     }
 }
