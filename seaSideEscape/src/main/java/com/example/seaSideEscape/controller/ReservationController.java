@@ -85,4 +85,15 @@ public class ReservationController {
     public void fillDB() throws Exception {
         roomService.setupDB();
     }
+
+    @PostMapping("/check-in")
+    public ResponseEntity<String> checkInGuest(@RequestParam String email) {
+        return reservationService.checkInGuestByEmail(email);
+    }
+
+    @PostMapping("/check-out")
+    public ResponseEntity<String> checkOutGuest(@RequestParam String email) {
+        return reservationService.checkOutGuestByEmail(email);
+    }
+
 }
