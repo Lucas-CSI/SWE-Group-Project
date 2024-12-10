@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {Button, Box, Typography, TextField, Select, MenuItem, InputLabel, FormControl} from '@mui/material';
 
-import { generatePostRequest} from "../services/apiService";
+import {generateGetRequest, generatePostRequest} from "../services/apiService";
 
 const AdminHomepage = () => {
     const [email, setEmail] = useState('');
@@ -11,6 +11,10 @@ const AdminHomepage = () => {
     const [modifyUsername, setModifyUsername] = useState('');
     const [permissionLevel, setPermissionLevel] = useState(0);
     const [modifyResult, setModifyResult] = useState('');
+    const [roomNumber, setRoomNumber] = useState('');
+    const [roomInfo, setRoomInfo] = useState({});
+    const [stringRoomInfo, setStringRoomInfo] = useState('');
+
     const handleSearch = () => {
         console.log(`Searching for: ${email}`);
     };
@@ -29,6 +33,17 @@ const AdminHomepage = () => {
             setModifyResult(response.data);
         else
             setModifyResult(response.response.data);
+    }
+
+    const handleGetRoomInfo = async () => {
+        const response = await generateGetRequest("/admin/getRoom?roomNumber=" + roomNumber, {}, {});
+        if(response.status === 200) {
+            setRoomInfo(response.data);
+            setStringRoomInfo(JSON.stringify(response.data));
+        }else {
+            setRoomInfo({});
+            setStringRoomInfo(response.response.data);
+        }
     }
 
     return (
@@ -223,8 +238,33 @@ const AdminHomepage = () => {
                     Modify Account Permissions
                 </Button>
 
+                <Box
+                    sx={{
+                        top: '100px',
+                        right: '20px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                    }}
+                >
+                    <TextField
+                        label="Room Number"
+                        variant="standard"
+                        size="small"
+                        value={roomNumber}
+                        onChange={(e) => setRoomNumber(e.target.value)}
+                    />
+                    <p>{stringRoomInfo}</p>
+                </Box>
+
+
                 <Button
                     variant="contained"
+                    onClick={handleGetRoomInfo}
                     sx={{
                         backgroundColor: 'rgb(25,122,140)',
                         color: 'white',
@@ -235,7 +275,7 @@ const AdminHomepage = () => {
                         },
                     }}
                 >
-                    Maintenance
+                    Get Room Status
                 </Button>
             </Box>
         </Box>
