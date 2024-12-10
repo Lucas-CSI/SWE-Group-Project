@@ -156,6 +156,10 @@ const NavigationBar = () => {
                             Events
                             <span className="underline"></span>
                         </Link>
+                        <Link to="/aboutUs" className="nav-link">
+                            About
+                            <span className="underline"></span>
+                        </Link>
                     </Box>
 
                     <IconButton
