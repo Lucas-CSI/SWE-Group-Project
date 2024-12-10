@@ -18,6 +18,7 @@ import VintageCharm from './components/Rooms/VintageCharm.js';
 import ExperiencePage from './components/ExperiencePage.js';
 import ReservationConfirmationPage from './components/ReservationPageComponents/ReservationConfirmationPage.js';
 import UserPortal from './components/UserPortal.js';
+import AboutUs from './components/AboutUs.js';
 
 function App() {
     return (
@@ -42,6 +43,7 @@ function App() {
                     <Route path="/vintageCharm" element={<VintageCharm />} />
                     <Route path="/reservation/confirmation" element={<ReservationConfirmationPage />} />
                     <Route path="/userPortal" element={<UserPortal />} />
+                    <Route path="/aboutUs" element={<AboutUs />} />
                 </Routes>
             </Box>
         </Router>
