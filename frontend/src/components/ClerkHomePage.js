@@ -5,6 +5,10 @@ const ClerkHomepage = () => {
     const [email, setEmail] = useState('');
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [reservationAction, setReservationAction] = useState('');
+    const [isRoomDialogOpen, setIsRoomDialogOpen] = useState(false);
+    const [roomType, setRoomType] = useState('');
+    const [roomOption, setRoomOption] = useState('');
+    const [roomNumber, setRoomNumber] = useState('');
 
     const handleSearch = () => {
         console.log(`Searching for: ${email}`);
@@ -20,6 +24,44 @@ const ClerkHomepage = () => {
 
     const handleReservationActionChange = (event) => {
         setReservationAction(event.target.value);
+    };
+
+    const handleRoomDialogOpen = () => {
+        setIsRoomDialogOpen(true);
+    };
+
+    const handleRoomDialogClose = () => {
+        setIsRoomDialogOpen(false);
+    };
+
+    const handleRoomTypeChange = (event) => {
+        setRoomType(event.target.value);
+        setRoomOption('');
+    };
+
+    const handleRoomOptionChange = (event) => {
+        setRoomOption(event.target.value);
+    };
+
+    const handleRoomNumberChange = (event) => {
+        setRoomNumber(event.target.value);
+    };
+
+    const handleSeeStatus = () => {
+        console.log(`Checking status for room number: ${roomNumber}, Type: ${roomType}, Option: ${roomOption}`);
+    };
+
+    const getRoomOptions = () => {
+        switch (roomType) {
+            case 'Nature Retreat':
+                return ['Single Room', 'Double Room', 'Family Room'];
+            case 'Urban Elegance':
+                return ['Suite Room', 'Deluxe Room'];
+            case 'Vintage Charm':
+                return ['Standard Room', 'Deluxe Room'];
+            default:
+                return [];
+        }
     };
 
     return (
@@ -143,7 +185,9 @@ const ClerkHomepage = () => {
                         '&:hover': {
                             backgroundColor: '#28c1d8',
                         },
+                        marginBottom: 4,
                     }}
+                    onClick={handleRoomDialogOpen}
                 >
                     Room Status
                 </Button>
@@ -182,6 +226,66 @@ const ClerkHomepage = () => {
                             <MenuItem value="modify">Modify Reservation</MenuItem>
                         </Select>
                     </FormControl>
+                </DialogContent>
+            </Dialog>
+
+            {/* Room Status Dialog */}
+            <Dialog open={isRoomDialogOpen} onClose={handleRoomDialogClose}>
+                <DialogTitle>Room Status</DialogTitle>
+                <DialogContent>
+                    <FormControl fullWidth sx={{ marginBottom: 2 }}>
+                        <InputLabel id="room-type-label">Room Type</InputLabel>
+                        <Select
+                            labelId="room-type-label"
+                            value={roomType}
+                            onChange={handleRoomTypeChange}
+                        >
+                            <MenuItem value="Nature Retreat">Nature Retreat</MenuItem>
+                            <MenuItem value="Urban Elegance">Urban Elegance</MenuItem>
+                            <MenuItem value="Vintage Charm">Vintage Charm</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    {roomType && (
+                        <FormControl fullWidth sx={{ marginBottom: 2 }}>
+                            <InputLabel id="room-option-label">Room Option</InputLabel>
+                            <Select
+                                labelId="room-option-label"
+                                value={roomOption}
+                                onChange={handleRoomOptionChange}
+                            >
+                                {getRoomOptions().map((option) => (
+                                    <MenuItem key={option} value={option}>
+                                        {option}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    )}
+
+                    <TextField
+                        label="Enter Room Number"
+                        variant="outlined"
+                        fullWidth
+                        sx={{ marginBottom: 2 }}
+                        value={roomNumber}
+                        onChange={handleRoomNumberChange}
+                    />
+
+                    <Button
+                        variant="contained"
+                        fullWidth
+                        sx={{
+                            backgroundColor: 'rgb(25,122,140)',
+                            color: 'white',
+                            '&:hover': {
+                                backgroundColor: '#28c1d8',
+                            },
+                        }}
+                        onClick={handleSeeStatus}
+                    >
+                        See Status
+                    </Button>
                 </DialogContent>
             </Dialog>
         </Box>
