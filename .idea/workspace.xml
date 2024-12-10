@@ -4,12 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="Merge Changes">
+    <list default="true" id="6d3ec65e-d7cf-4613-b7bf-d25b42f5318c" name="Changes" comment="PaymentService update implementation and frontend fixes">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/PaymentConfirmation.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/AdminHomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/AdminHomePage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/AdminPortalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/AdminPortalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/AdminPortalService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/AdminPortalService.java" afterDir="false" />
+
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/CartItems.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/CartItems.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/NavigationBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/NavigationBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/PaymentScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/PaymentScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/CartController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/PaymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/PaymentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/ReservationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/ReservationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/RoomController.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/controller/RoomController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/Payment.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/model/Payment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/repository/ReservationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/repository/ReservationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/EmailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/PaymentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/ReservationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/ReservationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/RoomService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/RoomService.java" afterDir="false" />
+
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Rooms/NatureRetreatOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/NatureRetreatOptions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Rooms/RoomModule.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/RoomModule.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Rooms/RoomsSuites.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/RoomsSuites.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Rooms/UrbanElegance.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/UrbanElegance.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Rooms/VintageCharm.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Rooms/VintageCharm.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +38,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="JavaScript File" />
         <option value="Class" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -55,6 +73,9 @@
     &quot;repository&quot;: &quot;SWE-Group-Project&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -64,6 +85,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
@@ -75,6 +97,7 @@
     &quot;git-widget-placeholder&quot;: &quot;AdminPortal&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/lmber/OneDrive/Desktop/SWE/Lab14&quot;,
+
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -87,12 +110,38 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
     &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.0.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.SeaSideEscapeApplication.executor": "Run",
+    "git-widget-placeholder": "RoomAccomodations",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/lmber/OneDrive/Desktop/SWE/Lab14",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.start.executor": "Run",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.0.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/frontend/public" />
       <recent name="$PROJECT_DIR$/frontend/src/components" />
+      <recent name="$PROJECT_DIR$/frontend/public" />
       <recent name="C:\Users\bakga\SWE-Group-Project\seaSideEscape" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -165,6 +214,9 @@
       <workItem from="1732729396133" duration="165000" />
       <workItem from="1732729581714" duration="3147000" />
       <workItem from="1732906838717" duration="400000" />
+
+      <workItem from="1733090807942" duration="6439000" />
+
       <workItem from="1733090807942" duration="7858000" />
       <workItem from="1733120024786" duration="127000" />
       <workItem from="1733180935120" duration="4216000" />
@@ -173,6 +225,7 @@
       <workItem from="1733526594441" duration="8634000" />
       <workItem from="1733592137369" duration="28059000" />
       <workItem from="1733775983141" duration="11083000" />
+
     </task>
     <task id="LOCAL-00001" summary="Added Others Implementation">
       <option name="closed" value="true" />
@@ -262,7 +315,103 @@
       <option name="project" value="LOCAL" />
       <updated>1731616936247</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Merge Changes">
+      <option name="closed" value="true" />
+      <created>1733156780617</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1733156780617</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Javadoc addition">
+      <option name="closed" value="true" />
+      <created>1733192333266</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1733192333266</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Javadoc addition">
+      <option name="closed" value="true" />
+      <created>1733192526963</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1733192526963</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Frontend PaymentScreen updated.">
+      <option name="closed" value="true" />
+      <created>1733340040304</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1733340040305</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Small changes in models and added dependency.">
+      <option name="closed" value="true" />
+      <created>1733713532150</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1733713532150</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Added baseRate Logic and a calculate reservation total.">
+      <option name="closed" value="true" />
+      <created>1733714072254</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1733714072255</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Changed the payment implementation.">
+      <option name="closed" value="true" />
+      <created>1733717089790</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1733717089791</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Updated BookingRepository issue.">
+      <option name="closed" value="true" />
+      <created>1733717323844</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1733717323844</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Updated roomService to the correct rounding.">
+      <option name="closed" value="true" />
+      <created>1733718162885</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1733718162886</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Added cartDetail implementation to roomService and PaymentScreen frontend is fetches room rates.">
+      <option name="closed" value="true" />
+      <created>1733729779160</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1733729779162</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Fixed PaymentScreen.">
+      <option name="closed" value="true" />
+      <created>1733736689711</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1733736689714</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Room Cart Removal implementation">
+      <option name="closed" value="true" />
+      <created>1733778701040</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1733778701043</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -289,7 +438,18 @@
     <MESSAGE value="Improved EventPage Front-End" />
     <MESSAGE value="Updated the billingSystem frontend" />
     <MESSAGE value="Merge Changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge Changes" />
+    <MESSAGE value="Javadoc addition" />
+    <MESSAGE value="Frontend PaymentScreen updated." />
+    <MESSAGE value="Small changes in models and added dependency." />
+    <MESSAGE value="Added baseRate Logic and a calculate reservation total." />
+    <MESSAGE value="Changed the payment implementation." />
+    <MESSAGE value="Updated BookingRepository issue." />
+    <MESSAGE value="Updated roomService to the correct rounding." />
+    <MESSAGE value="Added cartDetail implementation to roomService and PaymentScreen frontend is fetches room rates." />
+    <MESSAGE value="Fixed PaymentScreen." />
+    <MESSAGE value="Room Cart Removal implementation" />
+    <MESSAGE value="PaymentService update implementation and frontend fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="PaymentService update implementation and frontend fixes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

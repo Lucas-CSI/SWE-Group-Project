@@ -5,6 +5,7 @@ import com.example.seaSideEscape.model.Reservation;
 import com.example.seaSideEscape.model.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -19,5 +20,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     //List<Reservation> findBySmokingAllowedByQualityLevelAndBedTypeAndViewAndThemeBetweenCheckInDateAndCheckOutDate(boolean isSmokingAllowed, Room.QualityLevel qualityLevel, String bedType, boolean oceanView, Room.Themes theme, LocalDate startDate, LocalDate endDate);
     @Query("SELECT res FROM Reservation res JOIN Account acc ON acc = res.account WHERE acc.username = ?1")
     List<Reservation> findAllReservationsByUser(String username);
+
+    @Query("SELECT res FROM Reservation res WHERE res.account = ?1 AND NOT res.paid")
+    Optional<Reservation> findByAccountAndPaidFalse(Account account);
+
+
 }
 
