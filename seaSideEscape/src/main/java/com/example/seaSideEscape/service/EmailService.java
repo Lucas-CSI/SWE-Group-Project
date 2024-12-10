@@ -1,5 +1,6 @@
 package com.example.seaSideEscape.service;
 
+import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.model.Venue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -41,6 +42,18 @@ public class EmailService {
                         resetLink + "\n\n" +
                         "If you did not request this, please ignore this email.\n\n" +
                         "Best regards,\nSeaSide Escape Team");
+
+        emailSender.send(message);
+    }
+
+    public void sendAccountDetails(String to, String username, String password, Account.PermissionLevel permissionLevel) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject("Clerk Account");
+        message.setText(
+                "We received a request to create a new " + permissionLevel.name().toLowerCase() + " account for you.\n"+
+                        "Your username: " + username + "\nYour password: " + password + "\n\n Please delete this email once " +
+                        "you have securely stored your password");
 
         emailSender.send(message);
     }

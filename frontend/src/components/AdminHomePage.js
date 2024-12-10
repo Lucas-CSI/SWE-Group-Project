@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import {Button, Box, Typography, TextField, Select, MenuItem, InputLabel, FormControl} from '@mui/material';
 
+import { generatePostRequest} from "../services/apiService";
+
 const AdminHomepage = () => {
     const [email, setEmail] = useState('');
     const [clerkEmail, setClerkEmail] = useState('');
@@ -12,6 +14,14 @@ const AdminHomepage = () => {
     const handleSearch = () => {
         console.log(`Searching for: ${email}`);
     };
+
+    const handleCreateClerk = async() => {
+        const response = await generatePostRequest("/admin/createAccount/clerk?username="+clerkUsername+"&email="+clerkEmail, {}, {});
+        if(response.status === 200)
+            setClerkInfo(response.data);
+        else
+            setClerkInfo(response.response.data);
+    }
 
     return (
         <Box
@@ -138,6 +148,7 @@ const AdminHomepage = () => {
                 </Box>
                 <Button
                     variant="contained"
+                    onClick={handleCreateClerk}
                     sx={{
                         backgroundColor: 'rgb(25,122,140)',
                         color: 'white',

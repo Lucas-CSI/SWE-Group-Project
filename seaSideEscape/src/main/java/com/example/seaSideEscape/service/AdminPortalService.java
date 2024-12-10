@@ -12,10 +12,12 @@ import java.security.NoSuchAlgorithmException;
 @Service
 public class AdminPortalService {
     private final AccountService accountService;
+    private final EmailService emailService;
 
     @Autowired
-    public AdminPortalService(AccountService accountService) {
+    public AdminPortalService(AccountService accountService, EmailService emailService) {
         this.accountService = accountService;
+        this.emailService = emailService;
     }
 
     private Account makeAccount(String username, String email, Account.PermissionLevel permissionLevel){
@@ -36,12 +38,16 @@ public class AdminPortalService {
 
     public ResponseEntity<String> createNonGuestAccount(String toCreateUsername, String toCreateEmail, String username, Account.PermissionLevel permissionLevel) throws NoSuchAlgorithmException {
         if(checkPermission(username, Account.PermissionLevel.Admin)){
-            accountService.createAccount(makeAccount(toCreateUsername, toCreateEmail, permissionLevel));
+            Account account = makeAccount(toCreateUsername, toCreateEmail, permissionLevel);
+            String password = account.getPassword();
+            ResponseEntity<String> result = accountService.createAccount(account);
+            if(result.getStatusCode() == HttpStatus.OK){
+                emailService.sendAccountDetails(toCreateEmail, toCreateUsername, password, permissionLevel);
+            }
+            return result;
         }else{
             return new ResponseEntity<>("Error: Invalid permissions", HttpStatus.CONFLICT);
         }
-
-        return ResponseEntity.ok().body("Successfully created non-guest account");
     }
 
     @Transactional
