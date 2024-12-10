@@ -1,26 +1,32 @@
 package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.model.Account;
+import com.example.seaSideEscape.model.Booking;
 import com.example.seaSideEscape.model.Room;
+import com.example.seaSideEscape.repository.BookingRepository;
 import com.example.seaSideEscape.repository.RoomRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RoomService {
-    private final RoomRepository roomRepository;
+    public final RoomRepository roomRepository;
     private final BookingService bookingService;
     private final AccountService accountService;
+    private final BookingRepository bookingRepository;
 
     @Autowired
-    public RoomService(RoomRepository roomRepository, BookingService bookingService, AccountService accountService) {
+    public RoomService(RoomRepository roomRepository, BookingService bookingService, AccountService accountService, BookingRepository bookingRepository) {
         this.roomRepository = roomRepository;
         this.bookingService = bookingService;
         this.accountService = accountService;
+        this.bookingRepository = bookingRepository;
     }
 
     public boolean roomExists(Long roomId){
@@ -58,8 +64,71 @@ public class RoomService {
             room.setRoomNumber(String.valueOf(i + 101));
             room.setTheme(Room.Themes.values()[(int) (Math.random() * 3)]);
             room.setOceanView((int)(Math.random() * 2) == 0);
-            addRoomToDB(room);
+
+            room.setMaxRate(calculateRoomRate(room));
+            roomRepository.save(room);
         }
+    }
+
+    private double calculateRoomRate(Room room) {
+        double baseRate = 100.0;
+
+        switch (room.getQualityLevel()) {
+            case Executive -> baseRate *= 1.5;
+            case Business -> baseRate *= 1.3;
+            case Comfort -> baseRate *= 1.1;
+            case Economy -> baseRate *= 1.0;
+        }
+
+        if (room.isOceanView()) {
+            baseRate += 20.0;
+        }
+        if (room.isSmokingAllowed()) {
+            baseRate += 10.0;
+        }
+
+        baseRate = Math.max(baseRate, 100.0);
+
+        BigDecimal roundedRate = BigDecimal.valueOf(baseRate).setScale(2, RoundingMode.HALF_UP);
+        return roundedRate.doubleValue();
+    }
+    public double calculateTotalCartCost(String username) {
+        List<Room> cartRooms = getRoomsInCart(username);
+        if (cartRooms == null || cartRooms.isEmpty()) {
+            return 0.0;
+        }
+        return cartRooms.stream()
+                .mapToDouble(Room::getMaxRate)
+                .sum();
+    }
+    @Transactional
+    public void clearCart(String username) {
+        Optional<Account> account = accountService.findAccountByUsername(username);
+        if (account.isPresent()) {
+            Account accountObject = account.get();
+            List<Room> cartRooms = getRoomsInCart(username);
+
+            if (cartRooms != null && !cartRooms.isEmpty()) {
+                for (Room room : cartRooms) {
+                    bookingService.removeRoomFromCart(accountObject, room);
+                }
+            }
+        }
+    }
+
+    //Removing from Cart logic
+
+    public Room getRoomById(Long roomId) {
+        return roomRepository.findById(roomId).orElse(null);
+    }
+
+    public boolean removeRoomFromCart(Account account, Room room) {
+        Optional<Booking> booking = bookingRepository.findByReservation_AccountAndRoom(account, room);
+        if (booking.isPresent()) {
+            bookingRepository.delete(booking.get());
+            return true;
+        }
+        return false;
     }
 
     public List<Room> getRoomsInCart(String username){

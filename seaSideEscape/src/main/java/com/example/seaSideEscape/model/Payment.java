@@ -27,6 +27,10 @@ public class Payment {
     @ManyToOne
     private EventBooking eventBooking;
 
+    public Long getID(){return id;}
+
+    public void setID(Long id){this.id = id;}
+
     public Reservation getReservation(){return reservation;}
 
     public String getCardNumber(){

@@ -14,10 +14,11 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Booking> bookings;
 
     @ManyToOne
+    @JoinColumn(name = "account_id",  nullable = true)
     private Account account;
 
     private LocalDate checkInDate;
