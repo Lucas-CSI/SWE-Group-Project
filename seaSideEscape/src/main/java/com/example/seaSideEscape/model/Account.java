@@ -19,8 +19,7 @@ public class Account{
     @ManyToOne
     private Reservation unbookedReservation;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations;
 
     public PermissionLevel getPermissionLevel() {
