@@ -26,11 +26,6 @@ public class AccountService {
 //        this.jwtService = jwtService;
     }
 
-    public boolean adminExists(String username) {
-        // Checks if an admin account with the given username already exists
-        return accountRepository.findByUsernameAndIsAdmin(username).isPresent();
-    }
-
     public void saveAccount(Account account) {
         accountRepository.save(account);
     }
@@ -41,7 +36,7 @@ public class AccountService {
 //    }
 
 
-    private String createSalt(){
+    public String createSalt(){
         String SALTCHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder salt = new StringBuilder();
         Random rnd = new Random();
