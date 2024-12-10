@@ -117,7 +117,7 @@ public class AccountController {
     }
 
     @GetMapping("/getCart")
-    public ResponseEntity<String> getCart(@CookieValue("username") String username) throws NoSuchAlgorithmException, JsonProcessingException {
+    public ResponseEntity<String> getCart(@CookieValue("username") String username) throws JsonProcessingException {
         return ResponseEntity.ok(serializeRoom.listToJSON(roomService.getRoomsInCart(username)));
     }
 }

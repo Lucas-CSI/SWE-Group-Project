@@ -92,6 +92,15 @@ public class AccountService {
     public Optional<Account> findAccountByUsername(String username){
         return accountRepository.findByUsername(username);
     }
+
+    public Account getAccountObject(String username){
+        return accountRepository.findByUsername(username).orElse(null);
+    }
+
+    public boolean checkPermission(Account account, Account.PermissionLevel minimumPermissionLevel){
+        return account.getPermissionLevel().ordinal() >= minimumPermissionLevel.ordinal();
+    }
+
     public Optional<Account> canLogin(Account account) throws NoSuchAlgorithmException {
         Optional<Account> acc = accountRepository.findByUsername(account.getUsername());
         String password;
