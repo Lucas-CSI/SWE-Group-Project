@@ -200,67 +200,28 @@ const NavigationBar = () => {
                         horizontal: 'right',
                     }}
                     PaperProps={{
-                        style: {
-                            padding: '10px',
-                            width: '250px',
-                            position: 'relative',
-                        },
+                        style: { padding: '10px', width: '250px' },
                     }}
                 >
-                    <Typography
-                        variant="h6"
-                        gutterBottom
-                        sx={{
-                            textAlign: 'center',
-                            marginBottom: '10px',
-                            fontWeight: 'bold',
-                        }}
-                    >
+                    <Typography variant="h6" gutterBottom>
                         Cart Summary
                     </Typography>
-                    <Box
-                        sx={{
-                            border: '2px solid rgb(25,122,140)',
-                            borderRadius: '8px',
-                            padding: '8px',
-                            marginBottom: '60px',
-                            position: 'relative',
-                        }}
-                    >
-                        <List>
-                            {cartItems.map((item, index) => (
-                                <ListItem key={index}>
-                                    <ListItemText primary={item.name} secondary={`$${item.price}`} />
-                                </ListItem>
-                            ))}
-                        </List>
-                        <Typography
-                            variant="body1"
-                            sx={{
-                                marginTop: '10px',
-                                fontWeight: 'bold',
-                                textAlign: 'center',
-                            }}
-                        >
+                    <List>
+                        {cartItems.map((item, index) => (
+                            <ListItem key={index}>
+                                <ListItemText primary={item.name} secondary={`$${item.price}`} />
+                            </ListItem>
+                        ))}
+                    </List>
+                    <Divider sx={{ margin: '1rem 0' }} />
+                    <div style={{display: "flex", flexDirection: "row"}}>
+                        <Typography variant="body1" style={{marginTop: '10px', fontWeight: 'bold'}}>
                             Total: ${cartItems.reduce((total, item) => total + item.price, 0)}
                         </Typography>
-                    </Box>
-                    <Button
-                        variant="contained"
-                        sx={{
-                            backgroundColor: 'rgb(25,122,140)',
-                            color: 'white',
-                            position: 'absolute',
-                            bottom: '10px',
-                            right: '10px',
-                            '&:hover': {
-                                backgroundColor: '#28c1d8',
-                            },
-                        }}
-                        onClick={() => navigate('/checkout')}
-                    >
-                        Checkout
-                    </Button>
+                        <Button variant="contained" className="check-in-out-button" style={{alignSelf: "flex-end" , position:'absolute' , right:5}}>
+                            CHECKOUT
+                        </Button>
+                    </div>
                 </Popover>
             </AppBar>
 

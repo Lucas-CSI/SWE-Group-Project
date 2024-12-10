@@ -3,7 +3,6 @@ import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.repository.AccountRepository;
 
 import com.example.seaSideEscape.validator.AccountValidator;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -114,30 +113,4 @@ public class AccountService {
         }
         return Optional.empty();
     }
-
-    @Transactional
-    public ResponseEntity<String> updatePassword(String email, String newPassword) {
-        Optional<Account> optionalAccount = accountRepository.findByEmail(email);
-
-        if (optionalAccount.isPresent()) {
-            Account account = optionalAccount.get();
-
-            String newSalt = createSalt();
-            account.setSalt(newSalt);
-
-            try {
-                String hashedPassword = getSHA256(newPassword + newSalt);
-                account.setPassword(hashedPassword);
-
-                accountRepository.save(account);
-
-                return new ResponseEntity<>("Password updated successfully.", HttpStatus.OK);
-            } catch (NoSuchAlgorithmException e) {
-                return new ResponseEntity<>("Error updating password. Please try again.", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<>("Account not found.", HttpStatus.NOT_FOUND);
-    }
-
 }

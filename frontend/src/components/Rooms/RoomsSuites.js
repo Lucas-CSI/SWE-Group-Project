@@ -27,6 +27,7 @@ const urbanImages = ['modernBeachBed.jpg', 'urbanpt2.jpeg', 'modernBed.jpg'];
 const vintageImages = ['vintageBed.jpg', 'vintageView.jpg', 'vintageType.jpg'];
 
 const RoomSuites = () => {
+
     const [availableRooms, setAvailableRooms ] = useState({total: 0});
     useEffect(() => {
         const getAvailableRooms = async () => {
@@ -157,7 +158,7 @@ const RoomCategory = ({ title, description, images, options, hide }) => {
                 <Typography variant="body1">{description}</Typography>
 
                 {/* View Options Button */}
-                <Button variant="outlined" color='rgb(25,122,140)' sx={{ marginTop: '1rem' }} onClick={handleOpen}>
+                <Button variant="outlined" color="primary" sx={{ marginTop: '1rem' }} onClick={handleOpen}>
                     View Options
                 </Button>
 
@@ -197,7 +198,7 @@ const RoomCategory = ({ title, description, images, options, hide }) => {
                         <Divider sx={{ margin: '1rem 0' }} />
                         <Button
                             variant="contained"
-                            color='rgb(25,122,140)'
+                            color="primary"
                             onClick={() => {
                                 handleNavigate();
                             }}
@@ -217,7 +218,7 @@ const RoomCategory = ({ title, description, images, options, hide }) => {
             {hide ? null : <Button
                 onClick={handleNavigate}
                 variant="contained"
-                color='rgb(25,122,140)'
+                color="primary"
                 sx={{ position: 'absolute', bottom: 30, right: 30 }}
             >
                 View Rates & Reserve
