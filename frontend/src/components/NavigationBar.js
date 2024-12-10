@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Cookies from 'js-cookie';
 import {
     AppBar,
@@ -20,12 +20,15 @@ import {
     ListItemText, Divider
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import CloseIcon from '@mui/icons-material/Close';
+
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { login } from "../services/authService.js";
 import './NavigationBar.css';
 import { generatePostRequest, generateGetRequest } from "../services/apiService"
 import { getLoginStatus} from "../services/authService.js";
+import {CartContext} from "./CartItems";
 
 
 const NavigationBar = () => {
@@ -48,6 +51,9 @@ const NavigationBar = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const navigate = useNavigate();
+
+    const { cartItems, handleRemoveFromCart, clearCart } = useContext(CartContext);
+
 
     const handleLoginOpen = () => setLoginOpen(true);
     const handleLoginClose = () => {
@@ -98,7 +104,7 @@ const NavigationBar = () => {
     const handleLogout = async () => {
         const response = await generatePostRequest("logoutAccount", {});
         if (response.status === 200) {
-            setCartItems([]);
+            clearCart();
             navigate("/");
             alert("Logged out.");
         }else{
@@ -122,29 +128,10 @@ const NavigationBar = () => {
         }
     };
 
-    const handleRoomsClick = () => {
-        console.log("Navigating to Rooms & Suites page...");
-        navigate('/rooms');
+    const handleCheckout = () => {
+        const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
+        navigate("/reservation/payment", {state: {totalAmount, cartItems}});
     };
-
-    const [cartItems, setCartItems] = useState([]);
-
-    useEffect(() => {
-        const getCart = async () => {
-            let response = await generateGetRequest("/getCart");
-            let cart = response.data;
-            let tempItems = [];
-
-            for(let i in cart){
-                tempItems = [...tempItems,{name: cart[i].qualityLevel + " Style Room", price: cart[i].maxRate}];
-            }
-            setCartItems(tempItems);
-        }
-        if(getLoginStatus()) {
-            getCart();
-        }
-    }, []);
-
 
     return !cartItems ? (<p>Loading...</p>) : (
         <>
@@ -231,6 +218,16 @@ const NavigationBar = () => {
                             {cartItems.map((item, index) => (
                                 <ListItem key={index}>
                                     <ListItemText primary={item.name} secondary={`$${item.price}`} />
+                                    <IconButton
+                                        size="small"
+                                        color="error"
+
+                                        onClick={() => {
+                                            console.log(item.id);
+                                            handleRemoveFromCart(item.id);}}
+                                    >
+                                        <CloseIcon />
+                                    </IconButton>
                                 </ListItem>
                             ))}
                         </List>
@@ -257,7 +254,7 @@ const NavigationBar = () => {
                                 backgroundColor: '#28c1d8',
                             },
                         }}
-                        onClick={() => navigate('/checkout')}
+                        onClick={() => navigate('/reservation/payment')}
                     >
                         Checkout
                     </Button>

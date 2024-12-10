@@ -117,7 +117,6 @@ public class RoomService {
     }
 
     //Removing from Cart logic
-
     public Room getRoomById(Long roomId) {
         return roomRepository.findById(roomId).orElse(null);
     }

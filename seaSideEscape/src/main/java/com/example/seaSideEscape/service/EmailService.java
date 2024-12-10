@@ -55,16 +55,12 @@ public class EmailService {
     }
 
 
-    public void sendReservationConfirmation(String username, Long reservationId, List<Room> rooms,
+    public void sendReservationConfirmation(String email, Long reservationId, List<Room> rooms,
                                             LocalDateTime checkInDate, LocalDateTime checkOutDate) {
-
-        String recipientEmail = accountRepository.findByUsername(username)
-                .map(Account::getEmail)
-                .orElseThrow(() -> new IllegalArgumentException("Email not found for username: " + username));
 
         String subject = "Reservation Confirmation";
         StringBuilder message = new StringBuilder();
-        message.append("Dear ").append(username).append(",\n\n");
+        message.append("Dear Guest,\n\n");
         message.append("Thank you for your reservation. Here are the details:\n\n");
         message.append("Reservation ID: ").append(reservationId).append("\n");
         message.append("Check-In: ").append(checkInDate).append("\n");
@@ -78,14 +74,25 @@ public class EmailService {
         message.append("\nWe look forward to hosting you!\n");
         message.append("SeaSide Escape Hotel");
 
-        // Prepare the email
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setTo(recipientEmail);
-        email.setSubject(subject);
-        email.setText(message.toString());
+        SimpleMailMessage emailMessage = new SimpleMailMessage();
+        emailMessage.setTo(email);
+        emailMessage.setSubject(subject);
+        emailMessage.setText(message.toString());
 
-        // Send the email
-        emailSender.send(email);
+        emailSender.send(emailMessage);
     }
+
+    public void sendAccountDetails(String to, String username, String password, Account.PermissionLevel permissionLevel) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject("Clerk Account");
+        message.setText(
+                "We received a request to create a new " + permissionLevel.name().toLowerCase() + " account for you.\n"+
+                        "Your username: " + username + "\nYour password: " + password + "\n\n Please delete this email once " +
+                        "you have securely stored your password");
+
+        emailSender.send(message);
+    }
+
 
 }
