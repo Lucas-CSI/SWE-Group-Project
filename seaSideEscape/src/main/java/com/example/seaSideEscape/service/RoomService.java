@@ -64,6 +64,7 @@ public class RoomService {
             room.setRoomNumber(String.valueOf(i + 101));
             room.setTheme(Room.Themes.values()[(int) (Math.random() * 3)]);
             room.setOceanView((int)(Math.random() * 2) == 0);
+
             room.setMaxRate(calculateRoomRate(room));
             roomRepository.save(room);
         }
@@ -115,8 +116,6 @@ public class RoomService {
         }
     }
 
-    //Removing from Cart logic
-
     public Room getRoomById(Long roomId) {
         return roomRepository.findById(roomId).orElse(null);
     }
@@ -146,32 +145,6 @@ public class RoomService {
     }
   
 
-    public List<Map<String, Object>> getRoomDetailsInCart(String username) {
-        Optional<Account> accountOptional = accountService.findAccountByUsername(username);
-        if (accountOptional.isEmpty()) {
-            throw new IllegalArgumentException("Account not found for username: " + username);
-        }
-
-        Account account = accountOptional.get();
-        List<Room> cartRooms = roomRepository.getCart(account);
-        if (cartRooms == null || cartRooms.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        return cartRooms.stream()
-                .map(room -> {
-                    Map<String, Object> roomDetails = new HashMap<>();
-                    roomDetails.put("theme", room.getTheme().toString());
-                    roomDetails.put("qualityLevel", room.getQualityLevel().toString());
-                    roomDetails.put("oceanView", room.isOceanView());
-                    roomDetails.put("smokingAllowed", room.isSmokingAllowed());
-                    roomDetails.put("bedType", room.getBedType());
-                    roomDetails.put("roomRate", room.getMaxRate());
-                    return roomDetails;
-                })
-                .toList();
-    }
-
     public Optional<Room> getRoomInfo(String roomNumber){
         return roomRepository.findRoomByNumber(roomNumber);
     }
@@ -183,5 +156,4 @@ public class RoomService {
     public Room save(Room room){
         return roomRepository.save(room);
     }
-
 }

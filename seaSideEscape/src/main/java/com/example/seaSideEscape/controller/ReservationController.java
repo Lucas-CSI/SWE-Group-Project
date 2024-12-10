@@ -1,8 +1,11 @@
 package com.example.seaSideEscape.controller;
 
+import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.model.Reservation;
 import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.repository.ReservationRepository;
+import com.example.seaSideEscape.service.AccountService;
+
 import com.example.seaSideEscape.service.ReservationService;
 import com.example.seaSideEscape.service.RoomService;
 import org.apache.coyote.Response;
@@ -27,6 +30,8 @@ public class ReservationController {
     private final ReservationService reservationService;
     private final RoomService roomService;
     private final ReservationRepository reservationRepository;
+    private final AccountService accountService;
+
 
     /**
      * Constructs a new {@code ReservationController}.
@@ -35,10 +40,11 @@ public class ReservationController {
      * @param roomService the service handling room-related operations
      */
     @Autowired
-    public ReservationController(ReservationService reservationService, RoomService roomService, ReservationRepository reservationRepository) {
+    public ReservationController(ReservationService reservationService, RoomService roomService, ReservationRepository reservationRepository, AccountService accountService) {
         this.reservationService = reservationService;
         this.roomService = roomService;
         this.reservationRepository = reservationRepository;
+        this.accountService = accountService;
     }
 
     /**
@@ -93,12 +99,21 @@ public class ReservationController {
         roomService.setupDB();
     }
 
-//    @GetMapping("/getCurrentReservation")
-//    public ResponseEntity<Reservation> getCurrentReservation(@CookieValue("username") String username) {
-//        Optional<Long> reservationId = reservationRepository.findActiveReservationIdByAccountId(accountId);
-//        if (reservationId.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No active reservation found.");
-//        }
-//        return ResponseEntity.ok(reservationId.get().toString());
-//    }
+    @GetMapping("/current")
+    public ResponseEntity<String> getCurrentReservation(@CookieValue("username") String username) {
+        if (username == null || username.isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        try {
+            Account account = accountService.findAccountByUsername(username)
+                    .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+            String reservation = String.valueOf(reservationService.getUnpaidReservation(account).getId());
+            return ResponseEntity.ok(reservation);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
 }

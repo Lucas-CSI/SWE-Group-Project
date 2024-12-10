@@ -143,6 +143,12 @@ public class ReservationService {
         }
         return ResponseEntity.ok().body("Room added");
     }
+
+    public Reservation getUnpaidReservation(Account account) {
+
+        return reservationRepository.findByAccountAndPaidFalse(account)
+                .orElseThrow(() -> new IllegalArgumentException("No unpaid reservation found for the account"));
+    }
 }
 
 

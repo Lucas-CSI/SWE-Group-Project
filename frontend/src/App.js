@@ -16,7 +16,8 @@ import UrbanElegance from './components/Rooms/UrbanElegance.js';
 import VintageCharm from './components/Rooms/VintageCharm.js';
 import ExperiencePage from './components/ExperiencePage.js';
 import ReservationConfirmationPage from './components/ReservationPageComponents/ReservationConfirmationPage.js';
-import UserPortal from './components/UserPortal.js';
+import { CartProvider } from './components/CartItems';
+import PaymentConfirmation from './components/PaymentConfirmation'
 
 import { CartProvider } from './components/CartItems';
 import PaymentConfirmation from './components/PaymentConfirmation'
@@ -45,7 +46,6 @@ function App() {
                     <Route path="/urbanElegance" element={<UrbanElegance />} />
                     <Route path="/vintageCharm" element={<VintageCharm />} />
                     <Route path="/reservation/confirmation" element={<ReservationConfirmationPage />} />
-                    <Route path="/userPortal" element={<UserPortal />} />
                 </Routes>
             </Box>
         </Router>

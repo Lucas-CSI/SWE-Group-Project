@@ -14,6 +14,7 @@ import {
     CardContent,
 } from "@mui/material";
 import {CartContext} from "./CartItems";
+import {generateGetRequest, generatePostRequest} from "../services/apiService";
 
 const TAX_RATE = 0.1;
 
@@ -41,6 +42,33 @@ const PaymentScreen = () => {
     const navigate = useNavigate();
 
     const TAX_RATE = 0.10;
+    const [errors, setErrors] = useState({});
+
+    const validate = () => {
+        const validationErrors = {};
+
+        if (!formData.firstName) validationErrors.firstName = "First Name is required.";
+        if (!formData.lastName) validationErrors.lastName = "Last Name is required.";
+        if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+            validationErrors.email = "A valid Email Address is required.";
+        if (!formData.address) validationErrors.address = "Address is required.";
+        if (!formData.city) validationErrors.city = "City is required.";
+        if (!formData.state) validationErrors.state = "State is required.";
+        if (!formData.zip || !/^\d{5}(-\d{4})?$/.test(formData.zip))
+            validationErrors.zip = "A valid ZIP Code is required.";
+
+        if (!formData.creditCardNumber || !/^\d{16}$/.test(formData.creditCardNumber))
+            validationErrors.creditCardNumber = "A valid 16-digit Credit/Debit Card Number is required.";
+        if (!formData.expirationMonth || !/^(0[1-9]|1[0-2])$/.test(formData.expirationMonth))
+            validationErrors.expirationMonth = "Enter a valid month (01-12).";
+        if (!formData.expirationYear || !/^\d{4}$/.test(formData.expirationYear))
+            validationErrors.expirationYear = "Enter a valid year (e.g., 2025).";
+        if (!formData.cvv || !/^\d{3,4}$/.test(formData.cvv))
+            validationErrors.cvv = "A valid 3 or 4-digit CVV is required.";
+
+        setErrors(validationErrors);
+        return Object.keys(validationErrors).length === 0;
+    };
 
     useEffect(() => {
         const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
@@ -49,6 +77,24 @@ const PaymentScreen = () => {
         setTax(calculatedTax);
         setTotal(subtotal + calculatedTax);
     }, [cartItems]);
+
+    useEffect(() => {
+        const fetchReservationId = async () => {
+            try {
+                const response = await generateGetRequest("/reservation/current");
+                if (response && response.data) {
+                    setSelectedReservationId(response.data);
+                } else {
+                    alert("No reservation found. Please ensure you have an active reservation.");
+                }
+            } catch (error) {
+                console.error("Error fetching reservation:", error);
+                alert("Failed to fetch reservation. Please try again.");
+            }
+        };
+
+        fetchReservationId();
+    }, []);
 
     const handleChange = (e) => {
         setFormData({
@@ -60,13 +106,17 @@ const PaymentScreen = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if(!validate()){
+            return;
+        }
+
         if (!selectedReservationId) {
             alert("No reservation selected.");
             return;
         }
 
-
         const paymentData = {
+            reservationId: selectedReservationId,
             paymentMethod: formData.paymentMethod,
             billingAddress: formData.address,
             cardNumber: formData.creditCardNumber,
@@ -74,18 +124,13 @@ const PaymentScreen = () => {
             cvv: formData.cvv,
         };
 
-        try {
-            const response = await axios.post(
-                "http://localhost:8080/payments/payRoom",
-                paymentData,
-                {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true,
-                }
-            );
 
-            if (response.status === 200) {
-                navigate(`/reservation/confirmation/${response.data.id}`);
+
+        try {
+            const response = await generatePostRequest("/payments/payRoom", paymentData);
+
+            if (response && response.status === 200) {
+                navigate(`/reservation/confirmation`);
             } else {
                 alert("Payment failed. Please try again.");
             }
@@ -117,6 +162,8 @@ const PaymentScreen = () => {
                                         name="firstName"
                                         value={formData.firstName}
                                         onChange={handleChange}
+                                        error={!!errors.firstName}
+                                        helperText={errors.firstName}
                                         required
                                     />
                                 </Grid>
@@ -127,6 +174,8 @@ const PaymentScreen = () => {
                                         name="lastName"
                                         value={formData.lastName}
                                         onChange={handleChange}
+                                        error={!!errors.lastName}
+                                        helperText={errors.lastName}
                                         required
                                     />
                                 </Grid>
@@ -138,6 +187,8 @@ const PaymentScreen = () => {
                                         type="email"
                                         value={formData.email}
                                         onChange={handleChange}
+                                        error={!!errors.email}
+                                        helperText={errors.email}
                                         required
                                     />
                                 </Grid>
@@ -148,6 +199,8 @@ const PaymentScreen = () => {
                                         name="address"
                                         value={formData.address}
                                         onChange={handleChange}
+                                        error={!!errors.address}
+                                        helperText={errors.address}
                                         required
                                     />
                                 </Grid>
@@ -158,6 +211,8 @@ const PaymentScreen = () => {
                                         name="city"
                                         value={formData.city}
                                         onChange={handleChange}
+                                        error={!!errors.city}
+                                        helperText={errors.city}
                                         required
                                     />
                                 </Grid>
@@ -168,6 +223,8 @@ const PaymentScreen = () => {
                                         name="state"
                                         value={formData.state}
                                         onChange={handleChange}
+                                        error={!!errors.state}
+                                        helperText={errors.state}
                                         required
                                     />
                                 </Grid>
@@ -178,6 +235,8 @@ const PaymentScreen = () => {
                                         name="zip"
                                         value={formData.zip}
                                         onChange={handleChange}
+                                        error={!!errors.zip}
+                                        helperText={errors.zip}
                                         required
                                     />
                                 </Grid>
@@ -196,6 +255,8 @@ const PaymentScreen = () => {
                                         name="creditCardNumber"
                                         value={formData.creditCardNumber}
                                         onChange={handleChange}
+                                        error={!!errors.creditCardNumber}
+                                        helperText={errors.creditCardNumber}
                                         required
                                     />
                                 </Grid>
@@ -206,6 +267,8 @@ const PaymentScreen = () => {
                                         name="expirationMonth"
                                         value={formData.expirationMonth}
                                         onChange={handleChange}
+                                        error={!!errors.expirationMonth}
+                                        helperText={errors.expirationMonth}
                                         required
                                     />
                                 </Grid>
@@ -216,6 +279,8 @@ const PaymentScreen = () => {
                                         name="expirationYear"
                                         value={formData.expirationYear}
                                         onChange={handleChange}
+                                        error={!!errors.expirationYear}
+                                        helperText={errors.expirationYear}
                                         required
                                     />
                                 </Grid>
@@ -226,6 +291,8 @@ const PaymentScreen = () => {
                                         name="cvv"
                                         value={formData.cvv}
                                         onChange={handleChange}
+                                        error={!!errors.cvv}
+                                        helperText={errors.cvv}
                                         required
                                     />
                                 </Grid>
@@ -236,8 +303,18 @@ const PaymentScreen = () => {
                                 fullWidth
                                 sx={{
                                     mt: 3,
-                                    backgroundColor: "#1976d2",
-                                    "&:hover": { backgroundColor: "#1565c0" },
+                                    backgroundColor: "rgba(0, 59, 74, 0.65)",
+                                    color: "white",
+                                    fontWeight: "bold",
+                                    padding: "0.75rem 1rem",
+                                    borderRadius: "5px",
+                                    border: "none",
+                                    transition: "background-color 0.3s ease, transform 0.2s ease",
+                                    zIndex: 3,
+                                    "&:hover": {
+                                        backgroundColor: "rgba(0, 59, 74, 0.85)",
+                                        transform: "scale(1.02)",
+                                    },
                                 }}
                             >
                                 Pay ${total.toFixed(2)}
