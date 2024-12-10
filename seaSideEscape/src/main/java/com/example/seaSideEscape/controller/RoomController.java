@@ -27,10 +27,4 @@ public class RoomController {
     public String getAvailableRooms(@CookieValue("username") String username) throws JsonProcessingException {
         return serializeModule.listToJSON(roomService.getAvailableRooms(username));
     }
-
-    @GetMapping("/cart/details")
-    public ResponseEntity<List<Map<String, Object>>> getRoomDetailsInCart(@CookieValue("username") String username) {
-        List<Map<String, Object>> roomDetails = roomService.getRoomDetailsInCart(username);
-        return ResponseEntity.ok(roomDetails);
-    }
 }

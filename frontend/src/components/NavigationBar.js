@@ -155,7 +155,7 @@ const NavigationBar = () => {
 
     const handleCheckout = () => {
         const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
-        navigate("/reservation/payment/:reservationId", {state: {totalAmount, cartItems}});
+        navigate("/reservation/payment", {state: {totalAmount, cartItems}});
     };
 
 

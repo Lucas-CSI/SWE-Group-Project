@@ -2,15 +2,18 @@ package com.example.seaSideEscape.controller;
 
 import com.example.seaSideEscape.model.Reservation;
 import com.example.seaSideEscape.model.Room;
+import com.example.seaSideEscape.repository.ReservationRepository;
 import com.example.seaSideEscape.service.ReservationService;
 import com.example.seaSideEscape.service.RoomService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.time.LocalDate;
+import java.util.Optional;
 
 
 /**
@@ -23,6 +26,7 @@ public class ReservationController {
 
     private final ReservationService reservationService;
     private final RoomService roomService;
+    private final ReservationRepository reservationRepository;
 
     /**
      * Constructs a new {@code ReservationController}.
@@ -31,9 +35,10 @@ public class ReservationController {
      * @param roomService the service handling room-related operations
      */
     @Autowired
-    public ReservationController(ReservationService reservationService, RoomService roomService) {
+    public ReservationController(ReservationService reservationService, RoomService roomService, ReservationRepository reservationRepository) {
         this.reservationService = reservationService;
         this.roomService = roomService;
+        this.reservationRepository = reservationRepository;
     }
 
     /**
@@ -87,4 +92,13 @@ public class ReservationController {
     public void fillDB() throws Exception {
         roomService.setupDB();
     }
+
+//    @GetMapping("/getCurrentReservation")
+//    public ResponseEntity<Reservation> getCurrentReservation(@CookieValue("username") String username) {
+//        Optional<Long> reservationId = reservationRepository.findActiveReservationIdByAccountId(accountId);
+//        if (reservationId.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No active reservation found.");
+//        }
+//        return ResponseEntity.ok(reservationId.get().toString());
+//    }
 }

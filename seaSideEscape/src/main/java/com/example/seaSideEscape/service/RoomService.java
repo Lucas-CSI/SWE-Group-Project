@@ -146,31 +146,4 @@ public class RoomService {
         roomRepository.save(room);
     }
 
-    public List<Map<String, Object>> getRoomDetailsInCart(String username) {
-        Optional<Account> accountOptional = accountService.findAccountByUsername(username);
-        if (accountOptional.isEmpty()) {
-            throw new IllegalArgumentException("Account not found for username: " + username);
-        }
-
-        Account account = accountOptional.get();
-        List<Room> cartRooms = roomRepository.getCart(account);
-        if (cartRooms == null || cartRooms.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        return cartRooms.stream()
-                .map(room -> {
-                    Map<String, Object> roomDetails = new HashMap<>();
-                    roomDetails.put("theme", room.getTheme().toString());
-                    roomDetails.put("qualityLevel", room.getQualityLevel().toString());
-                    roomDetails.put("oceanView", room.isOceanView());
-                    roomDetails.put("smokingAllowed", room.isSmokingAllowed());
-                    roomDetails.put("bedType", room.getBedType());
-                    roomDetails.put("roomRate", room.getMaxRate());
-                    return roomDetails;
-                })
-                .toList();
-    }
-
-
 }

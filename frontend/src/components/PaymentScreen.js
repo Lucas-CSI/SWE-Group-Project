@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -13,6 +13,7 @@ import {
     Card,
     CardContent,
 } from "@mui/material";
+import {CartContext} from "./CartItems";
 
 const TAX_RATE = 0.1;
 
@@ -31,46 +32,23 @@ const PaymentScreen = () => {
         cvv: "",
     });
 
+    const [selectedReservationId, setSelectedReservationId] = useState(null);
+    const { cartItems } = useContext(CartContext);
     const [cartSubtotal, setCartSubtotal] = useState(0);
     const [tax, setTax] = useState(0);
     const [total, setTotal] = useState(0);
     const [cartDetails, setCartDetails] = useState([]);
     const navigate = useNavigate();
 
-    const fetchCartSubtotal = async () => {
-        try {
-            const response = await axios.get("http://localhost:8080/cart/subtotal", {
-                withCredentials: true,
-            });
-            const subtotal = response.data.subtotal || 0;
-            setCartSubtotal(subtotal);
-            const calculatedTax = subtotal * TAX_RATE;
-            setTax(calculatedTax);
-            setTotal(subtotal + calculatedTax);
-        } catch (error) {
-            console.error("Error fetching cart subtotal:", error);
-            alert("Failed to fetch cart subtotal. Please try again.");
-            navigate("/");
-        }
-    };
-
-    const fetchCartDetails = async () => {
-        try {
-            const response = await axios.get("http://localhost:8080/cart/details", {
-                params: { username: "loggedInUsername" },
-                withCredentials: true,
-            });
-            setCartDetails(response.data);
-        } catch (error) {
-            console.error("Error fetching cart details:", error);
-            alert("Failed to fetch cart details. Please try again.");
-        }
-    };
+    const TAX_RATE = 0.10;
 
     useEffect(() => {
-        fetchCartSubtotal();
-        fetchCartDetails();
-    }, [navigate]);
+        const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
+        const calculatedTax = subtotal * TAX_RATE;
+        setCartSubtotal(subtotal);
+        setTax(calculatedTax);
+        setTotal(subtotal + calculatedTax);
+    }, [cartItems]);
 
     const handleChange = (e) => {
         setFormData({
@@ -82,16 +60,29 @@ const PaymentScreen = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (!selectedReservationId) {
+            alert("No reservation selected.");
+            return;
+        }
+
+
         const paymentData = {
-            ...formData,
-            amount: total,
+            paymentMethod: formData.paymentMethod,
+            billingAddress: formData.address,
+            cardNumber: formData.creditCardNumber,
+            expirationDate: `${formData.expirationMonth}/${formData.expirationYear}`,
+            cvv: formData.cvv,
         };
 
-    try {
-            const response = await axios.post("http://localhost:8080/payments/payRoom", paymentData, {
-                headers: { "Content-Type": "application/json" },
-                withCredentials: true,
-            });
+        try {
+            const response = await axios.post(
+                "http://localhost:8080/payments/payRoom",
+                paymentData,
+                {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                }
+            );
 
             if (response.status === 200) {
                 navigate(`/reservation/confirmation/${response.data.id}`);
@@ -103,6 +94,7 @@ const PaymentScreen = () => {
             alert("Payment failed. Please try again.");
         }
     };
+
 
     return (
         <Container maxWidth="lg" sx={{ mt: 5, mb: 5 }}>
@@ -260,27 +252,21 @@ const PaymentScreen = () => {
                                 <Typography variant="h6" gutterBottom>
                                     Booking Summary
                                 </Typography>
-                                {cartDetails.map((room, index) => {
-                                    const roomRate = room?.roomRate || 0.0;
-                                    const oceanViewCharge = room?.oceanView ? 20.0 : 0.0;
-                                    const smokingCharge = room?.smokingAllowed ? 10.0 : 0.0;
-                                    const roomTotal = roomRate + oceanViewCharge + smokingCharge;
+                                {cartItems.map((room, index) => {
+                                    const roomTotal = room.price + (room.oceanView ? 20.0 : 0.0) + (room.smokingAllowed ? 10.0 : 0.0);
 
                                     return (
                                         <Box key={index} mb={2}>
                                             <Typography variant="body1"><strong>Room {index + 1}:</strong></Typography>
-                                            <Typography variant="body2">Theme: {room?.theme || "[Not Provided]"}</Typography>
-                                            <Typography variant="body2">Quality Level: {room?.qualityLevel || "[Not Provided]"}</Typography>
-                                            <Typography variant="body2">Ocean View: {room?.oceanView ? "Yes" : "No"}</Typography>
-                                            <Typography variant="body2">Smoking Allowed: {room?.smokingAllowed ? "Yes" : "No"}</Typography>
-                                            <Typography variant="body2">Bed Type: {room?.bedType || "[Not Provided]"}</Typography>
-                                            <Typography variant="body2">Base Room Rate: ${roomRate.toFixed(2)}</Typography>
-                                            {oceanViewCharge > 0 && (
-                                                <Typography variant="body2">Ocean View Charge: ${oceanViewCharge.toFixed(2)}</Typography>
-                                            )}
-                                            {smokingCharge > 0 && (
-                                                <Typography variant="body2">Smoking Charge: ${smokingCharge.toFixed(2)}</Typography>
-                                            )}
+                                            <Typography variant="body2">Room Number: {room.roomNumber}</Typography>
+                                            <Typography variant="body2">Theme: {room.theme}</Typography>
+                                            <Typography variant="body2">Quality Level: {room.qualityLevel}</Typography>
+                                            <Typography variant="body2">Ocean View: {room.oceanView ? "Yes" : "No"}</Typography>
+                                            <Typography variant="body2">Smoking Allowed: {room.smokingAllowed ? "Yes" : "No"}</Typography>
+                                            <Typography variant="body2">Bed Type: {room.bedType}</Typography>
+                                            <Typography variant="body2">Base Room Rate: ${room.price.toFixed(2)}</Typography>
+                                            {room.oceanView && <Typography variant="body2">Ocean View Charge: $20.00</Typography>}
+                                            {room.smokingAllowed && <Typography variant="body2">Smoking Charge: $10.00</Typography>}
                                             <Typography variant="body2" fontWeight="bold">Room Total: ${roomTotal.toFixed(2)}</Typography>
                                             <Divider sx={{ my: 2 }} />
                                         </Box>

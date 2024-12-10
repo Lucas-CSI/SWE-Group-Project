@@ -38,7 +38,6 @@ public class CartController {
 
     @PostMapping("/remove/{roomId}")
     public ResponseEntity<String> removeRoomFromCart(@CookieValue("username") String username, @PathVariable Long roomId) {
-        // Fetch the account associated with the username
         Optional<Account> account = accountService.findAccountByUsername(username);
         if (account.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Account not found.");
