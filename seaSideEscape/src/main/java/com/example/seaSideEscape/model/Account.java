@@ -13,7 +13,8 @@ public class Account{
     private String password;
     private String salt;
     private String email;
-    private Boolean isAdmin = false;
+    public enum PermissionLevel {Guest, Clerk, Admin}
+    private PermissionLevel permissionLevel;
 
     @ManyToOne
     private Reservation unbookedReservation;
@@ -21,6 +22,14 @@ public class Account{
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private List<Reservation> reservations;
+
+    public PermissionLevel getPermissionLevel() {
+        return permissionLevel;
+    }
+
+    public void setPermissionLevel(PermissionLevel permissionLevel) {
+        this.permissionLevel = permissionLevel;
+    }
 
     public Reservation getUnbookedReservation() {
         return unbookedReservation;
@@ -81,7 +90,4 @@ public class Account{
     public void setId(Long id) {
         this.id = id;
     }
-
-    public boolean isAdmin() { return isAdmin; }
-    public void setIsAdmin(Boolean isAdmin) { this.isAdmin = isAdmin; }
 }
