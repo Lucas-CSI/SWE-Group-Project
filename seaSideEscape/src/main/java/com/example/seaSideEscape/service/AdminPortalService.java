@@ -60,6 +60,7 @@ public class AdminPortalService {
             }else{
                 return "Error: Account does not exist";
             }
+        }else{
             return "Error: Not enough permission";
         }
         return "Successfully modified permission level";

@@ -31,8 +31,8 @@ public class AdminPortalController {
     }
 
     @PostMapping("/changePermission")
-    public ResponseEntity<String> changeAccountPermission(@RequestParam("username") String toChangeUsername, @RequestParam("permissionLevel") Account.PermissionLevel permissionLevel, @CookieValue("username") String username) throws NoSuchAlgorithmException {
-        String response = adminPortalService.modifyPermissionLevel(toChangeUsername, permissionLevel, username);
+    public ResponseEntity<String> changeAccountPermission(@RequestParam("username") String toChangeUsername, @RequestParam("permissionLevel") Integer permissionLevel, @CookieValue("username") String username) throws NoSuchAlgorithmException {
+        String response = adminPortalService.modifyPermissionLevel(toChangeUsername, Account.PermissionLevel.values()[permissionLevel], username);
 
         if(!response.contains("Error")){
             return ResponseEntity.ok("Successfully changed permission");

@@ -9,7 +9,7 @@ const AdminHomepage = () => {
     const [clerkUsername, setClerkUsername] = useState('');
     const [clerkInfo, setClerkInfo] = useState('');
     const [modifyUsername, setModifyUsername] = useState('');
-    const [permissionLevel, setPermissionLevel] = useState(null);
+    const [permissionLevel, setPermissionLevel] = useState(0);
     const [modifyResult, setModifyResult] = useState('');
     const handleSearch = () => {
         console.log(`Searching for: ${email}`);
@@ -21,6 +21,14 @@ const AdminHomepage = () => {
             setClerkInfo(response.data);
         else
             setClerkInfo(response.response.data);
+    }
+
+    const handleModifyPermission = async() => {
+        const response = await generatePostRequest("/admin/changePermission?username="+modifyUsername+"&permissionLevel="+permissionLevel, {}, {});
+        if(response.status === 200)
+            setModifyResult(response.data);
+        else
+            setModifyResult(response.response.data);
     }
 
     return (
@@ -188,6 +196,7 @@ const AdminHomepage = () => {
                         <Select
                             onChange={(e) => setPermissionLevel(e.target.value)}
                             labelId="accountPermission"
+                            defaultValue={0}
                             label="Permission Level" variant="standard">
                             <MenuItem value={0}>Guest</MenuItem>
                             <MenuItem value={1}>Clerk</MenuItem>
@@ -199,6 +208,7 @@ const AdminHomepage = () => {
 
                 <Button
                     variant="contained"
+                    onClick={handleModifyPermission}
                     sx={{
                         backgroundColor: 'rgb(25,122,140)',
                         color: 'white',
