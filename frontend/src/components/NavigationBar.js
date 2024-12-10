@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
+import Cookies from 'js-cookie';
 import {
     AppBar,
     Toolbar,
@@ -16,13 +17,16 @@ import {
     Badge,
     List,
     ListItem,
-    ListItemText
+    ListItemText, Divider
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { login } from "../services/authService.js";
 import './NavigationBar.css';
+import { generatePostRequest, generateGetRequest } from "../services/apiService"
+import { getLoginStatus} from "../services/authService.js";
+
 
 const NavigationBar = () => {
     const [isPopoverHovered, setIsPopoverHovered] = useState(false);
@@ -39,7 +43,10 @@ const NavigationBar = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [canCreateAccount, setCanCreateAccount] = useState(true);
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const navigate = useNavigate();
 
     const handleLoginOpen = () => setLoginOpen(true);
@@ -48,6 +55,7 @@ const NavigationBar = () => {
         setError('');
     };
 
+
     const handleSignupOpen = () => {
         setSignupOpen(true);
         setLoginOpen(false);
@@ -55,20 +63,48 @@ const NavigationBar = () => {
 
     const handleSignupClose = () => {
         setSignupOpen(false);
+        setSuccess('');
+        setError('');
     };
+
+    const handleCreateAccount = async () => {
+        if(canCreateAccount) {
+            const response = await generatePostRequest("createAccount", {username, password, email});
+            if (response.status === 200) {
+                setError('');
+                setSuccess('Account created successfully.');
+                setTimeout(() => {
+                    handleSignupClose();
+                    handleLoginOpen();
+                }, 1000);
+            }else{
+                setError("Error: " + response.response.data);
+            }
+        }
+    }
+
 
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const data = await login(username, password);
-            if (data) {
-                localStorage.setItem('token', data.token);
-                handleLoginClose();
-            }
-        } catch (error) {
-            setError('Login failed. Please check your credentials.');
+        const response = await generatePostRequest("login", {username, password});
+        if (response.status === 200) {
+            handleLoginClose();
+            alert("Logged in.");
+        }else{
+            setError("Error: " + response.response.data);
         }
     };
+
+    const handleLogout = async () => {
+        const response = await generatePostRequest("logoutAccount", {});
+        if (response.status === 200) {
+            setCartItems([]);
+            navigate("/");
+            alert("Logged out.");
+        }else{
+            setError("Error: " + response.response.data);
+        }
+    }
 
     const handleAdminLogin = async () => {
         try {
@@ -91,12 +127,26 @@ const NavigationBar = () => {
         navigate('/rooms');
     };
 
-    const [cartItems, setCartItems] = useState([
-        { name: 'Room Booking', price: 200 },
-        { name: 'Spa Service', price: 50 },
-    ]);
+    const [cartItems, setCartItems] = useState([]);
 
-    return (
+    useEffect(() => {
+        const getCart = async () => {
+            let response = await generateGetRequest("/getCart");
+            let cart = response.data;
+            let tempItems = [];
+
+            for(let i in cart){
+                tempItems = [...tempItems,{name: cart[i].qualityLevel + " Style Room", price: cart[i].maxRate}];
+            }
+            setCartItems(tempItems);
+        }
+        if(getLoginStatus()) {
+            getCart();
+        }
+    }, []);
+
+
+    return !cartItems ? (<p>Loading...</p>) : (
         <>
             <AppBar position="fixed" className="app-bar">
                 <Toolbar>
@@ -111,7 +161,7 @@ const NavigationBar = () => {
                             Home
                             <span className="underline"></span>
                         </Link>
-                        <Link to="/rooms" className="nav-link">
+                        <Link to="/reservation" className="nav-link">
                             Rooms & Suites
                             <span className="underline"></span>
                         </Link>
@@ -120,6 +170,7 @@ const NavigationBar = () => {
                             <span className="underline"></span>
                         </Link>
                     </Box>
+
                     <IconButton
                         color="inherit"
                         aria-label="cart"
@@ -130,9 +181,11 @@ const NavigationBar = () => {
                         </Badge>
                     </IconButton>
 
-                    <Button color="inherit" onClick={handleLoginOpen} style={{ fontWeight: 'bold' }}>
+                    {!getLoginStatus() ? <Button color="inherit" onClick={handleLoginOpen} style={{ fontWeight: 'bold' }}>
                         Login
-                    </Button>
+                    </Button> : <Button color="inherit" onClick={handleLogout} style={{ fontWeight: 'bold' }}>
+                        Logout
+                    </Button>}
                 </Toolbar>
                 <Popover
                     open={isCartOpen}
@@ -245,9 +298,6 @@ const NavigationBar = () => {
                     <Button onClick={handleSignupOpen} color="secondary">
                         Create Account
                     </Button>
-                    <Button onClick={handleAdminLogin} color="secondary">
-                        Admin Login
-                    </Button>
                 </DialogActions>
             </Dialog>
 
@@ -256,6 +306,8 @@ const NavigationBar = () => {
                 <DialogTitle>Create Account</DialogTitle>
                 <DialogContent>
                     <DialogContentText>Please enter your account details to sign up.</DialogContentText>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {success && <p style={{ color: 'green' }}>{success}</p>}
                     <TextField
                         autoFocus
                         margin="dense"
@@ -263,20 +315,30 @@ const NavigationBar = () => {
                         type="text"
                         fullWidth
                         variant="standard"
+                        onChange={(e) => setUsername(e.target.value)}
                     />
-                    <TextField margin="dense" label="Email" type="email" fullWidth variant="standard" />
-                    <TextField margin="dense" label="Password" type="password" fullWidth variant="standard" />
+                    <TextField margin="dense" label="Email" type="email" fullWidth variant="standard" onChange={(e) => { setEmail(e.target.value) }}/>
+                    <TextField margin="dense" label="Password" type="password" fullWidth variant="standard" onChange={(e) => setPassword(e.target.value)}/>
                     <TextField
                         margin="dense"
                         label="Confirm Password"
                         type="password"
                         fullWidth
                         variant="standard"
+                        onChange={(e) => {
+                            if(e.target.value !== password) {
+                                setError("Passwords do not match.");
+                                setCanCreateAccount(false);
+                            }else {
+                                setError('');
+                                setCanCreateAccount(true);
+                            }
+                        }}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleSignupClose}>Cancel</Button>
-                    <Button onClick={handleSignupClose}>Create Account</Button>
+                    <Button onClick={handleCreateAccount}>Create Account</Button>
                 </DialogActions>
             </Dialog>
         </>

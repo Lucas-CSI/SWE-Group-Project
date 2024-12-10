@@ -60,7 +60,6 @@ public class RoomService {
             room.setRoomNumber(String.valueOf(i + 101));
             room.setTheme(Room.Themes.values()[(int) (Math.random() * 3)]);
             room.setOceanView((int)(Math.random() * 2) == 0);
-
             room.setMaxRate(calculateRoomRate(room));
             roomRepository.save(room);
         }
@@ -123,9 +122,22 @@ public class RoomService {
         return null;
     }
 
+
+    public List<Room> getRoomsInCart(String username){
+        Optional<Account> account = accountService.findAccountByUsername(username);
+        Account accountObject;
+
+        if(account.isPresent()){
+            accountObject = account.get();
+            return roomRepository.getCart(accountObject);
+        }
+        return null;
+    }
+  
     public void addRoomToDB(Room room){
         roomRepository.save(room);
     }
+  
 
     public List<Map<String, Object>> getRoomDetailsInCart(String username) {
         Optional<Account> accountOptional = accountService.findAccountByUsername(username);

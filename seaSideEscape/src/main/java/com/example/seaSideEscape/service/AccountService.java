@@ -27,11 +27,6 @@ public class AccountService {
 //        this.jwtService = jwtService;
     }
 
-    public boolean adminExists(String username) {
-        // Checks if an admin account with the given username already exists
-        return accountRepository.findByUsernameAndIsAdmin(username).isPresent();
-    }
-
     public void saveAccount(Account account) {
         accountRepository.save(account);
     }
@@ -42,7 +37,7 @@ public class AccountService {
 //    }
 
 
-    private String createSalt(){
+    public String createSalt(){
         String SALTCHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder salt = new StringBuilder();
         Random rnd = new Random();
@@ -78,7 +73,7 @@ public class AccountService {
 
     public ResponseEntity<String> createAccount(Account account) throws NoSuchAlgorithmException {
         AccountValidator validator = new AccountValidator(account);
-        if(accountRepository.findByUsername(account.getUsername()).isEmpty() && accountRepository.findByEmail(account.getEmail()).isEmpty()) {
+        if(accountRepository.findByUsernameOrEmail(account.getUsername(), account.getEmail()).isEmpty()) {
             if(validator.isValid()) {
                 String saltStr = createSalt();
                 account.setSalt(saltStr);
@@ -98,6 +93,15 @@ public class AccountService {
     public Optional<Account> findAccountByUsername(String username){
         return accountRepository.findByUsername(username);
     }
+
+    public Account getAccountObject(String username){
+        return accountRepository.findByUsername(username).orElse(null);
+    }
+
+    public boolean checkPermission(Account account, Account.PermissionLevel minimumPermissionLevel){
+        return account.getPermissionLevel().ordinal() >= minimumPermissionLevel.ordinal();
+    }
+
     public Optional<Account> canLogin(Account account) throws NoSuchAlgorithmException {
         Optional<Account> acc = accountRepository.findByUsername(account.getUsername());
         String password;

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from "js-cookie";
 
 export const login = async (username, password) => {
     try {
@@ -11,3 +12,7 @@ export const login = async (username, password) => {
         throw new Error('Login failed');
     }
 };
+
+export const getLoginStatus = () => {
+    return !(!Cookies.get('username') || Cookies.get('username') === "")
+}
