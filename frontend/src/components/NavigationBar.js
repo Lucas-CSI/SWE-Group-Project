@@ -17,7 +17,11 @@ import {
     Badge,
     List,
     ListItem,
+
     ListItemText,
+
+    ListItemText, Divider
+
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CloseIcon from '@mui/icons-material/Close';
@@ -26,12 +30,13 @@ import axios from 'axios';
 import { login } from "../services/authService.js";
 import './NavigationBar.css';
 import { generatePostRequest, generateGetRequest } from "../services/apiService"
+
 import {formattedGetAvailableRooms} from "./Rooms/RoomModule";
 import {CartContext} from "./CartItems";
 
-const getLoginStatus = () => {
-    return !(!Cookies.get('username') || Cookies.get('username') === "")
-}
+import { getLoginStatus} from "../services/authService.js";
+
+
 
 const NavigationBar = () => {
     const [isPopoverHovered, setIsPopoverHovered] = useState(false);
@@ -86,7 +91,7 @@ const NavigationBar = () => {
                     handleLoginOpen();
                 }, 1000);
             }else{
-                setError("Error: " + response.data);
+                setError("Error: " + response.response.data);
             }
         }
     }
@@ -243,6 +248,7 @@ const NavigationBar = () => {
                     <Typography variant="body1" style={{marginTop: '10px', fontWeight: 'bold'}}>
                         Total: ${cartItems.reduce((total, item) => total + item.price, 0)}
                     </Typography>
+
                     <Button variant="contained" className="check-in-out-button"
                             style={{alignSelf: "flex-end", position: 'absolute', right: 5}} onClick={handleCheckout}>
                         CHECKOUT
@@ -265,6 +271,40 @@ const NavigationBar = () => {
                 type="text"
                 fullWidth
                 variant="standard"
+
+                    <List>
+                        {cartItems.map((item, index) => (
+                            <ListItem key={index}>
+                                <ListItemText primary={item.name} secondary={`$${item.price}`} />
+                            </ListItem>
+                        ))}
+                    </List>
+                    <Divider sx={{ margin: '1rem 0' }} />
+                    <div style={{display: "flex", flexDirection: "row"}}>
+                        <Typography variant="body1" style={{marginTop: '10px', fontWeight: 'bold'}}>
+                            Total: ${cartItems.reduce((total, item) => total + item.price, 0)}
+                        </Typography>
+                        <Button variant="contained" className="check-in-out-button" style={{alignSelf: "flex-end" , position:'absolute' , right:5}}>
+                            CHECKOUT
+                        </Button>
+                    </div>
+                </Popover>
+            </AppBar>
+
+            {/* Login Dialog */}
+            <Dialog open={loginOpen} onClose={handleLoginClose}>
+                <DialogTitle>Login</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>Please enter your login credentials.</DialogContentText>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        label="Username"
+                        type="text"
+                        fullWidth
+                        variant="standard"
+
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />

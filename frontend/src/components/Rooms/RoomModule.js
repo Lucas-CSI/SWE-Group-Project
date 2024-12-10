@@ -4,7 +4,8 @@ let themesToIndex = {}
 for(let i = 0; i < themes.length; ++i){
     themesToIndex[themes[i]] = i;
 }
-const qualityLevels = ["Comfort", "Suite", "Deluxe", "Economy", "Business", "Executive"];
+export const qualityLevels = ["Economy", "Comfort", "Business", "Executive"];
+export const qualityLevelsIndex = {"Economy" : 0, "Comfort" : 1, "Business": 2, "Executive": 3};
 
 export const formattedGetAvailableRooms = async () => {
     let cachedRooms = localStorage.getItem("rooms");
@@ -90,6 +91,24 @@ export const handleSubmitRoom = async (roomInfo) => {
     await sendAddRoomRequest(roomInfo);
 }
 
+export const checkPreferenceAvailability = (roomType, oceanView, smokingAllowed) => {
+    oceanView = oceanView ? "oceanView" : "noOceanView";
+    smokingAllowed = smokingAllowed ? "smokingAllowed" : "noSmokingAllowed";
+    console.log(oceanView + " " + smokingAllowed);
+    console.log(roomType[oceanView][smokingAllowed] > 0);
+    return roomType[oceanView][smokingAllowed] > 0;
+}
+
+export const findFirstAvailableRoom = (roomType) => {
+    for(let oceanView = 0; oceanView < 2; ++oceanView){
+        for(let smokingAllowed = 0; smokingAllowed < 2; ++smokingAllowed){
+            if(checkPreferenceAvailability(roomType, oceanView, smokingAllowed)){
+                return [Boolean(oceanView), Boolean(smokingAllowed)]
+            }
+        }
+    }
+    return null;
+}
 
 export const generateRoomData = (theme = "", qualityLevel = 0, oceanView = false, isSmokingAllowed = false) => {
     return {
