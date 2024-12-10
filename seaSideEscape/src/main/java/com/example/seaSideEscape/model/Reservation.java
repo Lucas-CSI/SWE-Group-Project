@@ -1,6 +1,7 @@
 package com.example.seaSideEscape.model;
 
 import jakarta.persistence.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public class Reservation {
     @JoinColumn(name = "account_id",  nullable = true)
     private Account account;
 
+
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
 
@@ -28,6 +30,15 @@ public class Reservation {
     private BigDecimal discount;
     private boolean paid;
     private boolean booked;
+    private boolean checkedIn;
+
+    public boolean isCheckedIn() {
+        return checkedIn;
+    }
+
+    public void setCheckedIn(boolean checkedIn) {
+        this.checkedIn = checkedIn;
+    }
 
     @OneToMany
     private List<Charge> charges;
@@ -35,6 +46,7 @@ public class Reservation {
     public List<Booking> getBookings() {
         return bookings;
     }
+
 
     public void setBookingList(List<Booking> booking) {
         this.bookings = booking;

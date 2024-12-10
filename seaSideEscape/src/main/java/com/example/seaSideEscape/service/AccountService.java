@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 
 
 import java.nio.charset.StandardCharsets;
@@ -28,11 +27,6 @@ public class AccountService {
 //        this.jwtService = jwtService;
     }
 
-    public boolean adminExists(String username) {
-        // Checks if an admin account with the given username already exists
-        return accountRepository.findByUsernameAndIsAdmin(username).isPresent();
-    }
-
     public void saveAccount(Account account) {
         accountRepository.save(account);
     }
@@ -43,7 +37,7 @@ public class AccountService {
 //    }
 
 
-    private String createSalt(){
+    public String createSalt(){
         String SALTCHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder salt = new StringBuilder();
         Random rnd = new Random();
@@ -77,7 +71,6 @@ public class AccountService {
         return getSHA256(account.getPassword() + account.getSalt());
     }
 
-    @Transactional
     public ResponseEntity<String> createAccount(Account account) throws NoSuchAlgorithmException {
         AccountValidator validator = new AccountValidator(account);
         if(accountRepository.findByUsernameOrEmail(account.getUsername(), account.getEmail()).isEmpty()) {
@@ -100,6 +93,15 @@ public class AccountService {
     public Optional<Account> findAccountByUsername(String username){
         return accountRepository.findByUsername(username);
     }
+
+    public Account getAccountObject(String username){
+        return accountRepository.findByUsername(username).orElse(null);
+    }
+
+    public boolean checkPermission(Account account, Account.PermissionLevel minimumPermissionLevel){
+        return account.getPermissionLevel().ordinal() >= minimumPermissionLevel.ordinal();
+    }
+
     public Optional<Account> canLogin(Account account) throws NoSuchAlgorithmException {
         Optional<Account> acc = accountRepository.findByUsername(account.getUsername());
         String password;
@@ -111,6 +113,31 @@ public class AccountService {
             }
         }
         return Optional.empty();
+    }
+
+    @Transactional
+    public ResponseEntity<String> updatePassword(String email, String newPassword) {
+        Optional<Account> optionalAccount = accountRepository.findByEmail(email);
+
+        if (optionalAccount.isPresent()) {
+            Account account = optionalAccount.get();
+
+            String newSalt = createSalt();
+            account.setSalt(newSalt);
+
+            try {
+                String hashedPassword = getSHA256(newPassword + newSalt);
+                account.setPassword(hashedPassword);
+
+                accountRepository.save(account);
+
+                return new ResponseEntity<>("Password updated successfully.", HttpStatus.OK);
+            } catch (NoSuchAlgorithmException e) {
+                return new ResponseEntity<>("Error updating password. Please try again.", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        return new ResponseEntity<>("Account not found.", HttpStatus.NOT_FOUND);
     }
 
 }
