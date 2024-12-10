@@ -18,4 +18,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     @Query("SELECT u FROM Account u WHERE u.username = ?1 AND u.password = ?2")
     Optional<Account> findByUsernameAndPassword(String username, String password);
+
+    Optional<Account> findByEmail(String email);
 }

@@ -10,6 +10,7 @@ import com.example.seaSideEscape.repository.AccountRepository;
 import com.example.seaSideEscape.model.Reservation;
 import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.repository.ReservationRepository;
+import com.example.seaSideEscape.validator.ReservationValidator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.projection.CollectionAwareProjectionFactory;

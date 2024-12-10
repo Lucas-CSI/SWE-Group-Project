@@ -122,18 +122,6 @@ public class RoomService {
         return null;
     }
 
-
-    public List<Room> getRoomsInCart(String username){
-        Optional<Account> account = accountService.findAccountByUsername(username);
-        Account accountObject;
-
-        if(account.isPresent()){
-            accountObject = account.get();
-            return roomRepository.getCart(accountObject);
-        }
-        return null;
-    }
-  
     public void addRoomToDB(Room room){
         roomRepository.save(room);
     }
