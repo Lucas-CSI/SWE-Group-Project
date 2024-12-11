@@ -1,8 +1,10 @@
-``` Installation Guide:
+```
+Installation Guide:
+
 Install:
-```Java Version: 21```
-```Node-js version: v22.10.7```
-```MySQL Server``` - run it on port 3306 and make sure the service is running (windows: check services.msc)
+Java Version: 21
+Node-js version: v22.10.7
+MySQL Server - run it on port 3306 and make sure the service is running (windows: check services.msc)
 Download the project files from the github / canvas
 Navigate to SWE-Group-Project/seaSideEscape in cmd line
 Run mvn clean install in cmd line
