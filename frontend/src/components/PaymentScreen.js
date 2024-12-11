@@ -130,7 +130,7 @@ const PaymentScreen = () => {
             const response = await generatePostRequest("/payments/payRoom", paymentData);
 
             if (response && response.status === 200) {
-                navigate(`/reservation/confirmation`);
+                navigate(`/reservation/payment/confirmation`);
             } else {
                 alert("Payment failed. Please try again.");
             }
@@ -341,7 +341,7 @@ const PaymentScreen = () => {
                                             <Typography variant="body2">Ocean View: {room.oceanView ? "Yes" : "No"}</Typography>
                                             <Typography variant="body2">Smoking Allowed: {room.smokingAllowed ? "Yes" : "No"}</Typography>
                                             <Typography variant="body2">Bed Type: {room.bedType}</Typography>
-                                            <Typography variant="body2">Base Room Rate: ${room.price.toFixed(2)}</Typography>
+                                            <Typography variant ="body2">Base Room Rate: ${room.price.toFixed(2)}</Typography>
                                             {room.oceanView && <Typography variant="body2">Ocean View Charge: $20.00</Typography>}
                                             {room.smokingAllowed && <Typography variant="body2">Smoking Charge: $10.00</Typography>}
                                             <Typography variant="body2" fontWeight="bold">Room Total: ${roomTotal.toFixed(2)}</Typography>

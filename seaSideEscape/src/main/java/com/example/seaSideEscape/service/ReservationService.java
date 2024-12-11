@@ -9,6 +9,7 @@ import com.example.seaSideEscape.model.Booking;
 import com.example.seaSideEscape.repository.AccountRepository;
 import com.example.seaSideEscape.model.Reservation;
 import com.example.seaSideEscape.model.Room;
+import com.example.seaSideEscape.repository.PaymentRepository;
 import com.example.seaSideEscape.repository.ReservationRepository;
 import com.example.seaSideEscape.validator.ReservationValidator;
 import jakarta.transaction.Transactional;
@@ -33,16 +34,19 @@ public class ReservationService {
     private final BookingService bookingService;
     private final AccountRepository accountRepository;
     private SerializeModule<Room> roomSerializeModule = new SerializeModule<Room>();
+    private final PaymentRepository paymentRepository;
     Logger logger = LoggerFactory.getLogger(ReservationService.class);
 
     @Autowired
-    public ReservationService(ReservationRepository reservationRepository, BillingService billingService, RoomService roomService, AccountService accountService, BookingService bookingService, AccountRepository accountRepository) {
+    public ReservationService(ReservationRepository reservationRepository, BillingService billingService, RoomService roomService, AccountService accountService, BookingService bookingService, AccountRepository accountRepository,
+                              PaymentRepository paymentRepository) {
         this.reservationRepository = reservationRepository;
         this.billingService = billingService;
         this.roomService = roomService;
         this.accountService = accountService;
         this.bookingService = bookingService;
         this.accountRepository = accountRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     @Transactional
@@ -149,19 +153,16 @@ public class ReservationService {
         return reservationRepository.findByAccountAndPaidFalse(account)
                 .orElseThrow(() -> new IllegalArgumentException("No unpaid reservation found for the account"));
     }
-}
 
     @Transactional
     public void deleteBookingsFromReservation(Reservation reservation) {
         if (reservation.getBookings() != null && !reservation.getBookings().isEmpty()) {
             for (Booking booking : new ArrayList<>(reservation.getBookings())) {
-                logger.info("Deleting booking ID: {}", booking.getId());
 
                 booking.setRoom(null);
                 reservation.getBookings().remove(booking);
                 bookingService.delete(booking);
             }
-            logger.info("All bookings removed for reservation ID: {}", reservation.getId());
         }
     }
 
@@ -195,10 +196,14 @@ public class ReservationService {
 
             deleteBookingsFromReservation(reservation);
 
+
             if (guest != null && guest.getReservations().contains(reservation)) {
                 guest.getReservations().remove(reservation);
                 accountRepository.save(guest);
             }
+
+            paymentRepository.deleteAllByReservationId(reservationId);
+
 
             reservationRepository.delete(reservation);
             reservationRepository.flush();
@@ -274,6 +279,7 @@ public class ReservationService {
         return ResponseEntity.ok("Guest checked out and reservation deleted successfully.");
     }
 }
+
 
 
 

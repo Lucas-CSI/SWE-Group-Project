@@ -90,29 +90,22 @@ public class PaymentService {
         Payment payment = createPayment(paymentMethod, billingAddress, totalCost, cardNumber, expirationDate, cvv);
         payment.setReservation(reservation);
         paymentRepository.save(payment);
+
         if (roomsInCart == null || roomsInCart.isEmpty()) {
             throw new IllegalArgumentException("No rooms found in the cart for this reservation.");
         }
-
-
-
         Set<Long> roomIds = new HashSet<>();
         for (Room room : roomsInCart) {
             if (!roomIds.add(room.getId())) {
                 throw new IllegalStateException("Duplicate room detected in cart for username: " + account.getUsername());
             }
-
             Booking booking = new Booking();
             booking.setReservation(reservation);
             booking.setRoom(room);
-
             bookingRepository.save(booking);
         }
-
-
         log.info("Saved {} bookings for reservation ID: {}", roomsInCart.size(), reservation.getId());
         log.info("Finished processRoomPayment for username: {}", account.getUsername());
-
         reservation.setPaid(true);
         reservationRepository.save(reservation);
 
