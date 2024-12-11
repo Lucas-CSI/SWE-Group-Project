@@ -30,12 +30,11 @@ function App() {
             {/* Adding some spacing for the AppBar */}
             <Box sx={{ paddingTop: {  } }}>
                 <Routes>
-
                     <Route path="/" element={<HomePage />} />
                     <Route path="/reservation/payment" element={<PaymentScreen />} />
                     <Route path="/reservation/payment/confirmation" element={<PaymentConfirmation />} />
                     <Route path="/events" element={<EventsPage />} />
-                    <Route path="/ResetPassword/:token" element={<ResetPassword />} />
+                    <Route path="/ResetPassword" element={<ResetPassword />} />
                     <Route path="/event-reservation/:eventId" element={<EventReservationPage />} />
                     <Route path="/event-reservation-summary" element={<EventSummaryPage />} />
                     <Route path="/event-confirmation/:eventId" element={<EventConfirmationPage />} />
