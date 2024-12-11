@@ -19,8 +19,9 @@ import ExperiencePage from './components/ExperiencePage.js';
 import ReservationConfirmationPage from './components/ReservationPageComponents/ReservationConfirmationPage.js';
 import UserPortal from './components/UserPortal.js';
 import AboutUs from './components/AboutUs.js';
-import { CartProvider } from './components/CartItems';
-import PaymentConfirmation from './components/PaymentConfirmation'
+import { CartProvider } from './components/CartItems.js';
+import PaymentConfirmation from './components/PaymentConfirmation.js'
+import ResetPasswordPage from './components/ResetPassword.js'
 
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
                     <Route path="/reservation/confirmation" element={<ReservationConfirmationPage />} />
                     <Route path="/userPortal" element={<UserPortal />} />
                     <Route path="/aboutUs" element={<AboutUs />} />
+                    <Route path="/reset-password" element={<ResetPasswordPage />} />
                 </Routes>
             </Box>
         </Router>

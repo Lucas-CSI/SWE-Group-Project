@@ -33,12 +33,13 @@ import {CartContext} from "./CartItems";
 
 
 
+
 const NavigationBar = () => {
     const [isPopoverHovered, setIsPopoverHovered] = useState(false);
 
     const [loginOpen, setLoginOpen] = useState(false);
     const [signupOpen, setSignupOpen] = useState(false);
-    
+
 
     const [cartAnchorEl, setCartAnchorEl] = useState(null);
 
@@ -54,16 +55,45 @@ const NavigationBar = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const navigate = useNavigate();
+    const [resetFeedback, setResetFeedback] = useState('');
 
-    const { cartItems, handleRemoveFromCart, clearCart } = useContext(CartContext);
 
+
+    const {cartItems, handleRemoveFromCart, clearCart} = useContext(CartContext);
+
+    const [resetPasswordOpen, setResetPasswordOpen] = useState(false);
 
     const handleLoginOpen = () => setLoginOpen(true);
     const handleLoginClose = () => {
         setLoginOpen(false);
         setError('');
     };
+    const handleResetPasswordOpen = () => {
+        setResetPasswordOpen(true);
+        setLoginOpen(false);
+    };
 
+    const handleResetPasswordClose = () => {
+        setResetPasswordOpen(false);
+        setResetFeedback('');
+        setError('');
+    };
+
+    const handleRequestReset = async () => {
+        setResetFeedback('');
+        try {
+            const response = await generatePostRequest("/password/request-reset?email=" + email);
+
+            if (response.status === 200) {
+                setResetFeedback('Password reset link sent to your email!');
+            } else {
+                setResetFeedback('Failed to send reset link. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error requesting password reset:', error);
+            setResetFeedback('An error occurred. Please try again later.');
+        }
+    };
 
     const handleSignupOpen = () => {
         setSignupOpen(true);
@@ -252,7 +282,45 @@ const NavigationBar = () => {
                 </Popover>
             </AppBar>
 
-            {/* Login Dialog */}
+        {/* Reset Password Dialog */}
+        <Dialog open={resetPasswordOpen} onClose={handleResetPasswordClose}>
+            <DialogTitle>Reset Password</DialogTitle>
+            <DialogContent>
+                <DialogContentText>Enter your email to receive a password reset link.</DialogContentText>
+                <TextField
+                    fullWidth
+                    label="Email Address"
+                    variant="outlined"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    sx={{ mt: 2 }}
+                />
+                {resetFeedback && (
+                    <Typography
+                        variant="body2"
+                        sx={{ color: resetFeedback.includes('sent') ? 'green' : 'red', mt: 2 }}
+                    >
+                        {resetFeedback}
+                    </Typography>
+                )}
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleResetPasswordClose}>Cancel</Button>
+                <Button
+                    onClick={handleRequestReset}
+                    variant="contained"
+                    sx={{
+                        backgroundColor: 'rgb(25,122,140)',
+                        '&:hover': { backgroundColor: '#28c1d8' },
+                    }}
+                >
+                    Send Reset Link
+                </Button>
+            </DialogActions>
+        </Dialog>
+
+
+        {/* Login Dialog */}
             <Dialog open={loginOpen} onClose={handleLoginClose}>
                 <DialogTitle>Login</DialogTitle>
                 <DialogContent>
@@ -286,6 +354,9 @@ const NavigationBar = () => {
                 <DialogActions>
                     <Button onClick={handleSignupOpen} color="secondary">
                         Create Account
+                    </Button>
+                    <Button onClick={handleResetPasswordOpen} color="secondary">
+                        Reset Password
                     </Button>
                 </DialogActions>
             </Dialog>

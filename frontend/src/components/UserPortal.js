@@ -29,8 +29,6 @@ const UserPortal = () => {
     const handleClose = () => setOpen(false);
     const handleActionChange = (event) => setAction(event.target.value);
 
-    
-
     return (
         <Box
             sx={{
@@ -70,7 +68,7 @@ const UserPortal = () => {
                         }}
                     >
                         {/* Past Bookings */}
-                        <Card sx={{ width: '80%', height: '150px', backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
+                        <Card sx={{ width: '80%', maxHeight: '150px', backgroundColor: 'rgba(255, 255, 255, 0.9)', overflowY: 'auto' }}>
                             <CardContent>
                                 <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                                     Past Bookings
@@ -78,11 +76,11 @@ const UserPortal = () => {
                                 <Typography variant="body2" sx={{ marginTop: '1rem' }}>
                                     View all your completed trips and past experiences.
                                 </Typography>
+                                {/* Add more content here to test scrolling */}
                             </CardContent>
                         </Card>
 
-                        {/* Current Bookings */}
-                        <Card sx={{ width: '80%', height: '150px', backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
+                        <Card sx={{ width: '80%', maxHeight: '150px', backgroundColor: 'rgba(255, 255, 255, 0.9)', overflowY: 'auto' }}>
                             <CardContent>
                                 <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                                     Current Bookings
@@ -90,18 +88,18 @@ const UserPortal = () => {
                                 <Typography variant="body2" sx={{ marginTop: '1rem' }}>
                                     Manage your ongoing trips and reservations here.
                                 </Typography>
+                                {/* Add more content here to test scrolling */}
                             </CardContent>
                         </Card>
 
-                        {/* Future Trips */}
-                        <Card sx={{ width: '80%', height: '150px', backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
+                        <Card sx={{ width: '80%', maxHeight: '150px', backgroundColor: 'rgba(255, 255, 255, 0.9)', overflowY: 'auto' }}>
                             <CardContent>
                                 <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                                     Future Trips
                                 </Typography>
                                 <Typography variant="body2" sx={{ marginTop: '1rem' }}>
                                     Plan your upcoming journeys and experiences.
-                                </Typography>
+                                </Typography>                                
                             </CardContent>
                         </Card>
                     </Box>
