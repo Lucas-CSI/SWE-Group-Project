@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import {
     Button,
     Box,
@@ -9,7 +10,11 @@ import {
     InputLabel,
     FormControl,
     Checkbox,
-    FormControlLabel
+    FormControlLabel,
+    Divider,
+    List,
+    ListItem,
+    ListItemText,
 } from '@mui/material';
 
 import {generateGetRequest, generatePostRequest} from "../services/apiService";
@@ -28,6 +33,7 @@ const AdminHomepage = () => {
         {"id":-1,"roomNumber":"","theme":"","qualityLevel":"","bedType":"","":0,"oceanView":false,"smokingAllowed":false,"isBookedCurrently":false});
     const [stringRoomInfo, setStringRoomInfo] = useState('');
     const [ submissionRoomStatus, setSubmissionRoomStatus ] = useState('');
+
 
     const handleSearch = () => {
         console.log(`Searching for: ${email}`);
@@ -77,6 +83,20 @@ const AdminHomepage = () => {
             setSubmissionRoomStatus(response.response.data);
         }
     }
+
+    const [specialRequests, setSpecialRequests] = useState([]);
+
+    useEffect(() => {
+        const fetchRequests = () => {
+            const requests = JSON.parse(localStorage.getItem("specialRequests")) || [];
+            setSpecialRequests(requests);
+        };
+        fetchRequests();
+
+        const handleStorageUpdate = () => fetchRequests();
+        window.addEventListener('storage', handleStorageUpdate);
+        return () => window.removeEventListener('storage', fetchRequests);
+    }, []);
 
     return (
         <Box
@@ -391,6 +411,26 @@ const AdminHomepage = () => {
                 >
                     Add Room / Set Room Status
                 </Button>
+                <Typography variant="h5" sx={{ marginTop: '2rem' }}>
+                    Special Requests from Guests
+                </Typography>
+                <Divider sx={{ marginBottom: '1rem' }} />
+                <List>
+                    {specialRequests.length > 0 ? (
+                        specialRequests.map((request, index) => (
+                            <ListItem key={index} alignItems="flex-start">
+                                <ListItemText
+                                    primary={`${request.title} - Preferences: Smoking ${
+                                        request.smokingAllowed ? "Allowed" : "Not Allowed"
+                                    }, Ocean View ${request.oceanView ? "Requested" : "Not Requested"}`}
+                                    secondary={request.specialRequest}
+                                />
+                            </ListItem>
+                        ))
+                    ) : (
+                        <Typography variant="body2">No special requests available.</Typography>
+                    )}
+                </List>
             </Box>
         </Box>
     );

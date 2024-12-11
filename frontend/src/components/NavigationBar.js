@@ -27,12 +27,11 @@ import axios from 'axios';
 import { login, getLoginStatus } from "../services/authService.js";
 import './NavigationBar.css';
 import { generatePostRequest, generateGetRequest } from "../services/apiService"
+import { Avatar } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 //import {formattedGetAvailableRooms} from "./Rooms/RoomModule";
 import {CartContext} from "./CartItems";
-
-
-
 
 const NavigationBar = () => {
     const [isPopoverHovered, setIsPopoverHovered] = useState(false);
@@ -57,8 +56,10 @@ const NavigationBar = () => {
     const navigate = useNavigate();
     const [resetFeedback, setResetFeedback] = useState('');
 
-
-
+    const navigateToUserPortal = () => {
+        navigate('/UserPortal');
+    };
+    
     const {cartItems, handleRemoveFromCart, clearCart} = useContext(CartContext);
 
     const [resetPasswordOpen, setResetPasswordOpen] = useState(false);
@@ -199,6 +200,24 @@ const NavigationBar = () => {
                     <Badge badgeContent={cartItems.length} color="secondary">
                         <ShoppingCartIcon/>
                     </Badge>
+                </IconButton>
+
+                {/* Profile Button */}
+                <IconButton
+                    color="primary"
+                    aria-label="profile"
+                    onClick={() => {
+                        if (getLoginStatus()) {
+                            navigateToUserPortal();
+                        } else {
+                            alert('Please log in to access your profile.');
+                        }
+                    }}
+                    sx={{ marginLeft: '10px', marginRight: '10px' }}
+                >
+                    <Avatar>
+                        <AccountCircleIcon sx={{ fontSize: '40px', backgroundColor: 'white', color: 'rgb(25,122,140)' }}/>
+                    </Avatar>
                 </IconButton>
 
                 {!getLoginStatus() ? <Button color="inherit" onClick={handleLoginOpen} style={{fontWeight: 'bold'}}>

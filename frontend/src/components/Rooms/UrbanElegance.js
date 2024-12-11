@@ -14,6 +14,8 @@ import {
 } from '@mui/material';
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
+import { TextField } from '@mui/material';
+
 
 import {
     handleSubmitRoom,
@@ -119,6 +121,21 @@ const RoomOption = ({ title }) => {
                         >
                             Reserve
                         </Button> }
+
+                        {/* Special Requests Text Box */}
+                        <Box sx={{ marginTop: '1rem' }}>
+                            <Typography variant="body1" sx={{ marginBottom: '0.5rem' }}>
+                                Special Requests:
+                            </Typography>
+                            <TextField
+                                fullWidth
+                                multiline
+                                rows={3}
+                                placeholder="Enter any special requests or additional information..."
+                                variant="outlined"
+                            />
+                        </Box>
+                        
                         <Button onClick={handleClose} variant="outlined" color="primary" sx={{ bottom: -10 , right: 10 }}>
                             Close
                         </Button>

@@ -15,6 +15,7 @@ import {
     DialogContent,
     DialogContentText,
 } from '@mui/material';
+
 import Slider from 'react-slick';
 
 import 'slick-carousel/slick/slick.css';
@@ -38,7 +39,7 @@ const RoomSuites = () => {
     }, []);
 
     return availableRooms.total === 0 ? (<p>Loading...</p>) : (
-        <Box sx={{padding: '2rem'}}>
+        <Box sx={{padding: '6rem'}}>
             <Typography variant="h4" align="center" sx={{marginBottom: '2rem'}}>
                 Available Room Categories
                 <Typography variant="h5" component="div" fontSize={17}>
@@ -195,6 +196,7 @@ const RoomCategory = ({ title, description, images, options, hide }) => {
                             </label>
                         </Box>
                         <Divider sx={{ margin: '1rem 0' }} />
+                        
                         <Button
                             variant="contained"
                             color='rgb(25,122,140)'

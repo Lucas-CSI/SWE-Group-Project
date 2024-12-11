@@ -14,6 +14,8 @@ import {
     DialogTitle,
     DialogContent, DialogContentText, FormControlLabel, Checkbox
 } from '@mui/material';
+import { TextField } from '@mui/material';
+
 import {
     generateRoomData,
     handleSubmitRoom,
@@ -38,6 +40,8 @@ const RoomOption = ({ title }) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const [specialRequest, setSpecialRequest] = useState('');
+
     const handleOceanView =  () => {
         if(checkPreferenceAvailability(roomType, !oceanView, smokingAllowed)){
             setOceanView(!oceanView);
@@ -49,6 +53,17 @@ const RoomOption = ({ title }) => {
             setSmokingAllowed(!smokingAllowed);
         }
     }
+
+    const handleSubmitRequest = () => {
+        const existingRequests = JSON.parse(localStorage.getItem("specialRequests")) || [];
+        existingRequests.push({
+            title,
+            specialRequest,
+        });
+        localStorage.setItem("specialRequests", JSON.stringify(existingRequests));
+        setOpen(false); 
+        setSpecialRequest('');
+    };
 
     return (
         <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%', opacity: isRoomAvailable ? 1 : 0.5}}>
@@ -109,6 +124,24 @@ const RoomOption = ({ title }) => {
                                 disabled={!checkPreferenceAvailability(roomType, !oceanView, smokingAllowed)}
                             />
                         </Box>
+
+                        {/* Special Requests Text Box */}
+                        <Box sx={{ marginTop: '1rem' }}>
+                            <Typography variant="body1" sx={{ marginBottom: '0.5rem' }}>
+                                Special Requests:
+                            </Typography>
+                            <TextField
+                                fullWidth
+                                multiline
+                                rows={3}
+                                placeholder="Enter any special requests or additional information..."
+                                variant="outlined"
+                                value={specialRequest}
+                                onChange={(e) => setSpecialRequest(e.target.value)}
+
+                            />
+                        </Box>
+
                         <Divider sx={{ margin: '1rem 0' }} />
                         {!isRoomAvailable ? null : <Button
                             component={Link}
@@ -119,6 +152,7 @@ const RoomOption = ({ title }) => {
                         >
                             Reserve
                         </Button> }
+                        
                         <Button onClick={handleClose} variant="outlined" color="primary" sx={{ bottom: -10 , right: 10 }}>
                             Close
                         </Button>
