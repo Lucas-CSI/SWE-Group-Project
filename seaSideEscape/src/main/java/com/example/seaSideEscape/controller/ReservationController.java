@@ -116,4 +116,15 @@ public class ReservationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
+
+    @PostMapping("/check-in")
+    public ResponseEntity<String> checkInGuest(@RequestParam String email) {
+        return reservationService.checkInGuestByEmail(email);
+    }
+
+    @PostMapping("/check-out")
+    public ResponseEntity<String> checkOutGuest(@RequestParam String email) {
+        return reservationService.checkOutGuestByEmail(email);
+    }
+
 }
