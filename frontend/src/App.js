@@ -39,7 +39,6 @@ function App() {
                     <Route path="/experiences" element={<ExperiencePage />} />
                     <Route path="/reservation" element={<ReservationPage />} />
                     <Route path="/admin/homepage" element={<AdminHomePage />} />
-                    <Route path="/clerk/homepage" element={<ClerkHomePage />} />
                     <Route path="/rooms" element={<RoomsSuites />} />
                     <Route path="/natureRetreat" element={<NatureRetreatOptions />} />
                     <Route path="/urbanElegance" element={<UrbanElegance />} />

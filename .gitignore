@@ -2,3 +2,4 @@ node_modules/
 
 frontend/src/components/Rooms/getAvailableRooms.js
 .idea/workspace.xml
+/.idea

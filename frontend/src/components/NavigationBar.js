@@ -29,6 +29,7 @@ import { login } from "../services/authService.js";
 import './NavigationBar.css';
 import { generatePostRequest, generateGetRequest } from "../services/apiService"
 import { getLoginStatus} from "../services/authService.js";
+import {CartContext} from "./CartItems";
 
 const NavigationBar = () => {
     const [isPopoverHovered, setIsPopoverHovered] = useState(false);
@@ -257,7 +258,6 @@ const NavigationBar = () => {
                     >
                         Checkout
                     </Button>
-                </div>
                 </Popover>
             </AppBar>
 
