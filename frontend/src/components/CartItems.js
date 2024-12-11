@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
 import { generateGetRequest, generatePostRequest } from '../services/apiService';
+import Cookies from 'js-cookie';
 
 export const CartContext = createContext();
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     AppBar,
     Toolbar,
@@ -16,9 +16,6 @@ import {
     Badge,
     List,
     ListItem,
-
-    ListItemText,
-
     ListItemText, Divider
 
 } from '@mui/material';
@@ -27,14 +24,11 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { login } from "../services/authService.js";
+import { login, getLoginStatus } from "../services/authService.js";
 import './NavigationBar.css';
 import { generatePostRequest, generateGetRequest } from "../services/apiService"
 
-import {formattedGetAvailableRooms} from "./Rooms/RoomModule";
-import {CartContext} from "./CartItems";
-
-import { getLoginStatus} from "../services/authService.js";
+//import {formattedGetAvailableRooms} from "./Rooms/RoomModule";
 import {CartContext} from "./CartItems";
 
 
@@ -44,6 +38,7 @@ const NavigationBar = () => {
 
     const [loginOpen, setLoginOpen] = useState(false);
     const [signupOpen, setSignupOpen] = useState(false);
+    
 
     const [cartAnchorEl, setCartAnchorEl] = useState(null);
 
@@ -201,31 +196,8 @@ const NavigationBar = () => {
                 <Typography variant="h6" gutterBottom>
                     Cart Summary
                 </Typography>
-                <List>
-                    {cartItems.map((item, index) => (
-                        <ListItem key={index}>
-                            <ListItemText primary={item.name} secondary={`$${item.price}`}/>
-                            <IconButton
-                                size="small"
-                                color="error"
-
-                                onClick={() => {
-                                    console.log(item.id);
-                                    handleRemoveFromCart(item.id);}}
-
-                            >
-                                <CloseIcon />
-                            </IconButton>
-                        </ListItem>
-
-                    ))}
-                </List>
-                <div style={{display: "flex", flexDirection: "row"}}>
-                    <Typography variant="body1" style={{marginTop: '10px', fontWeight: 'bold'}}>
-                        Total: ${cartItems.reduce((total, item) => total + item.price, 0)}
-                    </Typography>
-                    <Box
-                        sx={{
+                <Box
+                    sx={{
                             border: '2px solid rgb(25,122,140)',
                             borderRadius: '8px',
                             padding: '8px',

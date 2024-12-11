@@ -22,9 +22,6 @@ import AboutUs from './components/AboutUs.js';
 import { CartProvider } from './components/CartItems';
 import PaymentConfirmation from './components/PaymentConfirmation'
 
-import { CartProvider } from './components/CartItems';
-import PaymentConfirmation from './components/PaymentConfirmation'
-
 
 function App() {
     return (

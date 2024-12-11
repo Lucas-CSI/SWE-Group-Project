@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
 
 export const login = async (username, password) => {
     try {
