@@ -1,5 +1,5 @@
 Installation Guide:
-Install:
+```Install:
 Java Version: 21
 Node-js version: v22.10.7
 MySQL Server - run it on port 3306 and make sure the service is running (windows: check services.msc)
@@ -20,7 +20,7 @@ Running Project:
 Run npm start build in cmd line in SWE-Group-Project/frontend to run the frontend
 Run mvn spring-boot:run. in SWE-Group-Project/seaSideEscape to run the backend
 The backend is hosted on localhost:8080
-Frontend is hosted on localhost:3000
+Frontend is hosted on localhost:3000```
 
 ```To use the website, open your web browser to localhost:3000```
 
