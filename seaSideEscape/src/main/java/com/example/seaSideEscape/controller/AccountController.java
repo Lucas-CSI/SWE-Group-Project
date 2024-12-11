@@ -5,8 +5,6 @@ import com.example.seaSideEscape.model.Booking;
 import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.service.AccountService;
 import com.example.seaSideEscape.model.Account;
-import com.example.seaSideEscape.service.BookingService;
-import com.example.seaSideEscape.service.ReservationService;
 import com.example.seaSideEscape.service.RoomService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.Cookie;
@@ -18,35 +16,56 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-
+/**
+ * Handles user account-related operations in the SeaSide Escape application.
+ * This includes login, logout, account creation, and cart retrieval.
+ */
 @RestController
 public class AccountController {
+
     private final AccountService accountService;
     private final RoomService roomService;
+
     private final SerializeModule<Room> serializeRoom = new SerializeModule<>();
     Logger logger = LoggerFactory.getLogger(AccountController.class);
 
+    /**
+     * Constructor for the AccountController.
+     *
+     * @param accountService the service handling account operations.
+     * @param roomService    the service handling room operations.
+     */
     @Autowired
     public AccountController(AccountService accountService, RoomService roomService) {
         this.accountService = accountService;
         this.roomService = roomService;
     }
 
+    /**
+     * Returns the login page.
+     *
+     * @return the name of the login page view.
+     */
     @GetMapping("/login")
-    public String loginPage(){
+    public String loginPage() {
         return "login";
     }
 
+    /**
+     * Handles user login by validating credentials and setting cookies.
+     *
+     * @param response the HTTP response for adding cookies.
+     * @param account  the account credentials provided by the user.
+     * @return a {@link ResponseEntity} indicating the login status.
+     * @throws Exception if an error occurs during login processing.
+     */
     @PostMapping("/login")
     public ResponseEntity<String> login(HttpServletResponse response, @RequestBody Account account) throws Exception {
         Optional<Account> acc = accountService.canLogin(account);
-        if(acc.isPresent()){
+        if (acc.isPresent()) {
             Cookie username = new Cookie("username", account.getUsername());
             Cookie password = new Cookie("password", acc.get().getPassword());
             Cookie permissionLevel = new Cookie("permissionLevel", acc.get().toString());
@@ -60,61 +79,69 @@ public class AccountController {
             response.addCookie(username);
             response.addCookie(password);
             response.addCookie(permissionLevel);
-        }else{
+        } else {
             return new ResponseEntity<>("Invalid username or password.", HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>("Successfully logged into account.", HttpStatus.OK);
     }
 
+    /**
+     * Handles user logout by clearing cookies.
+     *
+     * @param response the HTTP response for clearing cookies.
+     * @return a confirmation message.
+     * @throws Exception if an error occurs during logout processing.
+     */
     @PostMapping("/logoutAccount")
     public String logout(HttpServletResponse response) throws Exception {
         Cookie username = new Cookie("username", null);
         Cookie password = new Cookie("password", null);
         Cookie permissionLevel = new Cookie("permissionLevel", null);
+
         username.setPath("/");
         password.setPath("/");
         permissionLevel.setPath("/");
         username.setMaxAge(0);
         password.setMaxAge(0);
         permissionLevel.setMaxAge(0);
+
         response.addCookie(username);
         response.addCookie(password);
         response.addCookie(permissionLevel);
+
         return "done";
     }
-    // TODO: Get user's reservations
-    //@RequestMapping(value = "/profile/reservations", method = GET)
-    //@ResponseBody
 
+    /**
+     * Returns the admin login page.
+     *
+     * @return the name of the admin login page view.
+     */
     @GetMapping("/adminLogin")
-    public String adminLogin(){return "adminLogin";}
-
-    /*
-    @PostMapping("/adminLogin")
-    public ResponseEntity<String> adminLogin(HttpServletResponse response, @RequestBody Account account) throws NoSuchAlgorithmException {
-        Optional<Account> acc = accountService.canLogin(account);
-        if(acc.isPresent()){
-            if (acc.get().isAdmin()){
-                response.addCookie(new Cookie("admin", account.getUsername()));
-                response.addCookie(new Cookie("password", acc.get().getPassword()));
-
-                //return ResponseEntity.status(HttpStatus.FOUND)
-                //.location(URI.create("/admin/homepage")).build();
-                return ResponseEntity.ok("Admin login successful");
-
-            }
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+    public String adminLogin() {
+        return "adminLogin";
     }
-    */
 
-
+    /**
+     * Creates a new account with a default Guest permission level.
+     *
+     * @param account the account details provided by the user.
+     * @return a {@link ResponseEntity} indicating the account creation status.
+     * @throws NoSuchAlgorithmException if an error occurs during account creation.
+     */
     @PostMapping("/createAccount")
     public ResponseEntity<String> createAccount(@RequestBody Account account) throws NoSuchAlgorithmException {
         account.setPermissionLevel(Account.PermissionLevel.Guest);
         return accountService.createAccount(account);
     }
 
+    /**
+     * Retrieves the current user's cart containing reserved rooms.
+     *
+     * @param username the username obtained from the cookies.
+     * @return a {@link ResponseEntity} containing the cart in JSON format.
+     * @throws JsonProcessingException if an error occurs during JSON serialization.
+     */
     @GetMapping("/getCart")
     public ResponseEntity<String> getCart(@CookieValue("username") String username) throws JsonProcessingException {
         return ResponseEntity.ok(serializeRoom.listToJSON(roomService.getRoomsInCart(username)));
