@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Box,
     Typography,
@@ -20,14 +20,36 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PaymentIcon from '@mui/icons-material/Payment';
 import EditIcon from '@mui/icons-material/Edit';
 import LockResetIcon from '@mui/icons-material/LockReset';
+import {generateGetRequest, generatePostRequest} from "../services/apiService";
 
 const UserPortal = () => {
     const [open, setOpen] = useState(false);
     const [action, setAction] = useState('');
+    const [reservations, setReservations] = useState('');
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleActionChange = (event) => setAction(event.target.value);
+
+
+    useEffect(() => {
+        const getReservations = async() => {
+            const response = await generateGetRequest("/profile/reservations");
+            let string = "";
+            console.log(response);
+            if(response.status === 200){
+                for(let i in response.data){
+                    console.log(i);
+                    string += "Reservation " + i;
+                    string += "\n Check-In Date: " + response.data[i].checkInDate + " Check-Out Date: " + response.data[i].checkOutDate;
+                    string += "\n" + JSON.stringify(response.data[i].bookings, null, 4) + "\n";
+                }
+                console.log(string);
+                setReservations(string);
+            }
+        }
+       getReservations();
+    });
 
     return (
         <Box
@@ -67,41 +89,19 @@ const UserPortal = () => {
                             gap: '1.5rem',
                         }}
                     >
-                        {/* Past Bookings */}
-                        <Card sx={{ width: '80%', height: '150px', backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
-                            <CardContent>
-                                <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-                                    Past Bookings
-                                </Typography>
-                                <Typography variant="body2" sx={{ marginTop: '1rem' }}>
-                                    View all your completed trips and past experiences.
-                                </Typography>
-                            </CardContent>
-                        </Card>
-
                         {/* Current Bookings */}
-                        <Card sx={{ width: '80%', height: '150px', backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
+                        <Card sx={{ width: '80%', height: '50%', backgroundColor: 'rgba(255, 255, 255, 0.9)', overflowY: 'scroll', overflowX: 'scroll', whiteSpace: 'pre-line' }}>
                             <CardContent>
                                 <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                                     Current Bookings
                                 </Typography>
-                                <Typography variant="body2" sx={{ marginTop: '1rem' }}>
+                                <Typography variant="body2" sx={{ marginTop: '1rem'}}>
                                     Manage your ongoing trips and reservations here.
                                 </Typography>
+                                {reservations}
                             </CardContent>
                         </Card>
 
-                        {/* Future Trips */}
-                        <Card sx={{ width: '80%', height: '150px', backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
-                            <CardContent>
-                                <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-                                    Future Trips
-                                </Typography>
-                                <Typography variant="body2" sx={{ marginTop: '1rem' }}>
-                                    Plan your upcoming journeys and experiences.
-                                </Typography>
-                            </CardContent>
-                        </Card>
                     </Box>
                 </Grid>
 
