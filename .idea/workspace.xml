@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ece300a4-5984-463c-8d5c-e3126db56a25" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/seaSideEscape/src/main/java/com/example/seaSideEscape/service/EmailService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,12 +18,19 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "Spring Boot.SeaSideEscapeApplication.executor": "Run",
     "git-widget-placeholder": "main",
-    "node.js.selected.package.tslint": "(autodetect)"
+    "node.js.selected.package.tslint": "(autodetect)",
+    "npm.start $Classpath$.executor": "Run",
+    "npm.start build.executor": "Run",
+    "npm.start.executor": "Run"
   }
 }]]></component>
-  <component name="RunManager" selected="Spring Boot.SeaSideEscapeApplication">
+  <component name="RunManager" selected="npm.start">
     <configuration name="SeaSideEscapeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="seaSideEscape" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.seaSideEscape.SeaSideEscapeApplication" />
@@ -33,13 +39,11 @@
       </method>
     </configuration>
     <configuration name="start" type="js.build_tools.npm" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/seaSideEscape/package.json" />
+      <package-json value="$PROJECT_DIR$/frontend/package.json" />
       <command value="start" />
       <node-interpreter value="project" />
       <envs />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+      <method v="2" />
     </configuration>
     <list>
       <item itemvalue="npm.start" />
