@@ -1,5 +1,6 @@
 package com.example.seaSideEscape.service;
 
+import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.model.Venue;
 import com.example.seaSideEscape.repository.AccountRepository;
@@ -94,5 +95,36 @@ public class EmailService {
         emailSender.send(message);
     }
 
+    public void sendReservationConfirmation(String username, Long reservationId, List<Room> rooms,
+                                            LocalDateTime checkInDate, LocalDateTime checkOutDate) {
 
+        String recipientEmail = accountRepository.findByUsername(username)
+                .map(Account::getEmail)
+                .orElseThrow(() -> new IllegalArgumentException("Email not found for username: " + username));
+
+        String subject = "Reservation Confirmation";
+        StringBuilder message = new StringBuilder();
+        message.append("Dear ").append(username).append(",\n\n");
+        message.append("Thank you for your reservation. Here are the details:\n\n");
+        message.append("Reservation ID: ").append(reservationId).append("\n");
+        message.append("Check-In: ").append(checkInDate).append("\n");
+        message.append("Check-Out: ").append(checkOutDate).append("\n\n");
+        message.append("Rooms:\n");
+        for (Room room : rooms) {
+            message.append("- ").append(room.getQualityLevel()).append(" Style Room (")
+                    .append(room.getTheme()).append("), Bed Type: ")
+                    .append(room.getBedType()).append("\n");
+        }
+        message.append("\nWe look forward to hosting you!\n");
+        message.append("SeaSide Escape Hotel");
+
+        // Prepare the email
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(recipientEmail);
+        email.setSubject(subject);
+        email.setText(message.toString());
+
+        // Send the email
+        emailSender.send(email);
+    }
 }
