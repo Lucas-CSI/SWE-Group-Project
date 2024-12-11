@@ -268,6 +268,10 @@ public class ReservationService {
 
     public List<Reservation> getReservationsByUsername(String username) {
         return reservationRepository.findAllReservationsByUser(username);
+	}
+    public Reservation getUnpaidReservation(Account account) {
+        return reservationRepository.findByAccountAndPaidFalse(account)
+                .orElseThrow(() -> new IllegalArgumentException("No unpaid reservation found for the account"));
     }
 }
 

@@ -23,7 +23,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     @Query("SELECT res FROM Reservation res WHERE res.account = ?1 AND NOT res.paid")
     Optional<Reservation> findByAccountAndPaidFalse(Account account);
-
-
 }
 

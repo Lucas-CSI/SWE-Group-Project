@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useContext, useEffect, useState, useContext} from 'react';
 import Cookies from 'js-cookie';
 import {
     AppBar,
@@ -25,6 +25,7 @@ import {
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CloseIcon from '@mui/icons-material/Close';
+
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { login } from "../services/authService.js";
@@ -35,6 +36,7 @@ import {formattedGetAvailableRooms} from "./Rooms/RoomModule";
 import {CartContext} from "./CartItems";
 
 import { getLoginStatus} from "../services/authService.js";
+import {CartContext} from "./CartItems";
 
 
 
@@ -134,35 +136,10 @@ const NavigationBar = () => {
         }
     };
 
-    const handleRoomsClick = () => {
-        console.log("Navigating to Rooms & Suites page...");
-        navigate('/rooms');
-    };
-
-    //const [cartItems, setCartItems] = useState([]);
-
-    // useEffect(() => {
-    //     const getCart = async () => {
-    //         let response = await generateGetRequest("/getCart");
-    //         let cart = response.data;
-    //         let tempItems = [];
-    //
-    //         for(let i in cart){
-    //             tempItems = [...tempItems,{name: cart[i].qualityLevel + " Style Room", price: cart[i].maxRate}];
-    //         }
-    //         setCartItems(tempItems);
-    //     }
-    //     if(getLoginStatus()) {
-    //         getCart();
-    //     }
-    // }, []);
-
-
     const handleCheckout = () => {
         const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
         navigate("/reservation/payment", {state: {totalAmount, cartItems}});
     };
-
 
     return !cartItems ? (<p>Loading...</p>) : (
         <>
@@ -248,40 +225,40 @@ const NavigationBar = () => {
                     <Typography variant="body1" style={{marginTop: '10px', fontWeight: 'bold'}}>
                         Total: ${cartItems.reduce((total, item) => total + item.price, 0)}
                     </Typography>
+                    <Box
+                        sx={{
+                            border: '2px solid rgb(25,122,140)',
+                            borderRadius: '8px',
+                            padding: '8px',
+                            marginBottom: '60px',
+                            position: 'relative',
+                        }}
+                    >
+                        <List>
+                            {cartItems.map((item, index) => (
+                                <ListItem key={index}>
+                                    <ListItemText primary={item.name} secondary={`$${item.price}`} />
+                                    <IconButton
+                                        size="small"
+                                        color="error"
 
-                    <Button variant="contained" className="check-in-out-button"
-                            style={{alignSelf: "flex-end", position: 'absolute', right: 5}} onClick={handleCheckout}>
-                        CHECKOUT
-                    </Button>
-                </div>
-            </Popover>
-        </AppBar>
-
-    {/* Login Dialog */
-    }
-    <Dialog open={loginOpen} onClose={handleLoginClose}>
-        <DialogTitle>Login</DialogTitle>
-        <DialogContent>
-            <DialogContentText>Please enter your login credentials.</DialogContentText>
-            {error && <p style={{color: 'red'}}>{error}</p>}
-            <TextField
-                autoFocus
-                margin="dense"
-                label="Username"
-                type="text"
-                fullWidth
-                variant="standard"
-
-                    <List>
-                        {cartItems.map((item, index) => (
-                            <ListItem key={index}>
-                                <ListItemText primary={item.name} secondary={`$${item.price}`} />
-                            </ListItem>
-                        ))}
-                    </List>
-                    <Divider sx={{ margin: '1rem 0' }} />
-                    <div style={{display: "flex", flexDirection: "row"}}>
-                        <Typography variant="body1" style={{marginTop: '10px', fontWeight: 'bold'}}>
+                                        onClick={() => {
+                                            console.log(item.id);
+                                            handleRemoveFromCart(item.id);}}
+                                    >
+                                        <CloseIcon />
+                                    </IconButton>
+                                </ListItem>
+                            ))}
+                        </List>
+                        <Typography
+                            variant="body1"
+                            sx={{
+                                marginTop: '10px',
+                                fontWeight: 'bold',
+                                textAlign: 'center',
+                            }}
+                        >
                             Total: ${cartItems.reduce((total, item) => total + item.price, 0)}
                         </Typography>
                     </Box>
@@ -297,7 +274,7 @@ const NavigationBar = () => {
                                 backgroundColor: '#28c1d8',
                             },
                         }}
-                        onClick={() => navigate('/checkout')}
+                        onClick={() => navigate('/reservation/payment')}
                     >
                         Checkout
                     </Button>
