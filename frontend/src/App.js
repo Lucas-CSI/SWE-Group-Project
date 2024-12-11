@@ -19,10 +19,6 @@ import ReservationConfirmationPage from './components/ReservationPageComponents/
 import { CartProvider } from './components/CartItems';
 import PaymentConfirmation from './components/PaymentConfirmation'
 
-import { CartProvider } from './components/CartItems';
-import PaymentConfirmation from './components/PaymentConfirmation'
-
-
 function App() {
     return (
         <CartProvider>

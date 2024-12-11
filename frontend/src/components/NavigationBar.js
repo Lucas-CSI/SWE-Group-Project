@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState, useContext} from 'react';
+import React, {useContext, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import {
     AppBar,
@@ -18,8 +18,6 @@ import {
     List,
     ListItem,
 
-    ListItemText,
-
     ListItemText, Divider
 
 } from '@mui/material';
@@ -36,8 +34,6 @@ import {formattedGetAvailableRooms} from "./Rooms/RoomModule";
 import {CartContext} from "./CartItems";
 
 import { getLoginStatus} from "../services/authService.js";
-import {CartContext} from "./CartItems";
-
 
 
 const NavigationBar = () => {
@@ -278,6 +274,7 @@ const NavigationBar = () => {
                     >
                         Checkout
                     </Button>
+                </div>
                 </Popover>
             </AppBar>
 
