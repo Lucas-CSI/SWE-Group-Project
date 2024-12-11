@@ -1,5 +1,7 @@
 package com.example.seaSideEscape.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
@@ -16,10 +18,12 @@ public class Reservation {
     private Long id;
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Booking> bookings;
 
     @ManyToOne
     @JoinColumn(name = "account_id",  nullable = true)
+    @JsonBackReference
     private Account account;
 
 

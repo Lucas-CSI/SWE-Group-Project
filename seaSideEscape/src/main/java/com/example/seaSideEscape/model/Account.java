@@ -1,5 +1,7 @@
 package com.example.seaSideEscape.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -17,9 +19,11 @@ public class Account{
     private PermissionLevel permissionLevel;
 
     @ManyToOne
+    @JsonBackReference(value = "unbookedReservations")
     private Reservation unbookedReservation;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference(value = "reservations")
     private List<Reservation> reservations;
 
     public PermissionLevel getPermissionLevel() {

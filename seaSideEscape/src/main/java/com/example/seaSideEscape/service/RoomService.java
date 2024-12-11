@@ -2,6 +2,7 @@ package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.model.Booking;
+import com.example.seaSideEscape.model.Reservation;
 import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.repository.BookingRepository;
 import com.example.seaSideEscape.repository.RoomRepository;
@@ -143,7 +144,10 @@ public class RoomService {
     public void addRoomToDB(Room room){
         roomRepository.save(room);
     }
-  
+
+    public List<Room> getRoomsInReservation(Reservation res) {
+        return roomRepository.getRoomsInReservation(res);
+    }
 
     public Optional<Room> getRoomInfo(String roomNumber){
         return roomRepository.findRoomByNumber(roomNumber);

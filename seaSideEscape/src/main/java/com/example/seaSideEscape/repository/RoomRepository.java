@@ -2,6 +2,7 @@ package com.example.seaSideEscape.repository;
 
 import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.model.Booking;
+import com.example.seaSideEscape.model.Reservation;
 import com.example.seaSideEscape.model.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -34,4 +35,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Query("Select rm FROM Room rm WHERE rm.roomNumber = ?1")
     Optional<Room> findRoomByNumber(String roomNumber);
+
+    @Query("SELECT rm FROM Room rm JOIN Booking b ON b.room = rm JOIN Reservation res ON b.reservation = ?1")
+    List<Room> getRoomsInReservation(Reservation reservation);
 }
