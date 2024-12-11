@@ -10,13 +10,27 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Handles billing-related operations in the SeaSide Escape application.
+ * The BillingController provides endpoints for generating and retrieving billing information.
+ */
 @RestController
 @RequestMapping("/billing")
 public class BillingController {
 
+    /**
+     * Service for handling billing operations.
+     */
     @Autowired
     private BillingService billingService;
 
+    /**
+     * Retrieves the billing information for a specific reservation.
+     *
+     * @param reservationId the ID of the reservation for which to generate the bill.
+     * @return a {@link ResponseEntity} containing the generated {@link Bill} if successful,
+     * or an error response if the reservation is not found or billing preconditions are not met.
+     */
     @GetMapping("/{reservationId}")
     public ResponseEntity<Bill> getPaymentInformation(@PathVariable Long reservationId) {
         try {
