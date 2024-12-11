@@ -1,4 +1,4 @@
-Installation Guide:
+``` Installation Guide:
 Install:
 ```Java Version: 21```
 ```Node-js version: v22.10.7```
@@ -20,7 +20,7 @@ Running Project:
 Run npm start build in cmd line in SWE-Group-Project/frontend to run the frontend
 Run mvn spring-boot:run. in SWE-Group-Project/seaSideEscape to run the backend
 The backend is hosted on localhost:8080
-Frontend is hosted on localhost:3000
+Frontend is hosted on localhost:3000```
 
 ```To use the website, open your web browser to localhost:3000```
 
