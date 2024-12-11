@@ -16,13 +16,28 @@ import {
     Badge,
     List,
     ListItem,
-    ListItemText
+
+    ListItemText,
+
+    ListItemText, Divider
+
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import CloseIcon from '@mui/icons-material/Close';
+
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { login } from "../services/authService.js";
 import './NavigationBar.css';
+import { generatePostRequest, generateGetRequest } from "../services/apiService"
+
+import {formattedGetAvailableRooms} from "./Rooms/RoomModule";
+import {CartContext} from "./CartItems";
+
+import { getLoginStatus} from "../services/authService.js";
+import {CartContext} from "./CartItems";
+
+
 
 const NavigationBar = () => {
     const [isPopoverHovered, setIsPopoverHovered] = useState(false);
@@ -39,14 +54,21 @@ const NavigationBar = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [canCreateAccount, setCanCreateAccount] = useState(true);
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const navigate = useNavigate();
+
+    const { cartItems, handleRemoveFromCart, clearCart } = useContext(CartContext);
+
 
     const handleLoginOpen = () => setLoginOpen(true);
     const handleLoginClose = () => {
         setLoginOpen(false);
         setError('');
     };
+
 
     const handleSignupOpen = () => {
         setSignupOpen(true);
@@ -55,20 +77,47 @@ const NavigationBar = () => {
 
     const handleSignupClose = () => {
         setSignupOpen(false);
+        setSuccess('');
+        setError('');
     };
+
+    const handleCreateAccount = async () => {
+        if(canCreateAccount) {
+            const response = await generatePostRequest("createAccount", {username, password, email});
+            if (response.status === 200) {
+                setError('');
+                setSuccess('Account created successfully.');
+                setTimeout(() => {
+                    handleSignupClose();
+                    handleLoginOpen();
+                }, 1000);
+            }else{
+                setError("Error: " + response.response.data);
+            }
+        }
+    }
 
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const data = await login(username, password);
-            if (data) {
-                localStorage.setItem('token', data.token);
-                handleLoginClose();
-            }
-        } catch (error) {
-            setError('Login failed. Please check your credentials.');
+        const response = await generatePostRequest("login", {username, password});
+        if (response.status === 200) {
+            handleLoginClose();
+            alert("Logged in.");
+        }else{
+            setError("Error: " + response.response.data);
         }
     };
+
+    const handleLogout = async () => {
+        const response = await generatePostRequest("logoutAccount", {});
+        if (response.status === 200) {
+            clearCart();
+            navigate("/");
+            alert("Logged out.");
+        }else{
+            setError("Error: " + response.response.data);
+        }
+    }
 
     const handleAdminLogin = async () => {
         try {
@@ -86,88 +135,94 @@ const NavigationBar = () => {
         }
     };
 
-    const handleRoomsClick = () => {
-        console.log("Navigating to Rooms & Suites page...");
-        navigate('/rooms');
+    const handleCheckout = () => {
+        const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
+        navigate("/reservation/payment", {state: {totalAmount, cartItems}});
     };
 
-    const [cartItems, setCartItems] = useState([
-        { name: 'Room Booking', price: 200 },
-        { name: 'Spa Service', price: 50 },
-    ]);
-
-    return (
+    return !cartItems ? (<p>Loading...</p>) : (
         <>
-            <AppBar position="fixed" className="app-bar">
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="logo" component={Link} to="/">
-                        <img src="/SeaSideEscapeLogo.webp" alt="SeaSideEscape Hotel" style={{ height: '40px', marginRight: '10px' }} />
-                    </IconButton>
-                    <Typography variant="h6" className="header-title" onClick={() => navigate('/')}>
-                        SeaSideEscape Hotel
-                    </Typography>
-                    <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-                        <Link to="/" className="nav-link">
-                            Home
-                            <span className="underline"></span>
-                        </Link>
-                        <Link to="/rooms" className="nav-link">
-                            Rooms & Suites
-                            <span className="underline"></span>
-                        </Link>
-                        <Link to="/events" className="nav-link">
-                            Events
-                            <span className="underline"></span>
-                        </Link>
-                        <Link to="/aboutUs" className="nav-link">
-                            About
-                            <span className="underline"></span>
-                        </Link>
-                    </Box>
-                    <IconButton
-                        color="inherit"
-                        aria-label="cart"
-                        onClick={(event) => setCartAnchorEl(cartAnchorEl ? null : event.currentTarget)}
-                    >
-                        <Badge badgeContent={cartItems.length} color="secondary">
-                            <ShoppingCartIcon />
-                        </Badge>
-                    </IconButton>
+        <AppBar position="fixed" className="app-bar">
+            <Toolbar>
+                <IconButton edge="start" color="inherit" aria-label="logo" component={Link} to="/">
+                    <img src="/SeaSideEscapeLogo.webp" alt="SeaSideEscape Hotel"
+                         style={{height: '40px', marginRight: '10px'}}/>
+                </IconButton>
+                <Typography variant="h6" className="header-title" onClick={() => navigate('/')}>
+                    SeaSideEscape Hotel
+                </Typography>
+                <Box sx={{flexGrow: 1, display: 'flex', justifyContent: 'center'}}>
+                    <Link to="/" className="nav-link">
+                        Home
+                        <span className="underline"></span>
+                    </Link>
+                    <Link to="/reservation" className="nav-link">
+                        Rooms & Suites
+                        <span className="underline"></span>
+                    </Link>
+                    <Link to="/events" className="nav-link">
+                        Events
+                        <span className="underline"></span>
+                    </Link>
+                </Box>
 
-                    <Button color="inherit" onClick={handleLoginOpen} style={{ fontWeight: 'bold' }}>
-                        Login
-                    </Button>
-                </Toolbar>
-                <Popover
-                    open={isCartOpen}
-                    anchorEl={cartAnchorEl}
-                    onClose={handleCartClose}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    PaperProps={{
-                        style: {
-                            padding: '10px',
-                            width: '250px',
-                            position: 'relative',
-                        },
-                    }}
+                <IconButton
+                    color="inherit"
+                    aria-label="cart"
+                    onClick={(event) => setCartAnchorEl(cartAnchorEl ? null : event.currentTarget)}
                 >
-                    <Typography
-                        variant="h6"
-                        gutterBottom
-                        sx={{
-                            textAlign: 'center',
-                            marginBottom: '10px',
-                            fontWeight: 'bold',
-                        }}
-                    >
-                        Cart Summary
+                    <Badge badgeContent={cartItems.length} color="secondary">
+                        <ShoppingCartIcon/>
+                    </Badge>
+                </IconButton>
+
+                {!getLoginStatus() ? <Button color="inherit" onClick={handleLoginOpen} style={{fontWeight: 'bold'}}>
+                    Login
+                </Button> : <Button color="inherit" onClick={handleLogout} style={{fontWeight: 'bold'}}>
+                    Logout
+                </Button>}
+            </Toolbar>
+            <Popover
+                open={isCartOpen}
+                anchorEl={cartAnchorEl}
+                onClose={handleCartClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                PaperProps={{
+                    style: {padding: '10px', width: '250px'},
+                }}
+            >
+                <Typography variant="h6" gutterBottom>
+                    Cart Summary
+                </Typography>
+                <List>
+                    {cartItems.map((item, index) => (
+                        <ListItem key={index}>
+                            <ListItemText primary={item.name} secondary={`$${item.price}`}/>
+                            <IconButton
+                                size="small"
+                                color="error"
+
+                                onClick={() => {
+                                    console.log(item.id);
+                                    handleRemoveFromCart(item.id);}}
+
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                        </ListItem>
+
+                    ))}
+                </List>
+                <div style={{display: "flex", flexDirection: "row"}}>
+                    <Typography variant="body1" style={{marginTop: '10px', fontWeight: 'bold'}}>
+                        Total: ${cartItems.reduce((total, item) => total + item.price, 0)}
                     </Typography>
                     <Box
                         sx={{
@@ -182,6 +237,16 @@ const NavigationBar = () => {
                             {cartItems.map((item, index) => (
                                 <ListItem key={index}>
                                     <ListItemText primary={item.name} secondary={`$${item.price}`} />
+                                    <IconButton
+                                        size="small"
+                                        color="error"
+
+                                        onClick={() => {
+                                            console.log(item.id);
+                                            handleRemoveFromCart(item.id);}}
+                                    >
+                                        <CloseIcon />
+                                    </IconButton>
                                 </ListItem>
                             ))}
                         </List>
@@ -208,7 +273,7 @@ const NavigationBar = () => {
                                 backgroundColor: '#28c1d8',
                             },
                         }}
-                        onClick={() => navigate('/checkout')}
+                        onClick={() => navigate('/reservation/payment')}
                     >
                         Checkout
                     </Button>
@@ -228,6 +293,7 @@ const NavigationBar = () => {
                         type="text"
                         fullWidth
                         variant="standard"
+
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
@@ -249,9 +315,6 @@ const NavigationBar = () => {
                     <Button onClick={handleSignupOpen} color="secondary">
                         Create Account
                     </Button>
-                    <Button onClick={handleAdminLogin} color="secondary">
-                        Admin Login
-                    </Button>
                 </DialogActions>
             </Dialog>
 
@@ -260,6 +323,8 @@ const NavigationBar = () => {
                 <DialogTitle>Create Account</DialogTitle>
                 <DialogContent>
                     <DialogContentText>Please enter your account details to sign up.</DialogContentText>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {success && <p style={{ color: 'green' }}>{success}</p>}
                     <TextField
                         autoFocus
                         margin="dense"
@@ -267,20 +332,30 @@ const NavigationBar = () => {
                         type="text"
                         fullWidth
                         variant="standard"
+                        onChange={(e) => setUsername(e.target.value)}
                     />
-                    <TextField margin="dense" label="Email" type="email" fullWidth variant="standard" />
-                    <TextField margin="dense" label="Password" type="password" fullWidth variant="standard" />
+                    <TextField margin="dense" label="Email" type="email" fullWidth variant="standard" onChange={(e) => { setEmail(e.target.value) }}/>
+                    <TextField margin="dense" label="Password" type="password" fullWidth variant="standard" onChange={(e) => setPassword(e.target.value)}/>
                     <TextField
                         margin="dense"
                         label="Confirm Password"
                         type="password"
                         fullWidth
                         variant="standard"
+                        onChange={(e) => {
+                            if(e.target.value !== password) {
+                                setError("Passwords do not match.");
+                                setCanCreateAccount(false);
+                            }else {
+                                setError('');
+                                setCanCreateAccount(true);
+                            }
+                        }}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleSignupClose}>Cancel</Button>
-                    <Button onClick={handleSignupClose}>Create Account</Button>
+                    <Button onClick={handleCreateAccount}>Create Account</Button>
                 </DialogActions>
             </Dialog>
         </>

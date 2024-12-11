@@ -10,6 +10,7 @@ public class Booking {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "reservation_id", nullable = false)
     private Reservation reservation;
     @ManyToOne
     private Room room;

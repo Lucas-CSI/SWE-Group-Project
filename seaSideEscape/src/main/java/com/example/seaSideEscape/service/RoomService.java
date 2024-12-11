@@ -1,7 +1,9 @@
 package com.example.seaSideEscape.service;
 
 import com.example.seaSideEscape.model.Account;
+import com.example.seaSideEscape.model.Booking;
 import com.example.seaSideEscape.model.Room;
+import com.example.seaSideEscape.repository.BookingRepository;
 import com.example.seaSideEscape.repository.RoomRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +16,17 @@ import java.util.*;
 
 @Service
 public class RoomService {
-    private final RoomRepository roomRepository;
+    public final RoomRepository roomRepository;
     private final BookingService bookingService;
     private final AccountService accountService;
+    private final BookingRepository bookingRepository;
 
     @Autowired
-    public RoomService(RoomRepository roomRepository, BookingService bookingService, AccountService accountService) {
+    public RoomService(RoomRepository roomRepository, BookingService bookingService, AccountService accountService, BookingRepository bookingRepository) {
         this.roomRepository = roomRepository;
         this.bookingService = bookingService;
         this.accountService = accountService;
+        this.bookingRepository = bookingRepository;
     }
 
     public boolean roomExists(Long roomId){
@@ -112,6 +116,19 @@ public class RoomService {
         }
     }
 
+    public Room getRoomById(Long roomId) {
+        return roomRepository.findById(roomId).orElse(null);
+    }
+
+    public boolean removeRoomFromCart(Account account, Room room) {
+        Optional<Booking> booking = bookingRepository.findByReservation_AccountAndRoom(account, room);
+        if (booking.isPresent()) {
+            bookingRepository.delete(booking.get());
+            return true;
+        }
+        return false;
+    }
+
     public List<Room> getRoomsInCart(String username){
         Optional<Account> account = accountService.findAccountByUsername(username);
         Account accountObject;
@@ -126,32 +143,17 @@ public class RoomService {
     public void addRoomToDB(Room room){
         roomRepository.save(room);
     }
+  
 
-    public List<Map<String, Object>> getRoomDetailsInCart(String username) {
-        Optional<Account> accountOptional = accountService.findAccountByUsername(username);
-        if (accountOptional.isEmpty()) {
-            throw new IllegalArgumentException("Account not found for username: " + username);
-        }
-
-        Account account = accountOptional.get();
-        List<Room> cartRooms = roomRepository.getCart(account);
-        if (cartRooms == null || cartRooms.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        return cartRooms.stream()
-                .map(room -> {
-                    Map<String, Object> roomDetails = new HashMap<>();
-                    roomDetails.put("theme", room.getTheme().toString());
-                    roomDetails.put("qualityLevel", room.getQualityLevel().toString());
-                    roomDetails.put("oceanView", room.isOceanView());
-                    roomDetails.put("smokingAllowed", room.isSmokingAllowed());
-                    roomDetails.put("bedType", room.getBedType());
-                    roomDetails.put("roomRate", room.getMaxRate());
-                    return roomDetails;
-                })
-                .toList();
+    public Optional<Room> getRoomInfo(String roomNumber){
+        return roomRepository.findRoomByNumber(roomNumber);
     }
 
+    public boolean isRoomBooked(Room room, LocalDate date){
+        return roomRepository.isRoomBooked(room, date);
+    }
 
+    public Room save(Room room){
+        return roomRepository.save(room);
+    }
 }

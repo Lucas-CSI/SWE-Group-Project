@@ -11,8 +11,11 @@ import com.example.seaSideEscape.model.Reservation;
 import com.example.seaSideEscape.model.Room;
 import com.example.seaSideEscape.repository.PaymentRepository;
 import com.example.seaSideEscape.repository.ReservationRepository;
+import com.example.seaSideEscape.validator.ReservationValidator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.projection.CollectionAwareProjectionFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +72,8 @@ public class ReservationService {
         return ResponseEntity.ok().body("Reservation booked");
     }
 
+
+
     /*public Room addRoom(Room room, String username) {
         Optional<Account> account = accountService.findAccountByUsername(username);
         Reservation reservation = account.get().getReservation();
@@ -87,6 +92,7 @@ public class ReservationService {
         Optional<Account> account = accountService.findAccountByUsername(username);
         Reservation reservation;
         Account accountObject;
+        ReservationValidator reservationValidator;
 
         if(account.isPresent()) {
             accountObject = account.get();
@@ -96,13 +102,18 @@ public class ReservationService {
                 reservation.setCheckOutDate(checkOutDate);
                 reservation.setBooked(false);
                 reservation.setGuest(accountObject);
-
-                accountObject.setUnbookedReservation(reservation);
-                reservationRepository.save(reservation);
-                accountRepository.save(accountObject);
+                reservationValidator = new ReservationValidator(reservation);
+                if(reservationValidator.isValid()) {
+                    accountObject.setUnbookedReservation(reservation);
+                    reservationRepository.save(reservation);
+                    accountRepository.save(accountObject);
+                }else{
+                    System.out.println(reservationValidator.getInvalidItems());
+                    return new ResponseEntity<>(reservationValidator.getInvalidItems().values().stream().findFirst().get(), HttpStatus.CONFLICT);
+                }
             }
         }else{
-            return ResponseEntity.badRequest().body("Account not found");
+            return new ResponseEntity<>("Account not found", HttpStatus.CONFLICT);
         }
 
         return ResponseEntity.ok().body("Reservation created");
@@ -136,6 +147,11 @@ public class ReservationService {
         return ResponseEntity.ok().body("Room added");
     }
 
+    public Reservation getUnpaidReservation(Account account) {
+
+        return reservationRepository.findByAccountAndPaidFalse(account)
+                .orElseThrow(() -> new IllegalArgumentException("No unpaid reservation found for the account"));
+    }
     @Transactional
     public void deleteBookingsFromReservation(Reservation reservation) {
         if (reservation.getBookings() != null && !reservation.getBookings().isEmpty()) {
@@ -261,6 +277,7 @@ public class ReservationService {
         return ResponseEntity.ok("Guest checked out and reservation deleted successfully.");
     }
 }
+
 
 
 

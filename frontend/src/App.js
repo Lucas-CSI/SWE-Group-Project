@@ -19,16 +19,24 @@ import ExperiencePage from './components/ExperiencePage.js';
 import ReservationConfirmationPage from './components/ReservationPageComponents/ReservationConfirmationPage.js';
 import UserPortal from './components/UserPortal.js';
 import AboutUs from './components/AboutUs.js';
+import { CartProvider } from './components/CartItems';
+import PaymentConfirmation from './components/PaymentConfirmation'
+
+import { CartProvider } from './components/CartItems';
+import PaymentConfirmation from './components/PaymentConfirmation'
+
 
 function App() {
     return (
+        <CartProvider>
         <Router>
             <NavigationBar />
             {/* Adding some spacing for the AppBar */}
             <Box sx={{ paddingTop: {  } }}>
                 <Routes>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/reservation/payment/:reservationId" element={<PaymentScreen />} />
+                    <Route path="/reservation/payment" element={<PaymentScreen />} />
+                    <Route path="/reservation/payment/:reservation.id" element={<PaymentConfirmation />} />
                     <Route path="/events" element={<EventsPage />} />
                     <Route path="/event-reservation/:eventId" element={<EventReservationPage />} />
                     <Route path="/event-reservation-summary" element={<EventSummaryPage />} />
@@ -47,6 +55,7 @@ function App() {
                 </Routes>
             </Box>
         </Router>
+        </CartProvider>
     );
 }
 

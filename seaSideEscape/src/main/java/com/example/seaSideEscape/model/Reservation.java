@@ -1,6 +1,7 @@
 package com.example.seaSideEscape.model;
 
 import jakarta.persistence.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -29,6 +30,15 @@ public class Reservation {
     private BigDecimal discount;
     private boolean paid;
     private boolean booked;
+    private boolean checkedIn;
+
+    public boolean isCheckedIn() {
+        return checkedIn;
+    }
+
+    public void setCheckedIn(boolean checkedIn) {
+        this.checkedIn = checkedIn;
+    }
 
     @OneToMany
     private List<Charge> charges;

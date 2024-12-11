@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
+import { Link } from 'react-router-dom';
 import {
     Box,
     Typography,
@@ -8,126 +9,125 @@ import {
     CardContent,
     Button,
     CardMedia,
-    Modal,
-    FormControl,
-    FormControlLabel,
-    RadioGroup,
-    Radio,
+    Dialog,
+    DialogTitle,
+    DialogContent, DialogContentText, FormControlLabel, Checkbox
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
-const sendRequest = async (reservation, navigate) => {
-    localStorage.setItem("reservation", JSON.stringify(reservation));
-    const response = await fetch('http://localhost:8080/reservation/addRoom', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(reservation),
-        credentials: 'include',
-    });
-    if (response.ok) {
-        navigate(`/reservation/payment/${reservation.id}`);
-    } else {
-        alert("Error: Room not available.");
-    }
-};
+import {
+    handleSubmitRoom,
+    generateRoomData,
+    findFirstAvailableRoom,
+    checkPreferenceAvailability,
+    qualityLevelsIndex
+} from './RoomModule'
+
+const theme = "VINTAGE_CHARM";
 
 const RoomOption = ({ title }) => {
+    let rooms = localStorage.getItem("rooms");
+    rooms = JSON.parse(rooms);
+    const qualityLevel = title.substring(0,title.indexOf(" "));
+    let roomType = rooms[theme][qualityLevel];
+    let isRoomAvailable = roomType.total > 0;
+    const firstAvailableRoom = findFirstAvailableRoom(roomType);
     const [open, setOpen] = useState(false);
-    const [smokingPreference, setSmokingPreference] = useState('non-smoking');
-    const navigate = useNavigate();
+    const [smokingAllowed, setSmokingAllowed] = useState(firstAvailableRoom ? firstAvailableRoom[1] : false);
+    const [oceanView, setOceanView] = useState(firstAvailableRoom ? firstAvailableRoom[0] : false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
-    const handleReserveClick = () => {
-        setOpen(true);
-    };
+    const handleOceanView =  () => {
+        if(checkPreferenceAvailability(roomType, !oceanView, smokingAllowed)){
+            setOceanView(!oceanView);
+        }
+    }
 
-    const handleConfirm = () => {
-        setOpen(false);
-        const reservation = {
-            room: {
-                bedType: title === "Suite Style" ? "Standard" : "Deluxe",
-                qualityLevel: title === "Suite Style" ? 2 : 1,
-                smokingPreference,
-            },
-        };
-        sendRequest(reservation, navigate);
-    };
-
+    const handleSmokingAllowed = () => {
+        if(checkPreferenceAvailability(roomType, oceanView, !smokingAllowed)){
+            setSmokingAllowed(!smokingAllowed);
+        }
+    }
     return (
-        <>
-            <Card sx={{ backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%' }}>
-                {/* Placeholder Image */}
-                <CardMedia>
-                    <Box
-                        component="img"
-                        src="vintageSuite.webp"
-                        alt={title}
-                        sx={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px' }}
-                    />
-                </CardMedia>
-
-                <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                    <Typography variant="h6" sx={{ marginBottom: '0.5rem' }}>
-                        {title}
-                    </Typography>
-                    <Typography variant="body2" sx={{ marginBottom: '1rem' }}>
-                        Text
-                    </Typography>
-
-                    {/* Reserve Button */}
-                    <Button
-                        onClick={handleReserveClick}
-                        variant="outlined"
-                        color="primary"
-                        sx={{ position: 'absolute', bottom: 10, right: 10 }}
-                    >
-                        Reserve
-                    </Button>
-                </CardContent>
-            </Card>
-
-            {/* Smoking Preference Modal */}
-            <Modal open={open} onClose={() => setOpen(false)}>
+        <Card sx={{backgroundColor: '#f2f2f2', padding: '1rem', position: 'relative', height: '100%'}}>
+            {/* Placeholder Image */}
+            <CardMedia>
                 <Box
-                    sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        bgcolor: 'background.paper',
-                        boxShadow: 24,
-                        p: 4,
-                        borderRadius: '8px',
-                        width: '300px',
-                    }}
-                >
-                    <Typography variant="h6" sx={{ mb: 2 }}>
-                        Smoking Preference
-                    </Typography>
-                    <FormControl component="fieldset">
-                        <RadioGroup
-                            value={smokingPreference}
-                            onChange={(e) => setSmokingPreference(e.target.value)}
+                    component="img"
+                    src="vintageSuite.webp"
+                    alt={title}
+                    sx={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px', opacity: isRoomAvailable ? 1 : 0.3}}
+                />
+            </CardMedia>
+
+            <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', opacity: isRoomAvailable ? 1 : 0.3}}>
+                <Typography variant="h6" sx={{marginBottom: '0.5rem'}}>
+                    {title}
+                </Typography>
+                <Typography variant="body2" sx={{marginBottom: '1rem'}}>
+                    {isRoomAvailable ? "Available" : "Not available."}
+                </Typography>
+
+                {/* View Options Button */}
+                {!isRoomAvailable ? null : <Button variant="contained" color="primary" sx={{ position: 'absolute', bottom: 10, right: 10 }} onClick={handleOpen}>
+                    View Options & Reserve
+                </Button>}
+                {/* Dialog for Viewing Options */}
+                <Dialog open={open} onClose={handleClose}>
+                    <DialogTitle>{title} - Room Options</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Here are the available options for {title}:
+                        </DialogContentText>
+                        <Divider sx={{ margin: '1rem 0' }} />
+                        <Box>
+                            <Typography variant="body1" sx={{ marginBottom: '0.5rem' }}>
+                                Preferences:
+                            </Typography>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        name="isSmokingAllowed"
+                                        checked={smokingAllowed}
+                                        onChange={handleSmokingAllowed}
+                                    />
+                                }
+                                label="Smoking Allowed"
+                                disabled={!checkPreferenceAvailability(roomType, oceanView, !smokingAllowed)}
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        name="oceanView"
+                                        checked={oceanView}
+                                        onChange={handleOceanView}
+                                    />
+                                }
+                                label="Ocean View"
+                                disabled={!checkPreferenceAvailability(roomType, !oceanView, smokingAllowed)}
+                            />
+                        </Box>
+                        <Divider sx={{ margin: '1rem 0' }} />
+                        {!isRoomAvailable ? null : <Button
+                            component={Link}
+                        onClick={() => handleSubmitRoom(generateRoomData(theme, qualityLevelsIndex[qualityLevel], oceanView, smokingAllowed))}
+                        variant="contained"
+                        color="primary"
+                        sx={{position: 'absolute', bottom: 10, right: 10}}
                         >
-                            <FormControlLabel value="smoking" control={<Radio />} label="Smoking" />
-                            <FormControlLabel value="non-smoking" control={<Radio />} label="Non-Smoking" />
-                        </RadioGroup>
-                    </FormControl>
-                    <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-                        <Button
-                            onClick={handleConfirm}
-                            variant="contained"
-                            color="primary"
-                        >
-                            Confirm
+                        Reserve
+                        </Button> }
+                        <Button onClick={handleClose} variant="outlined" color="primary" sx={{ bottom: -10 , right: 10 }}>
+                            Close
                         </Button>
-                    </Box>
-                </Box>
-            </Modal>
-        </>
+                    </DialogContent>
+                </Dialog>
+            </CardContent>
+        </Card>
     );
 };
+
 
 const VintageCharm = () => (
     <Box>
@@ -159,10 +159,10 @@ const VintageCharm = () => (
             <Divider sx={{ marginBottom: '1.5rem' }} />
             <Grid container spacing={4} justifyContent="center">
                 <Grid item xs={12} md={4}>
-                    <RoomOption title="Suite Style" />
+                    <RoomOption title="Executive Style" />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <RoomOption title="Deluxe Style" />
+                    <RoomOption title="Comfort Style" />
                 </Grid>
             </Grid>
         </Box>

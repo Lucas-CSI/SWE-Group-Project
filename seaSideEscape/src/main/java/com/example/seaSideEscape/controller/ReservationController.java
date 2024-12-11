@@ -1,15 +1,23 @@
 package com.example.seaSideEscape.controller;
 
+import com.example.seaSideEscape.model.Account;
 import com.example.seaSideEscape.model.Reservation;
 import com.example.seaSideEscape.model.Room;
+import com.example.seaSideEscape.repository.ReservationRepository;
+import com.example.seaSideEscape.service.AccountService;
+
 import com.example.seaSideEscape.service.ReservationService;
 import com.example.seaSideEscape.service.RoomService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 import java.time.LocalDate;
+import java.util.Optional;
+
 
 /**
  * REST controller for handling reservation-related requests in the SeaSide Escape application.
@@ -21,6 +29,9 @@ public class ReservationController {
 
     private final ReservationService reservationService;
     private final RoomService roomService;
+    private final ReservationRepository reservationRepository;
+    private final AccountService accountService;
+
 
     /**
      * Constructs a new {@code ReservationController}.
@@ -29,9 +40,11 @@ public class ReservationController {
      * @param roomService the service handling room-related operations
      */
     @Autowired
-    public ReservationController(ReservationService reservationService, RoomService roomService) {
+    public ReservationController(ReservationService reservationService, RoomService roomService, ReservationRepository reservationRepository, AccountService accountService) {
         this.reservationService = reservationService;
         this.roomService = roomService;
+        this.reservationRepository = reservationRepository;
+        this.accountService = accountService;
     }
 
     /**
@@ -84,6 +97,24 @@ public class ReservationController {
     @PostMapping("/fillDB")
     public void fillDB() throws Exception {
         roomService.setupDB();
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<String> getCurrentReservation(@CookieValue("username") String username) {
+        if (username == null || username.isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        try {
+            Account account = accountService.findAccountByUsername(username)
+                    .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+            String reservation = String.valueOf(reservationService.getUnpaidReservation(account).getId());
+            return ResponseEntity.ok(reservation);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @PostMapping("/check-in")

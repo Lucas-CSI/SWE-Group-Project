@@ -1,17 +1,20 @@
 package com.example.seaSideEscape.service;
 
+import com.example.seaSideEscape.controller.PaymentController;
 import com.example.seaSideEscape.dto.BookingPaymentRequest;
 import com.example.seaSideEscape.model.*;
-import com.example.seaSideEscape.repository.EventBookingRepository;
-import com.example.seaSideEscape.repository.PaymentRepository;
-import com.example.seaSideEscape.repository.ReservationRepository;
-import com.example.seaSideEscape.repository.VenueRepository;
+import com.example.seaSideEscape.repository.*;
+import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Service class for managing payments in the SeaSide Escape application.
@@ -20,10 +23,16 @@ import java.util.List;
 @Service
 public class PaymentService {
 
+    private static final Logger log = LoggerFactory.getLogger(PaymentService.class);
+
+
     private final PaymentRepository paymentRepository;
     private final ReservationRepository reservationRepository;
     private final EventBookingRepository eventBookingRepository;
     private final VenueRepository venueRepository;
+    private final RoomService roomService;
+    private final EmailService emailService;
+    private final BookingRepository bookingRepository;
 
     /**
      * Constructs a new {@code PaymentService}.
@@ -35,44 +44,93 @@ public class PaymentService {
      */
     @Autowired
     public PaymentService(PaymentRepository paymentRepository, ReservationRepository reservationRepository,
-                          EventBookingRepository eventBookingRepository, VenueRepository venueRepository) {
+                          EventBookingRepository eventBookingRepository, VenueRepository venueRepository, RoomService roomService, EmailService emailService, BookingRepository bookingRepository) {
         this.paymentRepository = paymentRepository;
         this.reservationRepository = reservationRepository;
         this.eventBookingRepository = eventBookingRepository;
         this.venueRepository = venueRepository;
+        this.roomService = roomService;
+        this.emailService = emailService;
+        this.bookingRepository = bookingRepository;
     }
 
     /**
      * Processes a payment for a room reservation.
      *
-     * @param reservationId the ID of the reservation to pay for
      * @param paymentMethod the payment method used (e.g., credit card)
      * @param billingAddress the billing address associated with the payment
-     * @param amount the amount to be charged
      * @param cardNumber the credit card number
      * @param expirationDate the expiration date of the credit card
      * @param cvv the CVV security code of the credit card
      * @return the {@code Payment} object representing the processed payment
      * @throws IllegalArgumentException if the reservation is not found
      */
-    public Payment processRoomPayment(Long reservationId, String paymentMethod, String billingAddress, BigDecimal amount,
-                                      String cardNumber, String expirationDate, String cvv) {
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
+    public Payment processRoomPayment(String paymentMethod, String billingAddress, String cardNumber,
+                                      String expirationDate, String cvv, Account account) {
 
-        BigDecimal roomRate = reservation.getRoomRate();
-        List<Charge> charges = reservation.getCharges();
-        BigDecimal totalAmount = calculateTotalAmount(charges, roomRate);
+        Reservation reservation = reservationRepository.findByAccountAndPaidFalse(account)
+                .orElseThrow(() -> new IllegalArgumentException("No unpaid reservations found for the account"));
+        log.info("Found unpaid reservation with ID: {}", reservation.getId());
 
-        Payment payment = createPayment(paymentMethod, billingAddress, totalAmount, cardNumber, expirationDate, cvv);
+        List<Room> roomsInCart = roomService.getRoomsInCart(account.getUsername());
+        roomService.clearCart(account.getUsername());
+        if (roomsInCart == null || roomsInCart.isEmpty()) {
+            throw new IllegalArgumentException("No rooms found in the cart for this reservation.");
+        }
+        log.info("Rooms in cart for username '{}': {}", account.getUsername(),
+                roomsInCart.stream().map(Room::getId).toList());
+        log.info("Starting processRoomPayment for username: {}", account.getUsername());
+
+        double totalRoomCost = roomService.calculateTotalCartCost(account.getUsername());
+        double tax = totalRoomCost * 0.1; // 10% tax rate
+        double totalCost = totalRoomCost + tax;
+
+        log.info("Processing payment: Room Cost = {}, Tax = {}, Total Cost = {}", totalRoomCost, tax, totalCost);
+
+        Payment payment = createPayment(paymentMethod, billingAddress, totalCost, cardNumber, expirationDate, cvv);
         payment.setReservation(reservation);
-
         paymentRepository.save(payment);
+        if (roomsInCart == null || roomsInCart.isEmpty()) {
+            throw new IllegalArgumentException("No rooms found in the cart for this reservation.");
+        }
+
+
+
+        Set<Long> roomIds = new HashSet<>();
+        for (Room room : roomsInCart) {
+            if (!roomIds.add(room.getId())) {
+                throw new IllegalStateException("Duplicate room detected in cart for username: " + account.getUsername());
+            }
+
+            Booking booking = new Booking();
+            booking.setReservation(reservation);
+            booking.setRoom(room);
+
+            bookingRepository.save(booking);
+        }
+
+
+        log.info("Saved {} bookings for reservation ID: {}", roomsInCart.size(), reservation.getId());
+        log.info("Finished processRoomPayment for username: {}", account.getUsername());
+
         reservation.setPaid(true);
         reservationRepository.save(reservation);
 
+        LocalDateTime checkInDateTime = reservation.getCheckInDate().atStartOfDay();
+        LocalDateTime checkOutDateTime = reservation.getCheckOutDate().atStartOfDay();
+
+        emailService.sendReservationConfirmation(
+                reservation.getGuest().getEmail(),
+                reservation.getId(),
+                roomsInCart,
+                checkInDateTime,
+                checkOutDateTime
+        );
+
+        log.info("Payment processed successfully for account: {}", account.getUsername());
         return payment;
     }
+
 
     /**
      * Processes a payment for an event booking.
@@ -119,12 +177,12 @@ public class PaymentService {
      * @param cvv the CVV security code of the credit card
      * @return a new {@code Payment} object populated with the provided details
      */
-    private Payment createPayment(String paymentMethod, String billingAddress, BigDecimal amount,
+    private Payment createPayment(String paymentMethod, String billingAddress, double amount,
                                   String cardNumber, String expirationDate, String cvv) {
         Payment payment = new Payment();
         payment.setPaymentMethod(paymentMethod);
         payment.setBillingAddress(billingAddress);
-        payment.setAmount(amount);
+        payment.setAmount(BigDecimal.valueOf(amount));
         payment.setPaymentDate(LocalDateTime.now());
         payment.setSuccess(true);
         payment.setCardNumber(cardNumber);

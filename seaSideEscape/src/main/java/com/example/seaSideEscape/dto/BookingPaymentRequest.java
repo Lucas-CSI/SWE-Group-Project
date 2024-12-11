@@ -9,7 +9,7 @@ public class BookingPaymentRequest {
     private Long eventBookingId;       // For event/venue payments
     private String paymentMethod;
     private String billingAddress;
-    private BigDecimal amount;
+    private double amount;
     private String cardNumber;
     private String expirationDate;
     private String cvv;
@@ -69,11 +69,11 @@ public class BookingPaymentRequest {
         this.billingAddress = billingAddress;
     }
 
-    public BigDecimal getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
