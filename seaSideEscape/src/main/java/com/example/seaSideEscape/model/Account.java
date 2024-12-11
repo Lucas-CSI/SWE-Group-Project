@@ -19,11 +19,11 @@ public class Account{
     private PermissionLevel permissionLevel;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference(value = "unbookedReservations")
     private Reservation unbookedReservation;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
+    @JsonBackReference(value = "reservations")
     private List<Reservation> reservations;
 
     public PermissionLevel getPermissionLevel() {
