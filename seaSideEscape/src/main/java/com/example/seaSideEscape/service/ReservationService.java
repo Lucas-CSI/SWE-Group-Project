@@ -115,6 +115,128 @@ public class ReservationService {
 
         return ResponseEntity.ok().body("Reservation created");
     }
+    @Transactional
+    public void deleteBookingsFromReservation(Reservation reservation) {
+        if (reservation.getBookings() != null && !reservation.getBookings().isEmpty()) {
+            for (Booking booking : new ArrayList<>(reservation.getBookings())) {
+                logger.info("Deleting booking ID: {}", booking.getId());
+
+                booking.setRoom(null);
+                reservation.getBookings().remove(booking);
+                bookingService.delete(booking);
+            }
+            logger.info("All bookings removed for reservation ID: {}", reservation.getId());
+        }
+    }
+
+    @Transactional
+    public void clearUnbookedReservationReference(Reservation reservation) {
+        Account guest = reservation.getGuest();
+        if (guest != null && guest.getUnbookedReservation() != null
+                && guest.getUnbookedReservation().getId().equals(reservation.getId())) {
+            logger.info("Clearing unbooked reservation for account ID: {}", guest.getId());
+            guest.setUnbookedReservation(null);
+            accountRepository.save(guest);
+            logger.info("Unbooked reservation cleared successfully.");
+        }
+    }
+
+    @Transactional
+    public void deleteReservationWithCleanup(Long reservationId) {
+        Optional<Reservation> reservationOptional = reservationRepository.findById(reservationId);
+        if (reservationOptional.isPresent()) {
+            Reservation reservation = reservationOptional.get();
+
+            logger.info("Preparing to delete reservation ID: {}", reservationId);
+
+            Account guest = reservation.getGuest();
+            if (guest != null && guest.getUnbookedReservation() != null
+                    && guest.getUnbookedReservation().getId().equals(reservationId)) {
+                logger.info("Clearing unbooked reservation for account ID: {}", guest.getId());
+                guest.setUnbookedReservation(null);
+                accountRepository.save(guest);
+            }
+
+            deleteBookingsFromReservation(reservation);
+
+            if (guest != null && guest.getReservations().contains(reservation)) {
+                guest.getReservations().remove(reservation);
+                accountRepository.save(guest);
+            }
+
+            reservationRepository.delete(reservation);
+            reservationRepository.flush();
+            logger.info("Deleted reservation ID: {}", reservationId);
+        } else {
+            logger.warn("Reservation not found for ID: {}", reservationId);
+        }
+    }
+
+    @Transactional
+    public List<Reservation> getReservationsByEmail(String email) {
+        Optional<Account> accountOptional = accountRepository.findByEmail(email);
+
+        if (accountOptional.isEmpty()) {
+            logger.error("No account found with email: {}", email);
+            throw new IllegalArgumentException("No account found with the given email.");
+        }
+
+        Account account = accountOptional.get();
+        return account.getReservations();
+    }
+
+    @Transactional
+    public ResponseEntity<String> checkInGuestByEmail(String email) {
+        List<Reservation> reservations = getReservationsByEmail(email);
+
+        if (reservations.isEmpty()) {
+            logger.warn("No reservations found for email: {}", email);
+            return ResponseEntity.badRequest().body("No reservations found for this email.");
+        }
+
+        Reservation reservation = reservations.get(0);
+
+        if (reservation.isBooked()) {
+            logger.warn("Guest is already checked in for reservation ID: {}", reservation.getId());
+            return ResponseEntity.badRequest().body("Guest is already checked in.");
+        }
+
+        reservation.setCheckedIn(true);
+        reservationRepository.save(reservation);
+
+        logger.info("Guest checked in successfully for reservation ID: {}", reservation.getId());
+        return ResponseEntity.ok("Guest checked in successfully.");
+    }
+
+    @Transactional
+    public ResponseEntity<String> checkOutGuestByEmail(String email) {
+        List<Reservation> reservations = getReservationsByEmail(email);
+
+        if (reservations.isEmpty()) {
+            logger.warn("No reservations found for email: {}", email);
+            return ResponseEntity.badRequest().body("No reservations found for this email.");
+        }
+
+        List<Reservation> bookedReservations = reservations.stream()
+                .filter(Reservation::isBooked)
+                .toList();
+
+        if (bookedReservations.isEmpty()) {
+            logger.warn("No booked reservations found for email: {}", email);
+            return ResponseEntity.badRequest().body("Guest is not checked in.");
+        }
+
+        for (Reservation reservation : bookedReservations) {
+            logger.info("Processing check-out for reservation ID: {}", reservation.getId());
+
+            clearUnbookedReservationReference(reservation);
+            deleteBookingsFromReservation(reservation);
+            deleteReservationWithCleanup(reservation.getId());
+        }
+
+        logger.info("All reservations checked out and deleted successfully for email: {}", email);
+        return ResponseEntity.ok("Guest checked out and reservation deleted successfully.");
+    }
 
     @Transactional
     public ResponseEntity<String> addRoom(Room room, String username) throws Exception {
@@ -142,6 +264,10 @@ public class ReservationService {
             return ResponseEntity.badRequest().body("You must be logged in.");
         }
         return ResponseEntity.ok().body("Room added");
+    }
+
+    public List<Reservation> getReservationsByUsername(String username) {
+        return reservationRepository.findAllReservationsByUser(username);
     }
 }
 
