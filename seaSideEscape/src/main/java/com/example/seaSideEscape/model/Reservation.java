@@ -32,6 +32,7 @@ public class Reservation {
 
     private BigDecimal roomRate;
     private BigDecimal discount;
+
     private boolean paid;
     private boolean booked;
     private boolean checkedIn;

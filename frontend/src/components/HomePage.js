@@ -54,6 +54,7 @@ const HomePage = () => {
         reservationData.set(name, value);
     };
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(reservation);

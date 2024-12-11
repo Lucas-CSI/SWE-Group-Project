@@ -58,7 +58,6 @@ export const CartProvider = ({ children }) => {
         }
     };
 
-    // Load cart items on component mount
     useEffect(() => {
         if (getLoginStatus()) {
             getCart();

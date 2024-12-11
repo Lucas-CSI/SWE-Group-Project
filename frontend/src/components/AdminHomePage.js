@@ -23,6 +23,9 @@ const AdminHomepage = () => {
     const [modifyUsername, setModifyUsername] = useState('');
     const [permissionLevel, setPermissionLevel] = useState(0);
     const [modifyResult, setModifyResult] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('')
+
     const [roomNumber, setRoomNumber] = useState('');
     const [roomInfo, setRoomInfo] = useState(
         {"id":-1,"roomNumber":"","theme":"","qualityLevel":"","bedType":"","":0,"oceanView":false,"smokingAllowed":false,"isBookedCurrently":false});
@@ -48,6 +51,35 @@ const AdminHomepage = () => {
         else
             setModifyResult(response.response.data);
     }
+
+    const handleCheckIn = async () => {
+        try {
+            const response = await generatePostRequest("/reservation/check-in", null, {
+                params: { email },
+            });
+            setSuccessMessage(response.data);
+            setErrorMessage("");
+        } catch (err) {
+            console.error(err);
+            setSuccessMessage("");
+            setErrorMessage(err.response?.data || "Failed to check-in.");
+        }
+    };
+
+    const handleCheckOut = async () => {
+        try {
+            const response = await generatePostRequest("/reservation/check-out", null, {
+                params: { email },
+            });
+            setSuccessMessage(response.data);
+            setErrorMessage("");
+        } catch (err) {
+            console.error(err);
+            setSuccessMessage("");
+            setErrorMessage(err.response?.data || "Failed to check-out.");
+        }
+    };
+
 
     const handleGetRoomInfo = async () => {
         const response = await generateGetRequest("/admin/getRoom?roomNumber=" + roomNumber, {}, {});
@@ -154,6 +186,7 @@ const AdminHomepage = () => {
                                 backgroundColor: '#28c1d8',
                             },
                         }}
+                        onClick={handleCheckIn}
                     >
                         Check In
                     </Button>
@@ -168,6 +201,7 @@ const AdminHomepage = () => {
                                 backgroundColor: '#28c1d8',
                             },
                         }}
+                        onClick={handleCheckOut}
                     >
                         Check Out
                     </Button>
